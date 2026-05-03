@@ -1,5 +1,5 @@
-This repository contains the Bonfyre native runtime lineage that is being
+This repository contains the Akai native runtime lineage that is being
 incorporated into Aurekai as the Aurekai Native Runtime.
 
-Bonfyre remains the internal compatibility name for legacy ABI, command names,
+Akai remains the internal compatibility name for legacy ABI, command names,
 and .bf* artifact formats.

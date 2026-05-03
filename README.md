@@ -1,8 +1,8 @@
 # Aurekai Native Runtime
 
-Preserved Bonfyre C11 runtime lineage for local operators, artifacts,
+Preserved Akai C11 runtime lineage for local operators, artifacts,
 media pipelines, and runtime primitives.
 
 Aurekai Native Runtime contains the native C11 operator engine originally
-developed under the Bonfyre codename. It is used by the Aurekai public platform
+developed under the Akai codename. It is used by the Aurekai public platform
 through CLI wrappers, package wrappers, and deployment manifests.

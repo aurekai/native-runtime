@@ -2,11 +2,11 @@
 
 ## Executive Summary
 
-The Bonfyre Recipe System provides **declarative pipeline composition** via:
+The Akai Recipe System provides **declarative pipeline composition** via:
 - **JSON schema** for pipeline recipes
 - **Composition operators** (⊕ serial,⊗ parallel, ⊕ merge, 🔁 loop)
-- **BonfyreRecipe** registry (SQLite + FTS5)
-- **BonfyreRun** executor (DAG scheduler)
+- **AkaiRecipe** registry (SQLite + FTS5)
+- **AkaiRun** executor (DAG scheduler)
 
 **Goal**: Replace bash scripts with content-addressed, reproducible recipes.
 
@@ -40,7 +40,7 @@ The Bonfyre Recipe System provides **declarative pipeline composition** via:
     {
       "id": "s01",
       "name": "VAD Segmentation",
-      "operator": "BonfyreSpeechLoop",
+      "operator": "AkaiSpeechLoop",
       "args": ["--input", "{input}", "--out", "{out}/segments"],
       "inputs": ["{input}"],
       "outputs": ["{out}/segments"],
@@ -49,7 +49,7 @@ The Bonfyre Recipe System provides **declarative pipeline composition** via:
     {
       "id": "s02",
       "name": "Transcription",
-      "operator": "BonfyreTranscribe",
+      "operator": "AkaiTranscribe",
       "args": ["--input", "{out}/segments", "--model", "whisper-base"],
       "inputs": ["{out}/segments"],
       "outputs": ["{out}/transcript.txt"],
@@ -59,7 +59,7 @@ The Bonfyre Recipe System provides **declarative pipeline composition** via:
     {
       "id": "s03",
       "name": "Entity Extraction",
-      "operator": "BonfyreEntity",
+      "operator": "AkaiEntity",
       "args": ["--input", "{out}/transcript.txt", "--out", "{out}/entities.json"],
       "inputs": ["{out}/transcript.txt"],
       "outputs": ["{out}/entities.json"],
@@ -75,7 +75,7 @@ The Bonfyre Recipe System provides **declarative pipeline composition** via:
   "metadata": {
     "category": "speech-investigation",
     "tags": ["audio", "transcription", "knowledge-graph"],
-    "author": "bonfyre",
+    "author": "aurekai",
     "complexity": "high",
     "estimated_time_minutes": 11
   }
@@ -151,7 +151,7 @@ input ──┤
 
 **Semantics**:
 - Execute `recipe_a` and `recipe_b` in parallel
-- Merge outputs using `merger_fn` (e.g., BonfyreMerge)
+- Merge outputs using `merger_fn` (e.g., AkaiMerge)
 
 **JSON Representation**:
 
@@ -162,7 +162,7 @@ input ──┤
     "op": "merge",
     "recipes": ["A1", "A2"],
     "merger": {
-      "operator": "BonfyreMerge",
+      "operator": "AkaiMerge",
       "args": ["--strategy", "union"]
     }
   }
@@ -172,7 +172,7 @@ input ──┤
 **DAG**:
 ```
         ┌─ A1 → output_a ─┐
-input ──┤                  ├→ BonfyreMerge → merged_output
+input ──┤                  ├→ AkaiMerge → merged_output
         └─ A2 → output_b ─┘
 ```
 
@@ -212,7 +212,7 @@ A1 → check → [not met] → A1 → check → ... → [met] → output
 
 ---
 
-## Recipe Registry (BonfyreRecipe)
+## Recipe Registry (AkaiRecipe)
 
 ### SQLite Schema
 
@@ -271,27 +271,27 @@ CREATE TABLE recipe_models (
 
 ### CLI Commands
 
-#### `bonfyre-recipe init`
+#### `akai-recipe init`
 
 Initialize registry database.
 
 ```bash
-bonfyre-recipe init [--db PATH]
+akai-recipe init [--db PATH]
 ```
 
 **Behavior**:
-- Create SQLite database at `~/.bonfyre/recipes.db` (or custom path)
+- Create SQLite database at `~/.akai/recipes.db` (or custom path)
 - Create schema
 - Insert 10 built-in recipes (A1-A3, M1, P1-P2, V1, R1, L1, G1)
 
 ---
 
-#### `bonfyre-recipe list`
+#### `akai-recipe list`
 
 List all recipes.
 
 ```bash
-bonfyre-recipe list [--category CATEGORY] [--tag TAG]
+akai-recipe list [--category CATEGORY] [--tag TAG]
 ```
 
 **Output**:
@@ -306,24 +306,24 @@ P1   Proof Bundle              legal,proof             2 min
 
 ---
 
-#### `bonfyre-recipe show`
+#### `akai-recipe show`
 
 Show recipe details.
 
 ```bash
-bonfyre-recipe show <RECIPE_ID>
+akai-recipe show <RECIPE_ID>
 ```
 
 **Output**: Full JSON + stage DAG visualization
 
 ---
 
-#### `bonfyre-recipe add`
+#### `akai-recipe add`
 
 Add custom recipe.
 
 ```bash
-bonfyre-recipe add <RECIPE.json>
+akai-recipe add <RECIPE.json>
 ```
 
 **Behavior**:
@@ -334,12 +334,12 @@ bonfyre-recipe add <RECIPE.json>
 
 ---
 
-#### `bonfyre-recipe validate`
+#### `akai-recipe validate`
 
 Validate recipe JSON.
 
 ```bash
-bonfyre-recipe validate <RECIPE.json>
+akai-recipe validate <RECIPE.json>
 ```
 
 **Checks**:
@@ -350,17 +350,17 @@ bonfyre-recipe validate <RECIPE.json>
 
 ---
 
-#### `bonfyre-recipe search`
+#### `akai-recipe search`
 
 Full-text search.
 
 ```bash
-bonfyre-recipe search <QUERY>
+akai-recipe search <QUERY>
 ```
 
 **Example**:
 ```bash
-$ bonfyre-recipe search "transcription"
+$ akai-recipe search "transcription"
 A1   Audio Quick Brief
 A2   Audio Archive
 A3   Full Speech Investigation
@@ -369,7 +369,7 @@ M1   Media/Podcast Pipeline
 
 ---
 
-## Recipe Executor (BonfyreRun)
+## Recipe Executor (AkaiRun)
 
 ### Execution Flow
 
@@ -390,12 +390,12 @@ M1   Media/Podcast Pipeline
 
 ### CLI Commands
 
-#### `bonfyre-run <RECIPE_ID>`
+#### `akai-run <RECIPE_ID>`
 
 Execute recipe.
 
 ```bash
-bonfyre-run A3 --input audio.wav --out results/ [--dry-run] [--resume]
+akai-run A3 --input audio.wav --out results/ [--dry-run] [--resume]
 ```
 
 **Flags**:
@@ -410,13 +410,13 @@ bonfyre-run A3 --input audio.wav --out results/ [--dry-run] [--resume]
 
 ---
 
-#### `bonfyre-run compose`
+#### `akai-run compose`
 
 Execute composed recipe.
 
 ```bash
-bonfyre-run compose --serial A1 A2 --input audio.wav --out results/
-bonfyre-run compose --parallel A1 M1 --input audio.wav --out results/
+akai-run compose --serial A1 A2 --input audio.wav --out results/
+akai-run compose --parallel A1 M1 --input audio.wav --out results/
 ```
 
 ---
@@ -450,7 +450,7 @@ Every execution produces `run-manifest.json`:
       "started_at": "2026-04-20T10:00:05Z",
       "completed_at": "2026-04-20T10:01:20Z",
       "duration_seconds": 75,
-      "operator": "BonfyreSpeechLoop",
+      "operator": "AkaiSpeechLoop",
       "exit_code": 0
     }
   ],
@@ -507,16 +507,16 @@ Every execution produces `run-manifest.json`:
 
 **Phase 3.1** (Current):
 - [x] Recipe schema design
-- [ ] BonfyreRecipe binary (SQLite registry)
+- [ ] AkaiRecipe binary (SQLite registry)
 - [ ] 10 built-in recipes (JSON)
 
 **Phase 3.2**:
-- [ ] BonfyreRun executor (DAG scheduler)
+- [ ] AkaiRun executor (DAG scheduler)
 - [ ] Composition operators
 - [ ] Run manifest signing
 
 **Phase 3.3**:
-- [ ] Integration with BonfyreStitch
+- [ ] Integration with AkaiStitch
 - [ ] Cache management
 - [ ] Multi-tier execution
 
@@ -524,7 +524,7 @@ Every execution produces `run-manifest.json`:
 
 ## Success Criteria
 
-1. **Zero bash scripts**: All pipelines via `bonfyre-run`
+1. **Zero bash scripts**: All pipelines via `akai-run`
 2. **Content-addressed**: Every recipe has SHA-256 hash
 3. **Reproducible**: Same inputs → same outputs → same manifest
 4. **Composable**: Build complex recipes from primitives

@@ -1,6 +1,6 @@
 # Lambda Tensors
 
-Lambda Tensors is a structural compression algorithm for JSON data. It's included in Bonfyre as `liblambda-tensors` (41 KB static library).
+Lambda Tensors is a structural compression algorithm for JSON data. It's included in Akai as `liblambda-tensors` (41 KB static library).
 
 ## The idea
 

@@ -28,7 +28,7 @@
     {
       "id": "s01",
       "name": "Repository Scan",
-      "operator": "BonfyreRepoScan",
+      "operator": "AkaiRepoScan",
       "args": [
         "--input", "{input}",
         "--out", "{out}/scan",
@@ -40,7 +40,7 @@
     {
       "id": "s02",
       "name": "Language Detection",
-      "operator": "BonfyreDetectLanguages",
+      "operator": "AkaiDetectLanguages",
       "args": [
         "--input", "{out}/scan/files.json",
         "--out", "{out}/languages.json"
@@ -52,7 +52,7 @@
     {
       "id": "s03",
       "name": "Dependency Analysis",
-      "operator": "BonfyreDepsAnalyze",
+      "operator": "AkaiDepsAnalyze",
       "args": [
         "--input", "{input}",
         "--out", "{out}/dependencies",
@@ -65,7 +65,7 @@
     {
       "id": "s04",
       "name": "AST Parsing",
-      "operator": "BonfyreCodeAST",
+      "operator": "AkaiCodeAST",
       "args": [
         "--input", "{input}",
         "--out", "{out}/ast",
@@ -79,7 +79,7 @@
     {
       "id": "s05",
       "name": "Symbol Extraction",
-      "operator": "BonfyreExtractSymbols",
+      "operator": "AkaiExtractSymbols",
       "args": [
         "--input", "{out}/ast",
         "--out", "{out}/symbols.json"
@@ -91,7 +91,7 @@
     {
       "id": "s06",
       "name": "Call Graph Construction",
-      "operator": "BonfyreCallGraph",
+      "operator": "AkaiCallGraph",
       "args": [
         "--input", "{out}/symbols.json",
         "--out", "{out}/callgraph.json"
@@ -103,7 +103,7 @@
     {
       "id": "s07",
       "name": "Documentation Extraction",
-      "operator": "BonfyreExtractDocs",
+      "operator": "AkaiExtractDocs",
       "args": [
         "--input", "{input}",
         "--out", "{out}/docs",
@@ -115,7 +115,7 @@
     {
       "id": "s08",
       "name": "Test Coverage Analysis",
-      "operator": "BonfyreTestCoverage",
+      "operator": "AkaiTestCoverage",
       "args": [
         "--input", "{input}",
         "--out", "{out}/coverage.json"
@@ -127,7 +127,7 @@
     {
       "id": "s09",
       "name": "Security Scan",
-      "operator": "BonfyreSecurityScan",
+      "operator": "AkaiSecurityScan",
       "args": [
         "--input", "{input}",
         "--out", "{out}/security.json",
@@ -141,7 +141,7 @@
     {
       "id": "s10",
       "name": "Code Quality Metrics",
-      "operator": "BonfyreQualityMetrics",
+      "operator": "AkaiQualityMetrics",
       "args": [
         "--input", "{out}/ast",
         "--out", "{out}/quality.json",
@@ -153,7 +153,7 @@
     {
       "id": "s11",
       "name": "Contributor Analysis",
-      "operator": "BonfyreContributors",
+      "operator": "AkaiContributors",
       "args": [
         "--input", "{out}/scan/commits.json",
         "--out", "{out}/contributors.json"
@@ -165,7 +165,7 @@
     {
       "id": "s12",
       "name": "Knowledge Graph Fusion",
-      "operator": "BonfyreCodeGraph",
+      "operator": "AkaiCodeGraph",
       "args": [
         "--symbols", "{out}/symbols.json",
         "--callgraph", "{out}/callgraph.json",
@@ -178,7 +178,7 @@
     {
       "id": "s13",
       "name": "Onboarding Guide Generation",
-      "operator": "BonfyreCodeBrief",
+      "operator": "AkaiCodeBrief",
       "args": [
         "--graph", "{out}/dependency-graph.json",
         "--languages", "{out}/languages.json",
@@ -198,7 +198,7 @@
   "metadata": {
     "estimated_time": "3-10 minutes (depends on repo size)",
     "tags": ["code", "repository", "analysis", "onboarding"],
-    "author": "bonfyre-core",
+    "author": "akai-core",
     "license": "MIT"
   }
 }

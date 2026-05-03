@@ -1,8 +1,8 @@
 # Client Surfaces
 
-Bonfyre is client-agnostic.
+Akai is client-agnostic.
 
-Bonfyre core owns:
+Akai core owns:
 
 - LayerArtifact registry
 - recipes
@@ -16,7 +16,7 @@ Bonfyre core owns:
 - ledger and meter
 - lifecycle state
 
-Client surfaces are optional adapters that consume Bonfyre state and events, render them for a specific experience, and emit user actions back into Bonfyre.
+Client surfaces are optional adapters that consume Akai state and events, render them for a specific experience, and emit user actions back into Aurekai.
 
 ## Examples
 
@@ -37,7 +37,7 @@ A `ClientSurface` may:
 - cache lightweight client state
 - animate events
 - capture user inputs
-- emit action payloads back to Bonfyre
+- emit action payloads back to Aurekai
 
 A `ClientSurface` must not:
 
@@ -50,11 +50,11 @@ A `ClientSurface` must not:
 ## Event Flow
 
 ```text
-Bonfyre core
+Akai core
   -> emits domain events and sync patches
   -> delivers through API / Sync / MoQ
   -> optional client surface renders local state
-  -> player or operator action emits input event back to Bonfyre
+  -> player or operator action emits input event back to Aurekai
 ```
 
 ## Current Optional Surface

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # seed_all_apps.sh — Run the real-data pipeline for all 13 thin apps
-# Each app gets 3 genuinely different YouTube sources through the same Bonfyre pipe.
+# Each app gets 3 genuinely different YouTube sources through the same Akai pipe.
 #
 # Same pipeline every time. Different domain. That's the point.
 set -euo pipefail

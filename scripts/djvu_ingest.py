@@ -3,7 +3,7 @@
 djvu_ingest.py — Direct _djvu.txt ingest with document type classification.
 
 Replaces the PDF→Whisper→transcript path for any corpus that already has
-IA-generated OCR. Enters the bonfyre pipeline at paragraph stage, skipping
+IA-generated OCR. Enters the akai pipeline at paragraph stage, skipping
 media-prep, transcribe, and transcript-clean entirely.
 
 Document type classifier (regex heuristics → 4 classes):

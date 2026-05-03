@@ -1,11 +1,11 @@
-# bonfyre-orchestrate
+# akai-orchestrate
 
-`bonfyre-orchestrate` is a machine-only planner for Bonfyre. It is not a chat UI and it does not expose human prompting to the end user.
+`akai-orchestrate` is a machine-only planner for Aurekai. It is not a chat UI and it does not expose human prompting to the end user.
 
 ## Goals
 
-- Keep Bonfyre fully usable without a model
-- Add an optional planner that can choose higher-leverage Bonfyre blocks automatically
+- Keep Akai fully usable without a model
+- Add an optional planner that can choose higher-leverage Akai blocks automatically
 - Use strict structured JSON and a hidden system contract
 - Respect latency so the orchestrator boosts the system instead of slowing it down
 
@@ -20,23 +20,23 @@ Sources:
 
 ## Runtime model
 
-Bonfyre uses three layers here:
+Akai uses three layers here:
 
-1. Deterministic Bonfyre baseline
-2. `bonfyre-orchestrate` heuristic planner
+1. Deterministic Akai baseline
+2. `akai-orchestrate` heuristic planner
 3. Optional Gemma 4 assist over an OpenAI-compatible endpoint
 
-If no endpoint is configured, `bonfyre-orchestrate` still produces a valid boost plan from Bonfyre's operator registry and the request contract.
+If no endpoint is configured, `akai-orchestrate` still produces a valid boost plan from Aurekai's operator registry and the request contract.
 
 When Gemma is configured, it operates as a bounded delta planner over the deterministic baseline, not as a freeform plan replacement.
 
 ## Commands
 
 ```bash
-bonfyre-orchestrate status
-bonfyre-orchestrate plan request.json
-bonfyre-orchestrate feedback request.json 0.22 0.08
-bonfyre-orchestrate feedback request.json feedback.json
+akai-orchestrate status
+akai-orchestrate plan request.json
+akai-orchestrate feedback request.json 0.22 0.08
+akai-orchestrate feedback request.json feedback.json
 ```
 
 ## Environment
@@ -66,9 +66,9 @@ export BONFYRE_ORCHESTRATE_API_KEY=...
   "mode": "gemma4-delta",
   "policy_source": "stability-gated-gemma-delta",
   "model": "google/gemma-4-E4B",
-  "selected_binaries": ["bonfyre-ingest", "bonfyre-media-prep", "bonfyre-transcribe", "bonfyre-brief"],
-  "booster_binaries": ["bonfyre-narrate", "bonfyre-render", "bonfyre-emit", "bonfyre-pack"],
-  "control_surfaces": ["bonfyre-render", "bonfyre-emit", "bonfyre-queue"],
+  "selected_binaries": ["akai-ingest", "akai-media-prep", "akai-transcribe", "akai-brief"],
+  "booster_binaries": ["akai-narrate", "akai-render", "akai-emit", "akai-pack"],
+  "control_surfaces": ["akai-render", "akai-emit", "akai-queue"],
   "objective_family": "publish",
   "state_key": "m100-s101-l10-o1000-a11",
   "expected_outputs": ["normalized-audio", "transcript", "brief", "rendered-output", "formatted-output"],
@@ -120,14 +120,14 @@ export BONFYRE_ORCHESTRATE_API_KEY=...
 ## Design constraints
 
 - No end-user prompt text
-- No replacement of core deterministic Bonfyre operators
+- No replacement of core deterministic Akai operators
 - Optional boost path only
-- Registry-bounded: only known Bonfyre operators can be selected
+- Registry-bounded: only known Akai operators can be selected
 - Low-latency aware: interactive flows get fewer always-on stages and more optional boosters
 
 ## Control profile
 
-Bonfyre derives a control profile for each operator from the typed registry. The orchestrator now scores plans over:
+Akai derives a control profile for each operator from the typed registry. The orchestrator now scores plans over:
 
 - `cost`
 - `latency`
@@ -151,13 +151,13 @@ The orchestrator keeps a compact SQLite policy store keyed by:
 - `latency_class`
 - `surface`
 
-That means Bonfyre can reuse winning boost sets without calling the model again for the same orchestration signature.
+That means Akai can reuse winning boost sets without calling the model again for the same orchestration signature.
 
-If there is no exact signature hit, Bonfyre can also fall back to a proven workload-family prior when the same `input_type`, `latency_class`, and `surface` have already produced a low-regret frontier in the same objective family.
+If there is no exact signature hit, Akai can also fall back to a proven workload-family prior when the same `input_type`, `latency_class`, and `surface` have already produced a low-regret frontier in the same objective family.
 
-Between those two, Bonfyre can also reuse a frontier by exact compressed machine state when the same `state_key` has already produced a strong low-regret outcome.
+Between those two, Akai can also reuse a frontier by exact compressed machine state when the same `state_key` has already produced a strong low-regret outcome.
 
-Bonfyre also distills those successful frontiers back into the deterministic planner as ranking priors, so repeated wins can bias booster ordering even before an exact memory hit is available.
+Akai also distills those successful frontiers back into the deterministic planner as ranking priors, so repeated wins can bias booster ordering even before an exact memory hit is available.
 
 Gemma is gated by the current plan itself:
 
@@ -183,18 +183,18 @@ Family-prior reuse surfaces as `mode: "family-memory"`.
 
 ## Feedback and regret
 
-Bonfyre can now record simple post-run feedback:
+Akai can now record simple post-run feedback:
 
 ```bash
-bonfyre-orchestrate feedback request.json 0.22 0.08
-bonfyre-orchestrate feedback request.json feedback.json
+akai-orchestrate feedback request.json 0.22 0.08
+akai-orchestrate feedback request.json feedback.json
 ```
 
 Meaning:
 
 - `0.22` = observed quality gain
 - `0.08` = observed latency delta
-- `feedback.json` = optional typed feedback payload when Bonfyre already has domain-level observations
+- `feedback.json` = optional typed feedback payload when Akai already has domain-level observations
 
 Example:
 
@@ -222,7 +222,7 @@ This is the first thin evaluation loop needed for policy distillation and long-r
 
 ## Domain back-feed
 
-Bonfyre now also derives compact domain signals from each feedback event:
+Akai now also derives compact domain signals from each feedback event:
 
 - `exec`
 - `artifact`
@@ -235,11 +235,11 @@ These are stored in the same policy table and folded into a composite `policy_sc
 
 That means the planner can start treating Lambda Tensors, CMS relational fit, retrieval lift, and execution quality as different observability surfaces instead of flattening everything into one scalar too early.
 
-When Bonfyre already has direct measurements from those surfaces, the JSON feedback path lets them flow into policy memory without first collapsing back to a flat quality/latency proxy.
+When Akai already has direct measurements from those surfaces, the JSON feedback path lets them flow into policy memory without first collapsing back to a flat quality/latency proxy.
 
 ## Objective weighting
 
-The composite `policy_score` is not flat. Bonfyre now reweights domains by request intent before scoring:
+The composite `policy_score` is not flat. Akai now reweights domains by request intent before scoring:
 
 - CMS and publish-heavy requests bias toward `cms` and `artifact`
 - retrieval and semantic requests bias toward `retrieval` and `tensor`
@@ -255,7 +255,7 @@ The plan JSON also exposes:
 - `objective_family`
 - `active_domain_weights`
 
-So downstream Bonfyre surfaces can see which control layer won and what domain mix shaped the plan, without introducing a human prompt surface.
+So downstream Akai surfaces can see which control layer won and what domain mix shaped the plan, without introducing a human prompt surface.
 
 ## State compression
 
@@ -264,9 +264,9 @@ Each request is also compressed into a small machine state:
 - `state_key`
 - `state_vector`
 
-This is Bonfyre's sufficient-statistics layer for orchestration. It keeps the planner oriented around modality, surface, latency class, objective family, and artifact shape instead of letting orchestration drift into raw-string prompt logic.
+This is Aurekai's sufficient-statistics layer for orchestration. It keeps the planner oriented around modality, surface, latency class, objective family, and artifact shape instead of letting orchestration drift into raw-string prompt logic.
 
-The Gemma path now uses that same compressed substrate too. When Bonfyre asks the model for a delta, it sends:
+The Gemma path now uses that same compressed substrate too. When Akai asks the model for a delta, it sends:
 
 - `state_key`
 - `state_vector`
@@ -275,7 +275,7 @@ The Gemma path now uses that same compressed substrate too. When Bonfyre asks th
 - the stability gate
 - the typed operator registry
 
-So the model sees Bonfyre's machine ontology and bounded control surface rather than a loose human-style request blob.
+So the model sees Aurekai's machine ontology and bounded control surface rather than a loose human-style request blob.
 
 ## Distillation
 
@@ -296,9 +296,9 @@ Each plan now also exposes:
 - `booster_contributions`
 - `frontier_decision`
 
-That gives Bonfyre an explicit counterfactual against the deterministic floor, so the system can measure what the retained frontier actually changed instead of treating the chosen path as an opaque result.
+That gives Akai an explicit counterfactual against the deterministic floor, so the system can measure what the retained frontier actually changed instead of treating the chosen path as an opaque result.
 
-Bonfyre now also uses that counterfactual internally as an uplift gate. If the retained frontier does not clear the minimum policy gain or a bounded utility tradeoff, the planner collapses back to the deterministic floor instead of keeping decorative or harmful boosters.
+Akai now also uses that counterfactual internally as an uplift gate. If the retained frontier does not clear the minimum policy gain or a bounded utility tradeoff, the planner collapses back to the deterministic floor instead of keeping decorative or harmful boosters.
 
 That uplift gate is now adaptive by workload memory. When similar state or family histories show boosters paying off consistently, the gate relaxes slightly. When history shows regret or poor payoff, the gate tightens.
 
@@ -306,7 +306,7 @@ When boosters do survive, `booster_contributions` shows their individual frontie
 
 `frontier_decision` makes that explicit by reporting whether the frontier was retained or collapsed, plus how many boosters existed before and after the gate.
 
-It also reports the reason code and the measured gain/delta values that drove the decision, so Bonfyre can learn from specific gate failures such as `policy-gain-too-low`, `utility-gain-too-low`, `latency-delta-too-high`, or `cost-delta-too-high`.
+It also reports the reason code and the measured gain/delta values that drove the decision, so Akai can learn from specific gate failures such as `policy-gain-too-low`, `utility-gain-too-low`, `latency-delta-too-high`, or `cost-delta-too-high`.
 
 ## Booster frontier
 

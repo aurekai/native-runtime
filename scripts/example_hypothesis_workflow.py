@@ -18,12 +18,12 @@ from hypothesis_engine import HypothesisEngine, Hypothesis, BUILTIN_HYPOTHESES
 
 def main():
     print("\n" + "="*70)
-    print("BONFYRE PHASE 16: HYPOTHESIS ENGINE WORKFLOW")
+    print("AKAI PHASE 16: HYPOTHESIS ENGINE WORKFLOW")
     print("="*70 + "\n")
     
     # Setup
-    memory_dir = "/tmp/bonfyre-memory"
-    models_dir = "/tmp/bonfyre-models"
+    memory_dir = "/tmp/akai-memory"
+    models_dir = "/tmp/akai-models"
     
     Path(memory_dir).mkdir(parents=True, exist_ok=True)
     Path(models_dir).mkdir(parents=True, exist_ok=True)
@@ -133,7 +133,7 @@ python3 scripts/hypothesis_engine.py --history alias_network
     print("\n" + "="*70)
     print("HYPOTHESIS ENGINE READY")
     print("="*70)
-    print("\nBonfyre can now pursue and validate specific theories about reality.")
+    print("\nAkai can now pursue and validate specific theories about reality.")
     print("\nInstead of: 'Process these documents'")
     print("You can now: 'Test whether these 3 names are the same person'\n")
 

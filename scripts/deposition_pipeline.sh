@@ -1,12 +1,12 @@
 #!/usr/bin/env env bash
 # deposition_pipeline.sh — run a full forensic pipeline on an audio deposition
 #
-# Stage 0: ensure bonfyre-transcribe daemon is running
+# Stage 0: ensure akai-transcribe daemon is running
 # Stage 1: transcribe audio via daemon socket (falls back to direct spawn)
 # Stage 2: trauma-filter pass — suppress graphic content, extract who/what/when
-# Stage 3: bonfyre-brief  — structured summary with corroboration flags
-# Stage 4: bonfyre-proof  — evidence attestation packet
-# Stage 5: bonfyre-pack   — archive-ready deliverable bundle
+# Stage 3: akai-brief  — structured summary with corroboration flags
+# Stage 4: akai-proof  — evidence attestation packet
+# Stage 5: akai-pack   — archive-ready deliverable bundle
 #
 # Usage:
 #   ./deposition_pipeline.sh --audio <file> --out <dir> [--label <tag>] [--dry-run]
@@ -22,11 +22,11 @@ AUDIO_FILE=""
 OUT_DIR=""
 LABEL=""
 DRY_RUN=0
-SOCKET="${BONFYRE_TRANSCRIBE_SOCKET:-/tmp/bonfyre-transcribe.sock}"
-DAEMON_BIN="bonfyre-transcribe"
-BRIEF_BIN="bonfyre-brief"
-PROOF_BIN="bonfyre-proof"
-PACK_BIN="bonfyre-pack"
+SOCKET="${BONFYRE_TRANSCRIBE_SOCKET:-/tmp/akai-transcribe.sock}"
+DAEMON_BIN="akai-transcribe"
+BRIEF_BIN="akai-brief"
+PROOF_BIN="akai-proof"
+PACK_BIN="akai-pack"
 WHISPER_MODEL="${BONFYRE_WHISPER_MODEL:-}"
 
 # Trauma-filter: named entity labels to preserve, graphic content patterns to redact
@@ -111,7 +111,7 @@ ensure_daemon() {
 
   log "  starting daemon: $daemon_cmd"
   if [[ $DRY_RUN -eq 0 ]]; then
-    nohup $daemon_cmd >/tmp/bonfyre-transcribe-daemon.log 2>&1 &
+    nohup $daemon_cmd >/tmp/akai-transcribe-daemon.log 2>&1 &
     local pid=$!
     log "  daemon pid=$pid, waiting for socket…"
     local waited=0
@@ -158,7 +158,7 @@ transcribe() {
     --out "$transcript_dir" \
     "$AUDIO_ABS"
 
-  # Attempt to locate the output .txt — bonfyre-transcribe writes <stem>.txt
+  # Attempt to locate the output .txt — akai-transcribe writes <stem>.txt
   if [[ $DRY_RUN -eq 0 ]]; then
     RAW_TRANSCRIPT="$(find "$transcript_dir" -name '*.txt' -newer "$AUDIO_ABS" \
       | sort -t/ -k1 | head -1)"
@@ -238,9 +238,9 @@ PYEOF
   log "  filtered transcript: $FILTERED_TRANSCRIPT"
 }
 
-# ── stage 3: bonfyre-brief ─────────────────────────────────────────────────────
+# ── stage 3: akai-brief ─────────────────────────────────────────────────────
 run_brief() {
-  log "Stage 3: bonfyre-brief"
+  log "Stage 3: akai-brief"
   local brief_out="$OUT_DIR/brief"
   run mkdir -p "$brief_out"
 
@@ -256,15 +256,15 @@ run_brief() {
 [BRIEF PLACEHOLDER]
 Source: ${FILTERED_TRANSCRIPT}
 Label:  ${LABEL}
-Action: run bonfyre-brief when available
+Action: run akai-brief when available
 TXT
     fi
   fi
 }
 
-# ── stage 4: bonfyre-proof ─────────────────────────────────────────────────────
+# ── stage 4: akai-proof ─────────────────────────────────────────────────────
 run_proof() {
-  log "Stage 4: bonfyre-proof"
+  log "Stage 4: akai-proof"
   local proof_out="$OUT_DIR/proof"
   run mkdir -p "$proof_out"
 
@@ -284,16 +284,16 @@ run_proof() {
   "source_transcript": "${FILTERED_TRANSCRIPT}",
   "sha256": "${h}",
   "generated_at": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-  "status": "PLACEHOLDER — run bonfyre-proof when available"
+  "status": "PLACEHOLDER — run akai-proof when available"
 }
 JSON
     fi
   fi
 }
 
-# ── stage 5: bonfyre-pack ─────────────────────────────────────────────────────
+# ── stage 5: akai-pack ─────────────────────────────────────────────────────
 run_pack() {
-  log "Stage 5: bonfyre-pack"
+  log "Stage 5: akai-pack"
 
   if command -v "$PACK_BIN" &>/dev/null; then
     run "$PACK_BIN" \

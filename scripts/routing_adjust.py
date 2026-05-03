@@ -2,12 +2,12 @@
 """
 scripts/routing_adjust.py — Dynamic routing weight adjuster.
 
-Reads the BonfyreMemory routing_weights table and produces an
+Reads the AkaiMemory routing_weights table and produces an
 adjusted frontier JSON file that demo.py can use to bias routing.
 
 HOW IT WORKS
 ============
-Bonfyre's bonfyre-model route command reads `frontier.json` which contains
+Aurekai's akai-model route command reads `frontier.json` which contains
 cosine-distance weights between family embedding centroids.  routing_adjust.py
 computes a "confidence modifier" for each transition based on historical
 success/failure/escalation rates, then writes:
@@ -31,14 +31,14 @@ For each transition (A → B):
 
 USAGE
 =====
-    python3 scripts/routing_adjust.py [--memory-dir /tmp/bonfyre-memory]
-                                       [--models-dir /tmp/bonfyre-families]
+    python3 scripts/routing_adjust.py [--memory-dir /tmp/akai-memory]
+                                       [--models-dir /tmp/akai-families]
                                        [--scale 0.3]
                                        [--dry-run]
 
     # In demo.py workflow:
     python3 scripts/routing_adjust.py
-    python3 scripts/demo.py "text" --frontier /tmp/bonfyre-memory/graph/frontier_adjusted.json
+    python3 scripts/demo.py "text" --frontier /tmp/akai-memory/graph/frontier_adjusted.json
 """
 
 import argparse
@@ -51,7 +51,7 @@ import time
 _SELF = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(_SELF))
 
-from scripts.bonfyre_memory import BonfyreMemory  # noqa: E402
+from scripts.bonfyre_memory import AkaiMemory  # noqa: E402
 
 
 # ── Constants ─────────────────────────────────────────────────────────────
@@ -64,7 +64,7 @@ MIN_WEIGHT       = 0.05  # floor: keep every edge non-zero (graph stays connecte
 
 # ── Adjust ────────────────────────────────────────────────────────────────
 
-def compute_adjustments(mem: BonfyreMemory) -> dict:
+def compute_adjustments(mem: AkaiMemory) -> dict:
     """
     Return per-transition weight multipliers.
 
@@ -95,7 +95,7 @@ def apply_adjustments(frontier: dict, multipliers: dict) -> dict:
     """
     Apply per-transition multipliers to a frontier.json structure.
 
-    frontier.json schema (from bonfyre-fpqx):
+    frontier.json schema (from akai-fpqx):
     {
       "families": ["T04", "T15", ...],
       "pairs": [
@@ -132,7 +132,7 @@ def apply_adjustments(frontier: dict, multipliers: dict) -> dict:
     return adjusted, changed
 
 
-def rebuild_escalation_chain(mem: BonfyreMemory,
+def rebuild_escalation_chain(mem: AkaiMemory,
                               base_chain: dict) -> dict:
     """
     Return a routing chain dict updated with learned preferences.
@@ -190,7 +190,7 @@ def run_adjustment(memory_dir: str, models_dir: str,
 
     Returns: {"multipliers": {...}, "changed": [...], "out_path": str}
     """
-    mem = BonfyreMemory(memory_dir)
+    mem = AkaiMemory(memory_dir)
     adj = compute_adjustments(mem)
 
     if not adj:
@@ -251,9 +251,9 @@ def run_adjustment(memory_dir: str, models_dir: str,
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Adjust Bonfyre routing weights from transform memory")
-    ap.add_argument("--memory-dir",  default="/tmp/bonfyre-memory")
-    ap.add_argument("--models-dir",  default="/tmp/bonfyre-families")
+        description="Adjust Akai routing weights from transform memory")
+    ap.add_argument("--memory-dir",  default="/tmp/akai-memory")
+    ap.add_argument("--models-dir",  default="/tmp/akai-families")
     ap.add_argument("--scale",       type=float, default=WEIGHT_SCALE,
                     help=f"Max fractional weight change (default: {WEIGHT_SCALE})")
     ap.add_argument("--dry-run",     action="store_true",

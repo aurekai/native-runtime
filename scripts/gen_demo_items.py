@@ -96,8 +96,8 @@ def main():
             "sourceLabel": "Watch original public video",
             "sourceTitle": source.get("title", ""),
             "publisher": source.get("channel", ""),
-            "license": f"Public YouTube video processed transiently. Bonfyre retained only derived artifacts.",
-            "sourceCopy": f"Source: {source.get('channel', 'Unknown')} on YouTube. Bonfyre downloaded, transcribed, and deleted the media. Only the transcript, brief, and proof remain.",
+            "license": f"Public YouTube video processed transiently. Akai retained only derived artifacts.",
+            "sourceCopy": f"Source: {source.get('channel', 'Unknown')} on YouTube. Akai downloaded, transcribed, and deleted the media. Only the transcript, brief, and proof remain.",
             "whyItMatters": get_why_it_matters(slug),
             "searchSummary": ", ".join(tags[:3]),
             "searchIntro": get_search_intro(slug),
@@ -181,7 +181,7 @@ def get_why_it_matters(slug):
 
 
 def get_search_intro(slug):
-    return f"Search across the {slug.replace('-', ' ')} records to see how Bonfyre connects related content from different sources."
+    return f"Search across the {slug.replace('-', ' ')} records to see how Akai connects related content from different sources."
 
 
 def get_outputs(slug):
@@ -206,7 +206,7 @@ def get_outputs(slug):
 def get_output_notes(slug):
     first = get_outputs(slug)[0]
     return {
-        first: f"Bonfyre extracted the key points from the source audio into a structured {first}.",
+        first: f"Akai extracted the key points from the source audio into a structured {first}.",
         "clean transcript": "The raw transcript cleaned of filler words, false starts, and artifacts.",
         "proof bundle": "Full provenance chain: source URL, transcription confidence, processing recipe, and quality flags."
     }

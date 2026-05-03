@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/rebuild_families.sh — Bonfyre self-rewrite trigger
+# scripts/rebuild_families.sh — Akai self-rewrite trigger
 #
 # Re-collapses the top N families, updates fragments, refreshes alignments,
 # and regenerates the frontier map.  Called by auto_evolve.py when the
@@ -20,9 +20,9 @@
 #   bash scripts/rebuild_families.sh [options]
 #
 # Options:
-#   --models-dir DIR     BQFP model store (default: /tmp/bonfyre-families)
-#   --memory-dir DIR     Bonfyre memory dir (default: /tmp/bonfyre-memory)
-#   --out-root DIR       Collapse output root (default: /tmp/bonfyre-rebuild)
+#   --models-dir DIR     BQFP model store (default: /tmp/akai-families)
+#   --memory-dir DIR     Akai memory dir (default: /tmp/akai-memory)
+#   --out-root DIR       Collapse output root (default: /tmp/akai-rebuild)
 #   --families LIST      Comma-separated family IDs to rebuild (default: T04,T15,T16)
 #   --n N                Corpus size per family (default: 1000)
 #   --anchor T04         Anchor family for alignment (default: T04)
@@ -41,9 +41,9 @@ LOG_PREFIX="[rebuild_families]"
 
 # ── Defaults ────────────────────────────────────────────────────────────────
 
-MODELS_DIR="/tmp/bonfyre-families"
-MEMORY_DIR="/tmp/bonfyre-memory"
-OUT_ROOT="/tmp/bonfyre-rebuild"
+MODELS_DIR="/tmp/akai-families"
+MEMORY_DIR="/tmp/akai-memory"
+OUT_ROOT="/tmp/akai-rebuild"
 FAMILIES="T04,T15,T16"
 N=1000
 ANCHOR="T04"
@@ -90,10 +90,10 @@ log "  dry_run     : $DRY_RUN"
 
 # ── Validate binaries ────────────────────────────────────────────────────────
 
-BONFYRE_RUN="$REPO_ROOT/cmd/BonfyreRun/bonfyre-run"
-BONFYRE_QUANT="$REPO_ROOT/cmd/BonfyreQuant/bonfyre-quant"
-BONFYRE_LAYER="$REPO_ROOT/cmd/BonfyreLayer/bonfyre-layer"
-BONFYRE_FPQX="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
+BONFYRE_RUN="$REPO_ROOT/cmd/AkaiRun/akai-run"
+BONFYRE_QUANT="$REPO_ROOT/cmd/AkaiQuant/akai-quant"
+BONFYRE_LAYER="$REPO_ROOT/cmd/AkaiLayer/akai-layer"
+BONFYRE_FPQX="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
 
 for BIN in "$BONFYRE_RUN" "$BONFYRE_QUANT"; do
     if [[ ! -x "$BIN" ]]; then
@@ -213,7 +213,7 @@ for FAM in "${FAM_LIST[@]}"; do
     fi
 
     # ── Collapse train ────────────────────────────────────────────────
-    log "  collapse: bonfyre-run $RECIPE"
+    log "  collapse: akai-run $RECIPE"
     if ! dry "$BONFYRE_RUN $RECIPE $CORPUS_DIR --out $RUN_DIR"; then
         "$BONFYRE_RUN" "$RECIPE" "$CORPUS_DIR" --out "$RUN_DIR" >> "$LOG_FILE" 2>&1 || {
             log "  ✗ collapse failed for $FAM"

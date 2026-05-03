@@ -45,14 +45,14 @@
     }
   ],
   "env": {
-    "BONFYRE_FRAGMENT_BIN": "bonfyre-fragment",
-    "description": "Override to point at a custom bonfyre-fragment binary"
+    "BONFYRE_FRAGMENT_BIN": "akai-fragment",
+    "description": "Override to point at a custom akai-fragment binary"
   },
   "stages": [
     {
       "id": "s01",
       "name": "Seed Merged Store",
-      "operator": "BonfyreFragment",
+      "operator": "AkaiFragment",
       "args": ["merge", "--dst", "{out}/merged.db", "--src", "{input_a}"],
       "inputs": ["{input_a}"],
       "outputs": ["{out}/merged.db"],
@@ -61,7 +61,7 @@
     {
       "id": "s02",
       "name": "Merge Store B",
-      "operator": "BonfyreFragment",
+      "operator": "AkaiFragment",
       "args": ["merge", "--dst", "{out}/merged.db", "--src", "{input_b}"],
       "depends_on": ["s01"],
       "inputs": ["{input_b}"],
@@ -71,7 +71,7 @@
     {
       "id": "s03",
       "name": "Diff Perspectives",
-      "operator": "BonfyreFragment",
+      "operator": "AkaiFragment",
       "args": ["diff", "--store-a", "{input_a}", "--store-b", "{input_b}", "--format", "json"],
       "depends_on": ["s01"],
       "inputs": ["{input_a}", "{input_b}"],
@@ -81,7 +81,7 @@
     {
       "id": "s04",
       "name": "Export Claims",
-      "operator": "BonfyreFragment",
+      "operator": "AkaiFragment",
       "args": [
         "query",
         "--store", "{out}/merged.db",
@@ -95,7 +95,7 @@
     {
       "id": "s05",
       "name": "Export Segments",
-      "operator": "BonfyreFragment",
+      "operator": "AkaiFragment",
       "args": [
         "query",
         "--store", "{out}/merged.db",
@@ -109,7 +109,7 @@
     {
       "id": "s06",
       "name": "Export Detections",
-      "operator": "BonfyreFragment",
+      "operator": "AkaiFragment",
       "args": [
         "query",
         "--store", "{out}/merged.db",
@@ -123,7 +123,7 @@
     {
       "id": "s07",
       "name": "Store Stats",
-      "operator": "BonfyreFragment",
+      "operator": "AkaiFragment",
       "args": ["stats", "--store", "{out}/merged.db"],
       "depends_on": ["s02"],
       "outputs": ["{out}/stats.json"],
@@ -135,7 +135,7 @@
     "s04/s05/s06 export queries run against the merged store — they reflect conflict resolution.",
     "s07 stats captures the final merged state.",
     "Fragment emission from operators: set BONFYRE_FRAGMENT_STORE=<path.db> before running",
-    "BonfyreTranscribe or BonfyreDetectObjects to auto-emit segment/detection fragments.",
+    "AkaiTranscribe or AkaiDetectObjects to auto-emit segment/detection fragments.",
     "Collect two such stores (e.g. whisper-base.db and whisper-large.db) then run F1 to compare."
   ]
 }

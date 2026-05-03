@@ -1,6 +1,6 @@
 # Demo Seeding
 
-Bonfyre demo apps should graduate from one-off showcase records to larger reference corpora that make:
+Akai demo apps should graduate from one-off showcase records to larger reference corpora that make:
 
 - search feel real
 - memory surfaces feel useful
@@ -134,22 +134,22 @@ You can scope that gate to flagship apps only:
 node scripts/assert_reference_readiness.mjs scripts/public_source_queue.sample.json --target 10 --min-readiness 30 --repo pages-town-box --repo pages-podcast-plant --repo pages-oss-cockpit
 ```
 
-That gate now also fails when approved sources are too weak to really stress Bonfyre. In other words, a corpus can still fail even if it has some approved links, if those sources are too clean, too low-jargon, too socially simple, or too weakly provenance-backed to prove real-world performance.
+That gate now also fails when approved sources are too weak to really stress Aurekai. In other words, a corpus can still fail even if it has some approved links, if those sources are too clean, too low-jargon, too socially simple, or too weakly provenance-backed to prove real-world performance.
 
-## Bonfyre-Native Stress Pass
+## Aurekai-Native Stress Pass
 
-Before publishing, run the reviewed queue through Bonfyre itself so the corpus review starts exercising the same orchestration surfaces clients will care about later:
+Before publishing, run the reviewed queue through Akai itself so the corpus review starts exercising the same orchestration surfaces clients will care about later:
 
 ```bash
 node scripts/stress_reference_corpora_with_bonfyre.mjs scripts/public_source_queue.sample.json --include-queued
 ```
 
-That pass is intentionally Bonfyre-native:
+That pass is intentionally Aurekai-native:
 
 - creates a machine request per reviewed source
-- runs `bonfyre-orchestrate plan`
-- records feedback through `bonfyre-orchestrate feedback`
-- enqueues the workload through `bonfyre-queue`
+- runs `akai-orchestrate plan`
+- records feedback through `akai-orchestrate feedback`
+- enqueues the workload through `akai-queue`
 - emits a stress report with:
   - policy source
   - predicted policy score
@@ -158,7 +158,7 @@ That pass is intentionally Bonfyre-native:
   - expected outputs
   - selected binaries and boosters
 
-This is the thinnest way to start building client-facing corpus metrics from Bonfyre's real control plane instead of from side spreadsheets.
+This is the thinnest way to start building client-facing corpus metrics from Aurekai's real control plane instead of from side spreadsheets.
 
 It also surfaces a key implementation smell early: if many very different sources collapse to the same state key, output set, and policy path, the stress report will flag low differentiation so we can tighten the planner before pretending the corpus proves much.
 
@@ -172,9 +172,9 @@ The stress report now also emits:
 Those readiness targets are intentionally app-aware. For example:
 
 - podcast and release surfaces require more approved public sources and a higher provenance floor
-- civic and operational apps still need strong provenance, but can graduate earlier if Bonfyre proves sharp plan differentiation on real public-origin material
+- civic and operational apps still need strong provenance, but can graduate earlier if Akai proves sharp plan differentiation on real public-origin material
 
-To turn that into a hard Bonfyre-side release gate, run:
+To turn that into a hard Aurekai-side release gate, run:
 
 ```bash
 node scripts/stress_reference_corpora_with_bonfyre.mjs scripts/public_source_queue.sample.json --include-queued --assert-ready --min-verdict technically-strong-but-provenance-thin

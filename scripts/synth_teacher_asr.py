@@ -171,7 +171,7 @@ def main():
                 with open(txt_path, "w", encoding="utf-8") as f:
                     f.write(asr_rec["transcript"] + "\n")
 
-        # Write bonfyre-tag-format tags.json
+        # Write akai-tag-format tags.json
         label = classify_logprob(avg_lp)
         score = logprob_to_score(avg_lp)
         tag_rec = {"tags": [{"label": label, "score": round(score, 4)}]}

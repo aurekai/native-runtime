@@ -25,7 +25,7 @@ The problem revealed:
 
 Usage:
     python3 scripts/compare.py
-    python3 scripts/compare.py --models-dir /tmp/bonfyre-families
+    python3 scripts/compare.py --models-dir /tmp/akai-families
 """
 
 import argparse
@@ -42,12 +42,12 @@ import warnings
 warnings.filterwarnings("ignore")
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "BonfyreModel", "bonfyre-model")
+MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "AkaiModel", "akai-model")
 
 # ── ONNX heads by family ─────────────────────────────────────────────────────
 HEADS = {
     "T04": {
-        "path":    "/tmp/bonfyre-72/runs/T04-C-ag_news-1000/train/model.onnx",
+        "path":    "/tmp/akai-72/runs/T04-C-ag_news-1000/train/model.onnx",
         "task":    "topic-map",
         "n_class": 4,
         "labels":  {0: "World", 1: "Sports", 2: "Business", 3: "Sci/Tech"},
@@ -56,7 +56,7 @@ HEADS = {
         "condition": "avg_doc_len <= 300",
     },
     "T15": {
-        "path":    "/tmp/bonfyre-72/runs/T15-C-cnn_dm-1000/train/model.onnx",
+        "path":    "/tmp/akai-72/runs/T15-C-cnn_dm-1000/train/model.onnx",
         "task":    "topic-map",
         "n_class": 6,
         "labels":  {0: "Politics", 1: "Tech", 2: "Business",
@@ -214,7 +214,7 @@ def print_block(title, texts, embs, family, expected_labels=None):
 
 def main():
     ap = argparse.ArgumentParser(description="Single-model vs mesh routing comparison")
-    ap.add_argument("--models-dir", default="/tmp/bonfyre-families")
+    ap.add_argument("--models-dir", default="/tmp/akai-families")
     ap.add_argument("--frontier-origin", default="T04",
                     help="Family used as 'from' in frontier routing")
     args = ap.parse_args()
@@ -225,7 +225,7 @@ def main():
         sys.exit(1)
 
     print("=" * 72)
-    print(" BONFYRE  single-model vs mesh routing")
+    print(" AKAI  single-model vs mesh routing")
     print("  claim: routing to a distribution-matched model raises confidence")
     print("=" * 72)
 

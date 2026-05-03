@@ -35,17 +35,17 @@ repos = [
 ]
 
 readme_map = {
-    "model-memory": "/Users/nickgonzales/Documents/Bonfyre/hf-repos/model-memory-README.md",
-    "sae-dictionaries": "/Users/nickgonzales/Documents/Bonfyre/hf-repos/sae-dictionaries-README.md",
-    "fpqx-alignments": "/Users/nickgonzales/Documents/Bonfyre/hf-repos/fpqx-alignments-README.md",
-    "semantic-cache-bench": "/Users/nickgonzales/Documents/Bonfyre/hf-repos/semantic-cache-bench-README.md",
+    "model-memory": "/Users/nickgonzales/Documents/Aurekai/hf-repos/model-memory-README.md",
+    "sae-dictionaries": "/Users/nickgonzales/Documents/Aurekai/hf-repos/sae-dictionaries-README.md",
+    "fpqx-alignments": "/Users/nickgonzales/Documents/Aurekai/hf-repos/fpqx-alignments-README.md",
+    "semantic-cache-bench": "/Users/nickgonzales/Documents/Aurekai/hf-repos/semantic-cache-bench-README.md",
 }
 
 files_to_upload = {
     "model-memory": [
-        ("/Users/nickgonzales/Documents/Bonfyre/Aurekai/dist/aurekai-model-memory-qwen3-8b-20260502.tar.gz", "aurekai-model-memory-qwen3-8b-20260502.tar.gz"),
-        ("/Users/nickgonzales/Documents/Bonfyre/Aurekai/dist/aurekai.manifest.json", "aurekai.manifest.json"),
-        ("/Users/nickgonzales/Documents/Bonfyre/Aurekai/dist/bonfyre.manifest.json", "bonfyre.manifest.json"),
+        ("/Users/nickgonzales/Documents/Aurekai/Aurekai/dist/aurekai-model-memory-qwen3-8b-20260502.tar.gz", "aurekai-model-memory-qwen3-8b-20260502.tar.gz"),
+        ("/Users/nickgonzales/Documents/Aurekai/Aurekai/dist/aurekai.manifest.json", "aurekai.manifest.json"),
+        ("/Users/nickgonzales/Documents/Aurekai/Aurekai/dist/bonfyre.manifest.json", "bonfyre.manifest.json"),
     ],
     "sae-dictionaries": [],
     "fpqx-alignments": [],

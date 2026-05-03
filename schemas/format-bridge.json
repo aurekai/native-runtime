@@ -1,91 +1,91 @@
 {
   "schema": "aurekai.format-bridge.v1",
-  "description": "Mapping between legacy Bonfyre .bf* artifact formats and Aurekai-native .ak* format names. Both sets are produced and consumed by the same Bonfyre ABI-v1 native runtime.",
-  "note": "The Bonfyre extension names remain the canonical on-disk format during v0.8.x. Aurekai-native names are the target for v1.0+.",
+  "description": "Mapping between legacy Aurekai .bf* artifact formats and Aurekai-native .ak* format names. Both sets are produced and consumed by the same Aurekai ABI-v1 native runtime.",
+  "note": "The Akai extension names remain the canonical on-disk format during v0.8.x. Aurekai-native names are the target for v1.0+.",
   "formats": [
     {
       "bonfyre_ext": ".bf",
       "aurekai_ext": ".ak",
       "description": "General-purpose packed artifact bundle",
-      "produced_by": ["BonfyrePack", "BonfyreProof"],
-      "consumed_by": ["BonfyreQuery", "BonfyreIndex", "BonfyreRuntime"]
+      "produced_by": ["AkaiPack", "AkaiProof"],
+      "consumed_by": ["AkaiQuery", "AkaiIndex", "AkaiRuntime"]
     },
     {
       "bonfyre_ext": ".bfa",
       "aurekai_ext": ".aka",
       "description": "Artifact archive (multi-item packed bundle)",
-      "produced_by": ["BonfyrePack"],
-      "consumed_by": ["BonfyreDistribute", "BonfyreSync"]
+      "produced_by": ["AkaiPack"],
+      "consumed_by": ["AkaiDistribute", "AkaiSync"]
     },
     {
       "bonfyre_ext": ".bfq",
       "aurekai_ext": ".akq",
       "description": "FPQ quantization artifact (T-family transform snapshot)",
-      "produced_by": ["BonfyreFPQ"],
-      "consumed_by": ["BonfyreFPQx", "BonfyreLeapfrog", "BonfyreVec"]
+      "produced_by": ["AkaiFPQ"],
+      "consumed_by": ["AkaiFPQx", "AkaiLeapfrog", "AkaiVec"]
     },
     {
       "bonfyre_ext": ".bfqx",
       "aurekai_ext": ".akqx",
       "description": "FPQx cross-family alignment artifact",
-      "produced_by": ["BonfyreFPQx"],
-      "consumed_by": ["BonfyreSLI", "BonfyreControl", "BonfyreLeapfrog"]
+      "produced_by": ["AkaiFPQx"],
+      "consumed_by": ["AkaiSLI", "AkaiControl", "AkaiLeapfrog"]
     },
     {
       "bonfyre_ext": ".bfmodel",
       "aurekai_ext": ".akmodel",
       "description": "Embedded model snapshot (ONNX weights + metadata)",
-      "produced_by": ["BonfyreModel"],
-      "consumed_by": ["BonfyreEmbed", "BonfyreLearn", "BonfyreSAE"]
+      "produced_by": ["AkaiModel"],
+      "consumed_by": ["AkaiEmbed", "AkaiLearn", "AkaiSAE"]
     },
     {
       "bonfyre_ext": ".bfsae",
       "aurekai_ext": ".aksae",
       "description": "SAE feature dictionary (sparse autoencoder activation map)",
-      "produced_by": ["BonfyreSAE"],
-      "consumed_by": ["BonfyreControl", "BonfyreSLI", "BonfyreFragment"]
+      "produced_by": ["AkaiSAE"],
+      "consumed_by": ["AkaiControl", "AkaiSLI", "AkaiFragment"]
     },
     {
       "bonfyre_ext": ".bfgraph",
       "aurekai_ext": ".akgraph",
       "description": "Graph artifact (entity/relation store)",
-      "produced_by": ["BonfyreGraph", "BonfyreEntity"],
-      "consumed_by": ["BonfyreQuery", "BonfyreReason"]
+      "produced_by": ["AkaiGraph", "AkaiEntity"],
+      "consumed_by": ["AkaiQuery", "AkaiReason"]
     },
     {
       "bonfyre_ext": ".bftag",
       "aurekai_ext": ".aktag",
       "description": "Tag artifact (language classification output)",
-      "produced_by": ["BonfyreTag"],
-      "consumed_by": ["BonfyreIndex", "BonfyreQuery", "BonfyreRepurpose"]
+      "produced_by": ["AkaiTag"],
+      "consumed_by": ["AkaiIndex", "AkaiQuery", "AkaiRepurpose"]
     },
     {
       "bonfyre_ext": ".bftone",
       "aurekai_ext": ".aktone",
       "description": "Tone artifact (eGeMAPS feature vector)",
-      "produced_by": ["BonfyreTone"],
-      "consumed_by": ["BonfyreProof", "BonfyreOffer"]
+      "produced_by": ["AkaiTone"],
+      "consumed_by": ["AkaiProof", "AkaiOffer"]
     },
     {
       "bonfyre_ext": ".bfvec",
       "aurekai_ext": ".akvec",
       "description": "Dense vector store snapshot",
-      "produced_by": ["BonfyreVec", "BonfyreEmbed"],
-      "consumed_by": ["BonfyreQuery", "BonfyreLeapfrog", "BonfyreSLI"]
+      "produced_by": ["AkaiVec", "AkaiEmbed"],
+      "consumed_by": ["AkaiQuery", "AkaiLeapfrog", "AkaiSLI"]
     },
     {
       "bonfyre_ext": ".bfrecipe",
       "aurekai_ext": ".akrecipe",
       "description": "Pipeline recipe definition (DAG of operator steps)",
-      "produced_by": ["BonfyreRecipe"],
-      "consumed_by": ["BonfyrePipeline", "BonfyreRun", "BonfyreOrchestrate"]
+      "produced_by": ["AkaiRecipe"],
+      "consumed_by": ["AkaiPipeline", "AkaiRun", "AkaiOrchestrate"]
     },
     {
       "bonfyre_ext": ".bfproof",
       "aurekai_ext": ".akproof",
       "description": "Proof bundle (signed artifact + metrics attestation)",
-      "produced_by": ["BonfyreProof"],
-      "consumed_by": ["BonfyreDistribute", "BonfyreLedger"]
+      "produced_by": ["AkaiProof"],
+      "consumed_by": ["AkaiDistribute", "AkaiLedger"]
     }
   ],
   "migration_status": "bonfyre_ext_canonical_until_v1",

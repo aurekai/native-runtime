@@ -41,7 +41,7 @@
     "Hex2vec",
     "GeoVeX"
   ],
-  "bonfyre_families": [
+  "akai_families": [
     "T_GEOSPATIAL_EMBED",
     "T_S2_CELL",
     "T_BUILT_ENVIRONMENT",

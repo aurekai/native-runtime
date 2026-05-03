@@ -16,8 +16,8 @@ import subprocess
 import sys
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODELS_DIR = sys.argv[1] if len(sys.argv) > 1 else "/tmp/bonfyre-families"
-FPQX = os.path.join(REPO_ROOT, "cmd", "BonfyreFPQX", "bonfyre-fpqx")
+MODELS_DIR = sys.argv[1] if len(sys.argv) > 1 else "/tmp/akai-families"
+FPQX = os.path.join(REPO_ROOT, "cmd", "AkaiFPQX", "akai-fpqx")
 
 # ── Family metadata ────────────────────────────────────────────────────────
 FAMILIES = {
@@ -124,7 +124,7 @@ def find_align_json(a, b):
 
 
 print("=" * 80)
-print(" bonfyre-fpqx transform network frontier map")
+print(" akai-fpqx transform network frontier map")
 print(f" models_dir : {MODELS_DIR}")
 print("=" * 80)
 print()
@@ -180,7 +180,7 @@ print()
 
 # ── Write frontier.json ────────────────────────────────────────────────────
 frontier = {
-    "schema": "bonfyre-frontier-map-v1",
+    "schema": "akai-frontier-map-v1",
     "families": sorted(FAMILIES.keys()),
     "n_pairs": len(rows),
     "pairs": rows,

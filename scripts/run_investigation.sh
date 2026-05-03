@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# scripts/run_investigation.sh — Full Bonfyre Investigation Pipeline
+# scripts/run_investigation.sh — Full Akai Investigation Pipeline
 #
 # This script runs the complete investigation stack:
 #   1. Symbolic Front-End  (Entity → Canon → Graph)
@@ -10,7 +10,7 @@
 # Architecture:
 #   RAW CORPUS
 #     ↓
-#   SYMBOLIC PROCESSING (BonfyreEntity/Canon/Graph stubs for now)
+#   SYMBOLIC PROCESSING (AkaiEntity/Canon/Graph stubs for now)
 #     ↓
 #   CLAIMS GENERATION (graph → claims bridge)
 #     ↓
@@ -36,7 +36,7 @@ OUT_DIR=${2:-"investigation_out"}
 mkdir -p "$OUT_DIR"/{symbolic,graphs,reports,interventions}
 
 echo "══════════════════════════════════════════════════════════════════════"
-echo "BONFYRE INVESTIGATION PIPELINE"
+echo "AKAI INVESTIGATION PIPELINE"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 echo "Corpus:  $CORPUS"
@@ -51,8 +51,8 @@ echo "════════════════════════�
 echo "PHASE 1: SYMBOLIC PROCESSING"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
-echo "Using: BonfyreEntity, BonfyreCanon, BonfyreGraph (Python stubs)"
-echo "TODO: Replace with C binaries from /tmp/bonfyre-oss/build/"
+echo "Using: AkaiEntity, AkaiCanon, AkaiGraph (Python stubs)"
+echo "TODO: Replace with C binaries from /tmp/akai-oss/build/"
 echo ""
 
 python3 scripts/symbolic_extract.py \

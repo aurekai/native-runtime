@@ -10,7 +10,7 @@
 
 **Before Phase 16:**
 ```
-Bonfyre = sophisticated document processor
+Akai = sophisticated document processor
   → Throw documents at it
   → Get claims, convergence, pressure results
   → But no direction, no goal
@@ -18,7 +18,7 @@ Bonfyre = sophisticated document processor
 
 **After Phase 16:**
 ```
-Bonfyre = scientific instrument for testing theories
+Akai = scientific instrument for testing theories
   → Define a hypothesis about reality
   → System orchestrates full pipeline to test it
   → Get validation: confirmed | refuted | inconclusive
@@ -28,7 +28,7 @@ Bonfyre = scientific instrument for testing theories
 
 ## 💥 THE CRITICAL DISTINCTION
 
-### What Bonfyre Was (Phases 1-15)
+### What Akai Was (Phases 1-15)
 
 An **extremely complex, extremely impressive, but directionless** system:
 
@@ -38,7 +38,7 @@ An **extremely complex, extremely impressive, but directionless** system:
 - ✓ Can modify its own structure (Phase 15)
 - ✗ **Has no idea what it's trying to prove**
 
-### What Bonfyre Is Now (Phase 16)
+### What Akai Is Now (Phase 16)
 
 A **machine that can pursue and validate ideas**:
 
@@ -234,8 +234,8 @@ Hypothesis(
 from hypothesis_engine import HypothesisEngine, BUILTIN_HYPOTHESES
 
 # Initialize
-engine = HypothesisEngine(memory_dir="/tmp/bonfyre-memory", 
-                          models_dir="/tmp/bonfyre-models")
+engine = HypothesisEngine(memory_dir="/tmp/akai-memory", 
+                          models_dir="/tmp/akai-models")
 
 # Register hypothesis
 alias_hypothesis = BUILTIN_HYPOTHESES["alias_network"]
@@ -420,8 +420,8 @@ def _determine_validation_status(hypothesis, survival_rate, n_stable_edges,
 **System behavior:**
 ```
 User: "Here are some documents about Epstein"
-Bonfyre: *processes documents*
-Bonfyre: "I found 342 claims. 127 are stable. 43 conflicts."
+Aurekai: *processes documents*
+Aurekai: "I found 342 claims. 127 are stable. 43 conflicts."
 User: "Okay... but what does that MEAN?"
 ```
 
@@ -432,13 +432,13 @@ User: "Okay... but what does that MEAN?"
 **System behavior:**
 ```
 User: "I think Jeffrey Epstein and J.E. are the same person. Test that."
-Bonfyre: *orchestrates full pipeline*
-Bonfyre: "Hypothesis CONFIRMED (survival rate: 87%)"
-Bonfyre: "Evidence: 23 stable claims linking the names"
-Bonfyre: "Timeline consistent, no pressure violations"
+Aurekai: *orchestrates full pipeline*
+Aurekai: "Hypothesis CONFIRMED (survival rate: 87%)"
+Aurekai: "Evidence: 23 stable claims linking the names"
+Aurekai: "Timeline consistent, no pressure violations"
 User: "Perfect. Now test if he was in two places on July 8, 2019"
-Bonfyre: "Hypothesis REFUTED (temporal pressure = 0.0)"
-Bonfyre: "Physical impossibility detected"
+Aurekai: "Hypothesis REFUTED (temporal pressure = 0.0)"
+Aurekai: "Physical impossibility detected"
 ```
 
 **Solution:** System now pursues specific testable theories.
@@ -447,7 +447,7 @@ Bonfyre: "Physical impossibility detected"
 
 ## 🔬 SCIENTIFIC INSTRUMENT ANALOGY
 
-Think of Bonfyre as a **particle accelerator**:
+Think of Akai as a **particle accelerator**:
 
 **Phase 12 (Hypothesis Swarm):**  
 = Generate particles (competing claims)
@@ -622,10 +622,10 @@ Built-in hypotheses: 5/5 valid ✓
 ### The One-Line Takeaway
 
 **Before:**  
-Bonfyre = extremely complex document processor (directionless)
+Akai = extremely complex document processor (directionless)
 
 **After:**  
-Bonfyre = scientific instrument that tests theories about reality (purposeful)
+Akai = scientific instrument that tests theories about reality (purposeful)
 
 ---
 
@@ -639,7 +639,7 @@ TO:   "I think X is true. Test that hypothesis and report confidence."
 
 This is the PURPOSE layer.
 
-This is what makes Bonfyre **a system that can pursue and validate ideas**.
+This is what makes Akai **a system that can pursue and validate ideas**.
 
 ---
 

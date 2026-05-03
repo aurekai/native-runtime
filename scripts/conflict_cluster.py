@@ -29,10 +29,10 @@ USAGE (library):
     hot = flag_hot_zones(clusters, pressure_threshold=2.0)
 
 USAGE (CLI):
-    python3 scripts/conflict_cluster.py --memory-dir /tmp/bonfyre-memory \
+    python3 scripts/conflict_cluster.py --memory-dir /tmp/akai-memory \
         --min-conflicts 3 --out /tmp/clusters_advanced.json
 
-    python3 scripts/conflict_cluster.py hot-zones --memory-dir /tmp/bonfyre-memory \
+    python3 scripts/conflict_cluster.py hot-zones --memory-dir /tmp/akai-memory \
         --pressure-threshold 2.0
 """
 
@@ -246,19 +246,19 @@ def mark_resolved(claim_graph, cluster_id: int):
 def main():
     import argparse
 
-    ap = argparse.ArgumentParser(description="Bonfyre conflict clustering + pressure analysis")
+    ap = argparse.ArgumentParser(description="Akai conflict clustering + pressure analysis")
     sub = ap.add_subparsers(dest="cmd")
 
     # cluster-advanced
     p_cluster = sub.add_parser("cluster-advanced", help="Run advanced clustering")
-    p_cluster.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_cluster.add_argument("--memory-dir", default="/tmp/akai-memory")
     p_cluster.add_argument("--min-conflicts", type=int, default=2)
     p_cluster.add_argument("--min-confidence", type=float, default=0.25)
     p_cluster.add_argument("--out", help="Output JSON path")
 
     # hot-zones
     p_hot = sub.add_parser("hot-zones", help="Flag hot zones")
-    p_hot.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_hot.add_argument("--memory-dir", default="/tmp/akai-memory")
     p_hot.add_argument("--pressure-threshold", type=float, default=2.0)
     p_hot.add_argument("--min-conflicts", type=int, default=3)
     p_hot.add_argument("--min-lenses", type=int, default=2)

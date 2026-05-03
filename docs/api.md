@@ -1,11 +1,11 @@
-# API Reference — bonfyre-api
+# API Reference — akai-api
 
-`bonfyre-api` is the HTTP gateway that exposes all Bonfyre binaries over REST.
+`akai-api` is the HTTP gateway that exposes all Akai binaries over REST.
 
 ## Starting the server
 
 ```bash
-bonfyre-api --port 9090 --static frontend/ serve
+akai-api --port 9090 --static frontend/ serve
 ```
 
 | Flag | Default | Description |
@@ -23,7 +23,7 @@ GET /api/health
 ```
 
 ```json
-{"status": "ok", "version": "1.0.0", "service": "bonfyre-api"}
+{"status": "ok", "version": "1.0.0", "service": "akai-api"}
 ```
 
 ### System status
@@ -38,7 +38,7 @@ GET /api/status
   "completed_jobs": 38,
   "total_uploads": 15,
   "available_binaries": 38,
-  "binaries": ["bonfyre-cms", "bonfyre-ingest", ...]
+  "binaries": ["akai-cms", "akai-ingest", ...]
 }
 ```
 
@@ -61,11 +61,11 @@ file=@interview.mp3
 POST /api/jobs
 Content-Type: application/json
 
-{"binary": "bonfyre-ingest", "args": ["--file", "interview.mp3"]}
+{"binary": "akai-ingest", "args": ["--file", "interview.mp3"]}
 ```
 
 ```json
-{"id": 1, "binary": "bonfyre-ingest", "status": "running"}
+{"id": 1, "binary": "akai-ingest", "status": "running"}
 ```
 
 ### List jobs
@@ -76,8 +76,8 @@ GET /api/jobs
 
 ```json
 [
-  {"id": 1, "binary": "bonfyre-ingest", "status": "completed", "created_at": 1712345678},
-  {"id": 2, "binary": "bonfyre-transcribe", "status": "running", "created_at": 1712345700}
+  {"id": 1, "binary": "akai-ingest", "status": "completed", "created_at": 1712345678},
+  {"id": 2, "binary": "akai-transcribe", "status": "running", "created_at": 1712345700}
 ]
 ```
 
@@ -88,7 +88,7 @@ GET /api/jobs/:id
 ```
 
 ```json
-{"id": 1, "binary": "bonfyre-ingest", "status": "completed", "output": "...", "created_at": 1712345678}
+{"id": 1, "binary": "akai-ingest", "status": "completed", "output": "...", "created_at": 1712345678}
 ```
 
 ### Proxy to any binary
@@ -97,13 +97,13 @@ GET /api/jobs/:id
 * /api/binaries/:name/*
 ```
 
-Forwards the request to the named `bonfyre-*` binary via fork/exec. The binary receives the request body as stdin and its stdout becomes the response.
+Forwards the request to the named `akai-*` binary via fork/exec. The binary receives the request body as stdin and its stdout becomes the response.
 
 Examples:
 ```
-GET  /api/binaries/bonfyre-meter/status
-POST /api/binaries/bonfyre-auth/login  {"email": "...", "password": "..."}
-GET  /api/binaries/bonfyre-finance/report
+GET  /api/binaries/akai-meter/status
+POST /api/binaries/akai-auth/login  {"email": "...", "password": "..."}
+GET  /api/binaries/akai-finance/report
 ```
 
 ### Static files
@@ -122,7 +122,7 @@ Pass a Bearer token in the `Authorization` header:
 Authorization: Bearer bfy_abc123...
 ```
 
-Tokens are created via `bonfyre-auth signup` / `bonfyre-auth login` and validated via `bonfyre-auth verify`.
+Tokens are created via `akai-auth signup` / `akai-auth login` and validated via `akai-auth verify`.
 
 ## CORS
 

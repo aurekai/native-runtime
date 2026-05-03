@@ -25,7 +25,7 @@ def main() -> None:
     fpqx_alignments = m.get("fpqx_alignments", [])
 
     lines = []
-    lines.append(f"# Bonfyre Release {release}")
+    lines.append(f"# Akai Release {release}")
     lines.append("")
     lines.append(f"- Target: {target}")
     lines.append(f"- Revision: {revision}")

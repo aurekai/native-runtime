@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const BONFYRE_OSS = '/Users/nickgonzales/Projects/bonfyre-oss';
+const BONFYRE_OSS = '/Users/nickgonzales/Projects/akai-oss';
 const PROJECTS = '/Users/nickgonzales/Projects';
 
 const sharedHelpers = [
@@ -260,7 +260,7 @@ ${subtitle}
 | Pipeline latency | **< 8 ms** per stage |
 | Total binary size | **~2.1 MB** (48 static C11 binaries) |
 | JSON compression | **9.3%** ratio with O(1) field reads (Lambda Tensors) |
-| OpenAI compatibility | Drop-in via **bonfyre-proxy** (\`/v1/audio/transcriptions\`, \`/v1/chat/completions\`) |
+| OpenAI compatibility | Drop-in via **akai-proxy** (\`/v1/audio/transcriptions\`, \`/v1/chat/completions\`) |
 | Tests passing | **167** |
 
 ## Quick Start
@@ -270,7 +270,7 @@ ${subtitle}
 1. Open the live Pages app.
 2. Select a file and download the intake-ready renamed copy.
 3. Open the repo \`input/\` folder from the app and upload that file with GitHub's own web UI.
-4. Commit to \`main\`; the Bonfyre Actions runtime processes it and republishes the site.
+4. Commit to \`main\`; the Akai Actions runtime processes it and republishes the site.
 
 ### Local repo workflow
 
@@ -286,7 +286,7 @@ git push
 \`\`\`
 browser prepare  →  GitHub web upload  →  input/
                                           ↓
-                             reusable Bonfyre runtime workflow
+                             reusable Akai runtime workflow
                                           ↓
                          artifacts/ + site/job.json + site/summary.json
                                           ↓
@@ -295,7 +295,7 @@ browser prepare  →  GitHub web upload  →  input/
 
 ## Powered By
 
-[Bonfyre](https://github.com/Nickgonzales76017/bonfyre) — 48 composable C11 binaries. ~2.1 MB total.
+[Aurekai](https://github.com/Nickgonzales76017/akai) — 48 composable C11 binaries. ~2.1 MB total.
 `;
 }
 
@@ -413,7 +413,7 @@ async function handleFile(file) {
     return;
   }
 
-  const preparedName = BonfyreGitHubIntake.createPreparedName(file.name);
+  const preparedName = AkaiGitHubIntake.createPreparedName(file.name);
   const itemId = preparedName.replace(/\\.[^.]*$/, '');
   const targetPath = INPUT_PATH + '/' + preparedName;
 
@@ -431,10 +431,10 @@ async function handleFile(file) {
   };
 
   try {
-    const preparedDownload = BonfyreGitHubIntake.createPreparedDownload(file, preparedName);
+    const preparedDownload = AkaiGitHubIntake.createPreparedDownload(file, preparedName);
     updateStep('prepare', 'done');
     updateStep('commit', 'active');
-    BonfyreGitHubJobs.showIntakePreview({
+    AkaiGitHubJobs.showIntakePreview({
       intake: activeIntake,
       preparedDownload,
       routeLabel: ROUTE_LABEL,
@@ -452,14 +452,14 @@ async function handleFile(file) {
       targetPath
     };
 
-    items = BonfyreGitHubJobs.upsertAndPersist(ITEMS_KEY, items, item);
+    items = AkaiGitHubJobs.upsertAndPersist(ITEMS_KEY, items, item);
     renderBoard();
 
-    if (BonfyreGitHubIntake.isTextLikeFile(file)) {
+    if (AkaiGitHubIntake.isTextLikeFile(file)) {
       const text = await file.text();
       runBriefWasm(text, itemId);
     } else {
-      showWasmPreview(BonfyreGitHubJobs.buildReadyMessage(APP_NAME));
+      showWasmPreview(AkaiGitHubJobs.buildReadyMessage(APP_NAME));
     }
   } catch (err) {
     console.error('Intake preparation failed:', err);
@@ -469,7 +469,7 @@ async function handleFile(file) {
 }
 
 async function githubGetFile(filePath) {
-  return BonfyreGitHubIntake.fetchRawFile({
+  return AkaiGitHubIntake.fetchRawFile({
     repo: config.repo,
     branch: config.branch,
     path: filePath
@@ -477,7 +477,7 @@ async function githubGetFile(filePath) {
 }
 
 function buildUploadFolderUrl() {
-  return BonfyreGitHubIntake.buildUploadFolderUrl({
+  return AkaiGitHubIntake.buildUploadFolderUrl({
     repo: config.repo,
     branch: config.branch,
     inputPath: INPUT_PATH
@@ -485,7 +485,7 @@ function buildUploadFolderUrl() {
 }
 
 function markUploaded() {
-  items = BonfyreGitHubJobs.markUploaded({
+  items = AkaiGitHubJobs.markUploaded({
     activeIntake,
     items,
     storageKey: ITEMS_KEY,
@@ -504,7 +504,7 @@ function initBriefWorker() {
       briefWorker.onmessage = function(e) {
         if (e.data.type === 'brief') {
           showWasmPreview(e.data.result);
-          items = BonfyreGitHubJobs.updateAndPersist(ITEMS_KEY, items, e.data.id, function(item) {
+          items = AkaiGitHubJobs.updateAndPersist(ITEMS_KEY, items, e.data.id, function(item) {
             item.brief = e.data.result;
             item.status = 'previewed';
           });
@@ -526,9 +526,9 @@ function pollForCompletion(itemId, fileName) {
   const base = fileName.replace(/\\.[^.]*$/, '');
   const seen = {};
 
-  BonfyreGitHubJobs.pollArtifacts({
+  AkaiGitHubJobs.pollArtifacts({
     onError: function(err) {
-      console.warn('[bonfyre] poll:', err.message);
+      console.warn('[akai] poll:', err.message);
     },
     onPoll: async function(ctrl) {
       const transcript = await githubGetFile('artifacts/' + base + '.transcript.json');
@@ -551,9 +551,9 @@ function pollForCompletion(itemId, fileName) {
       const idx = items.findIndex(h => h.id === itemId);
       if (idx >= 0) {
         const next = Object.assign({}, items[idx]);
-        if (brief) next.brief = BonfyreGitHubIntake.parseBriefPayload(brief);
+        if (brief) next.brief = AkaiGitHubIntake.parseBriefPayload(brief);
         Object.keys(seen).forEach(name => applyArtifactSignals(next, name, seen[name]));
-        items = BonfyreGitHubJobs.updateAndPersist(ITEMS_KEY, items, itemId, function(item) {
+        items = AkaiGitHubJobs.updateAndPersist(ITEMS_KEY, items, itemId, function(item) {
           item.brief = next.brief;
           item.tags = next.tags;
           item.flagged = next.flagged;
@@ -563,12 +563,12 @@ function pollForCompletion(itemId, fileName) {
       const hasCompletionSignal = COMPLETE_WHEN_ANY.some(name => seen[name]);
       if (brief && (hasCompletionSignal || COMPLETE_AFTER_BRIEF_ONLY)) {
         updateStep('emit', 'done');
-        items = BonfyreGitHubJobs.updateAndPersist(ITEMS_KEY, items, itemId, function(item) {
+        items = AkaiGitHubJobs.updateAndPersist(ITEMS_KEY, items, itemId, function(item) {
           item.status = 'complete';
-          if (brief) item.brief = BonfyreGitHubIntake.parseBriefPayload(brief);
+          if (brief) item.brief = AkaiGitHubIntake.parseBriefPayload(brief);
         });
         renderBoard();
-        BonfyreGitHubJobs.touchLastUpdate('lastUpdate');
+        AkaiGitHubJobs.touchLastUpdate('lastUpdate');
         setTimeout(hidePipeline, 2000);
         ctrl.stop();
         return;
@@ -609,8 +609,8 @@ function renderBoard() {
                    items.filter(h => h.tags?.includes(activeFilter));
   let html = '';
   for (const h of filtered) {
-    const statusColor = BonfyreGitHubJobs.statusColor(h.status);
-    const statusLabel = BonfyreGitHubJobs.statusLabel(h.status);
+    const statusColor = AkaiGitHubJobs.statusColor(h.status);
+    const statusLabel = AkaiGitHubJobs.statusLabel(h.status);
     ${renderPrelude}
     html += \`<div class="card"><h3>${cardTitleExpr}</h3><div class="card-meta"><span>\${h.time}</span><span style="color:\${statusColor}">\${statusLabel}</span></div><div class="card-body">\${h.brief || "<em style=\\"color:var(--dim)\\">${escapeHtml(meta.emptyBody)}</em>"}</div><div class="card-tags">${tagsExpr}</div></div>\`;
   }

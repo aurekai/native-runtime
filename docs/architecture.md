@@ -1,8 +1,8 @@
-# Bonfyre Architecture
+# Akai Architecture
 
 ## The One Abstraction
 
-Bonfyre is **typed artifact families + composable operator graphs + projection-first outputs**.
+Akai is **typed artifact families + composable operator graphs + projection-first outputs**.
 
 Every binary in the system does one of three things:
 1. **Produces** a `BfArtifact` manifest
@@ -98,20 +98,20 @@ A binary is **either** `PURE` **or** `STATEFUL`. Never both. Enforced by tests.
 ```
 Binary              SQLite  zlib  Whisper  Piper  ONNX  Pandoc  Weaviate
 ──────              ──────  ────  ───────  ─────  ────  ──────  ────────
-bonfyre-cms           ✓      ✓
-bonfyre-api           ✓
-bonfyre-auth          ✓
-bonfyre-pipeline      ✓      ✓
-bonfyre-index         ✓
-bonfyre-meter         ✓
-bonfyre-graph         ✓
-bonfyre-queue         ✓
-bonfyre-ledger        ✓
-bonfyre-transcribe                  ✓
-bonfyre-narrate                              ✓
-bonfyre-embed                                       ✓
-bonfyre-emit                                               ✓
-bonfyre-weaviate-idx                                               ✓
+akai-cms           ✓      ✓
+akai-api           ✓
+akai-auth          ✓
+akai-pipeline      ✓      ✓
+akai-index         ✓
+akai-meter         ✓
+akai-graph         ✓
+akai-queue         ✓
+akai-ledger        ✓
+akai-transcribe                  ✓
+akai-narrate                              ✓
+akai-embed                                       ✓
+akai-emit                                               ✓
+akai-weaviate-idx                                               ✓
 
 All others: libc only (no external dependencies)
 ```
@@ -138,9 +138,9 @@ Lambda Tensors exploits structural similarity within families to achieve 13.5% o
 Source → Ingest → Transform chain → Index → Realize
 ```
 
-1. **Ingest:** `bonfyre-ingest` detects type, normalizes, stamps `BfArtifact` manifest
+1. **Ingest:** `akai-ingest` detects type, normalizes, stamps `BfArtifact` manifest
 2. **Transform:** Pure operators in sequence. Each reads `BfArtifact`, produces `BfArtifact`
-3. **Index:** `bonfyre-index` registers in SQLite, groups by `family_key`
+3. **Index:** `akai-index` registers in SQLite, groups by `family_key`
 4. **Realize:** Materialize outputs on demand (pack, emit, narrate, distribute)
 
 **Key principle:** transforms produce artifacts; realizations produce outputs.
@@ -149,19 +149,19 @@ Source → Ingest → Transform chain → Index → Realize
 
 ```
 audio.mp3
-  → bonfyre-ingest     (manifest + type detection)
-  → bonfyre-media-prep (16kHz mono WAV)
-  → bonfyre-hash       (SHA-256 content address)
-  → bonfyre-transcribe (Whisper speech-to-text)
-  → bonfyre-transcript-clean (remove filler)
-  → bonfyre-paragraph  (structure text)
-  → bonfyre-brief      (summary + action items)
-  → bonfyre-proof      (quality score)
-  → bonfyre-offer      (pricing)
-  → bonfyre-pack       (ZIP deliverable)
+  → akai-ingest     (manifest + type detection)
+  → akai-media-prep (16kHz mono WAV)
+  → akai-hash       (SHA-256 content address)
+  → akai-transcribe (Whisper speech-to-text)
+  → akai-transcript-clean (remove filler)
+  → akai-paragraph  (structure text)
+  → akai-brief      (summary + action items)
+  → akai-proof      (quality score)
+  → akai-offer      (pricing)
+  → akai-pack       (ZIP deliverable)
 ```
 
-Or: `bonfyre-pipeline run` — all 10 steps in one process, 5–8 ms.
+Or: `akai-pipeline run` — all 10 steps in one process, 5–8 ms.
 
 ## Storage
 
@@ -169,15 +169,15 @@ All data lives in `~/.local/share/bonfyre/` by default:
 
 ```
 ~/.local/share/bonfyre/
-├── cms.db          # BonfyreCMS schemas, content, tokens
-├── jobs.db         # BonfyreAPI job tracking
+├── cms.db          # AkaiCMS schemas, content, tokens
+├── jobs.db         # AkaiAPI job tracking
 ├── meter.db        # Usage metering
 ├── index.db        # Artifact index
 ├── uploads/        # Uploaded files
 └── artifacts/      # Pipeline outputs
 ```
 
-## HTTP endpoints (bonfyre-api)
+## HTTP endpoints (akai-api)
 
 ```
 GET  /api/health           → {"status":"ok","version":"1.0.0"}
@@ -186,7 +186,7 @@ POST /api/upload           → multipart file upload
 POST /api/jobs             → submit pipeline job
 GET  /api/jobs             → list all jobs
 GET  /api/jobs/:id         → job detail
-*    /api/binaries/:name/* → proxy to any bonfyre-* binary
+*    /api/binaries/:name/* → proxy to any akai-* binary
 GET  /*                    → static files (frontend SPA)
 ```
 
@@ -223,8 +223,8 @@ Structural compression for families of similar JSON records.
 
 ## Adding a New Binary
 
-1. Create `cmd/BonfyreYourThing/src/main.c`
-2. Create `cmd/BonfyreYourThing/Makefile` (copy any existing one)
+1. Create `cmd/AkaiYourThing/src/main.c`
+2. Create `cmd/AkaiYourThing/Makefile` (copy any existing one)
 3. Add an operator descriptor to `lib/libbonfyre/src/bf_operators.c`
 4. Declare whether you are `BF_OP_PURE` or `BF_OP_STATEFUL` — pick one
 5. Read/write `BfArtifact` manifests for all inputs and outputs

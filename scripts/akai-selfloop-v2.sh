@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# bonfyre-selfloop-v2.sh
+# akai-selfloop-v2.sh
 #
-# Full self-utilization loop — every active Bonfyre subsystem exercises every
+# Full self-utilization loop — every active Akai subsystem exercises every
 # other.  Artifacts flow through the complete pipeline and each output feeds
 # back into the intelligence layers.
 #
@@ -34,12 +34,12 @@
 # to production.
 #
 # Usage:
-#   bash scripts/bonfyre-selfloop-v2.sh [--iters N] [--dir WORKDIR]
+#   bash scripts/akai-selfloop-v2.sh [--iters N] [--dir WORKDIR]
 
 set -euo pipefail
 
 ITERS=10
-WORKDIR="/tmp/bonfyre-selfloop-v2"
+WORKDIR="/tmp/akai-selfloop-v2"
 PROMOTE_AFTER=5
 
 while [[ $# -gt 0 ]]; do
@@ -55,10 +55,10 @@ mkdir -p "$WORKDIR"
 LOG="$WORKDIR/selfloop.log"
 exec > >(tee -a "$LOG") 2>&1
 
-BF="bonfyre"
+BF="akai"
 VEC_DB="$WORKDIR/selfloop.vecdb"
 FRAG_DB="$WORKDIR/fragments.db"
-SPACE_NAME="bonfyre-selfloop-v2"
+SPACE_NAME="akai-selfloop-v2"
 
 banner()  { echo; echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; echo "  $*"; echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; }
 step()    { echo; echo "  ▶ $*"; }
@@ -78,7 +78,7 @@ make_artifact() {
   local conf
   conf=$(python3 -c "import random; random.seed($iter*7+3); print(f'{random.uniform(0.55,0.99):.3f}')")
   cat > "$txt" <<EOF
-Bonfyre self-optimization loop v2 — iteration ${iter}
+Akai self-optimization loop v2 — iteration ${iter}
 Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 Category: ${cat}
 
@@ -116,7 +116,7 @@ obj = {
   'iteration': ${iter},
   'category': '${cat}',
   'confidence': float('${conf}'),
-  'source': 'bonfyre-selfloop-v2',
+  'source': 'akai-selfloop-v2',
   'inputs': [{'path': 'doc.txt', 'type': 'text'}]
 }
 json.dump(obj, open('$outdir/artifact.json', 'w'), indent=2)
@@ -129,7 +129,7 @@ snapshot_learn() {
 }
 
 # ── Initial setup ────────────────────────────────────────────────────────
-banner "bonfyre-selfloop-v2: ${ITERS} iterations"
+banner "akai-selfloop-v2: ${ITERS} iterations"
 echo "  workdir: $WORKDIR"
 echo "  log:     $LOG"
 echo "  promote winner after ${PROMOTE_AFTER} iterations"
@@ -293,7 +293,7 @@ except: pass
 
   # ── 8. SLI chain ──────────────────────────────────────────────────────
   step "8. sli chain: T04:gdn:T16 pattern inference"
-  MODELS_DIR="$HOME/.local/share/bonfyre/models"
+  MODELS_DIR="$HOME/.local/share/akai/models"
   if [ -f "$ITER_DIR/embedding.json" ]; then
     python3 -c "
 import json, struct
@@ -530,4 +530,4 @@ for i in $(seq 1 $((ITERS-1))); do
   printf "    iter-%-2d → iter-%-2d  cosine=%-8s\n" "$i" "$((i+1))" "$SIM"
 done
 
-banner "bonfyre-selfloop-v2 complete — log: $LOG"
+banner "akai-selfloop-v2 complete — log: $LOG"

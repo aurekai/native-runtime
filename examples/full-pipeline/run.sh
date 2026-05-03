@@ -1,5 +1,5 @@
 #!/bin/sh
-# Bonfyre Full Pipeline Demo
+# Akai Full Pipeline Demo
 # Usage: ./run.sh /path/to/audio.mp3
 #
 # Runs the unified pipeline binary which executes all 10 stages
@@ -8,7 +8,7 @@
 set -e
 
 BONFYRE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-PIPELINE="$BONFYRE_ROOT/cmd/BonfyrePipeline/bonfyre-pipeline"
+PIPELINE="$BONFYRE_ROOT/cmd/AkaiPipeline/akai-pipeline"
 OUTPUT="$(dirname "$0")/output"
 
 if [ -z "$1" ]; then
@@ -17,7 +17,7 @@ if [ -z "$1" ]; then
     echo "Example:"
     echo "  $0 interview.mp3"
     echo ""
-    echo "This runs the full Bonfyre pipeline:"
+    echo "This runs the full Akai pipeline:"
     echo "  ingest → normalize → hash → transcribe → clean →"
     echo "  paragraph → brief → proof → offer → pack"
     exit 1
@@ -32,8 +32,8 @@ fi
 
 # Build if needed
 if [ ! -f "$PIPELINE" ]; then
-    echo "Building bonfyre-pipeline..."
-    make -C "$BONFYRE_ROOT" cmd/BonfyrePipeline
+    echo "Building akai-pipeline..."
+    make -C "$BONFYRE_ROOT" cmd/AkaiPipeline
 fi
 
 mkdir -p "$OUTPUT"

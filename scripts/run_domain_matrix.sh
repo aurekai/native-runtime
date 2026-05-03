@@ -22,8 +22,8 @@
 # Options:
 #   --wave N            run wave 1 only (default: 1), or 2 for both waves
 #   --n N               corpus size per domain (default: 1000)
-#   --out-root DIR      root output dir (default: /tmp/bonfyre-domain)
-#   --models-dir DIR    BQFP/align dir (default: /tmp/bonfyre-families)
+#   --out-root DIR      root output dir (default: /tmp/akai-domain)
+#   --models-dir DIR    BQFP/align dir (default: /tmp/akai-families)
 #   --dry-run           print what would run, don't execute
 #   --skip-existing     skip domains whose model.onnx already exists
 #
@@ -44,8 +44,8 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 # ── defaults ──────────────────────────────────────────────────────────────────
 WAVE=1
 N=1000
-OUT_ROOT="/tmp/bonfyre-domain"
-MODELS_DIR="/tmp/bonfyre-families"
+OUT_ROOT="/tmp/akai-domain"
+MODELS_DIR="/tmp/akai-families"
 DRY_RUN=0
 SKIP_EXISTING=0
 
@@ -90,7 +90,7 @@ if [[ ! -f "$RESULTS_TSV" ]]; then
 fi
 
 echo "=================================================================="
-echo " run_domain_matrix.sh — Bonfyre domain expansion"
+echo " run_domain_matrix.sh — Akai domain expansion"
 echo "  wave       : $WAVE  (${#ALL_DOMAINS[@]} domains)"
 echo "  corpus n   : $N"
 echo "  out-root   : $OUT_ROOT"
@@ -191,7 +191,7 @@ except Exception:
 
 lines = []
 lines.append("=" * 70)
-lines.append(f" Bonfyre domain_matrix report  (wave {wave})")
+lines.append(f" Akai domain_matrix report  (wave {wave})")
 lines.append("=" * 70)
 lines.append(f"  total domains : {n_pass + n_fail}")
 lines.append(f"  passed        : {n_pass}")
@@ -222,15 +222,15 @@ lines.append("  [ ] bqfp generated           → <models-dir>/<FAMILY>.bqfp")
 lines.append("  [ ] fragment extracted        → <models-dir>/<FAMILY>-frag.bqfp")
 lines.append("  [ ] alignment computed        → align-<FAMILY>-T04/fpqx_alignment.json")
 lines.append("  [ ] frontier.json updated     → <models-dir>/frontier.json")
-lines.append("  [ ] geometry_condition set    → bonfyre-model DB entry")
+lines.append("  [ ] geometry_condition set    → akai-model DB entry")
 lines.append("  [ ] FAMILY_HEADS entry        → scripts/demo.py")
 lines.append("")
 lines.append("Next steps:")
 lines.append("  Run: bash scripts/extract_fragment.sh --family T15")
 lines.append("  Run: bash scripts/extract_fragment.sh --family T16")
 lines.append("  Add T20/T21 to FAMILY_HEADS in scripts/demo.py")
-lines.append("  Run: python3 scripts/demo.py --models-dir /tmp/bonfyre-families \\")
-lines.append("         --metrics-out /tmp/bonfyre-domain/metrics.json")
+lines.append("  Run: python3 scripts/demo.py --models-dir /tmp/akai-families \\")
+lines.append("         --metrics-out /tmp/akai-domain/metrics.json")
 lines.append("=" * 70)
 
 report = "\n".join(lines)

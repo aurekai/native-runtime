@@ -10,12 +10,12 @@
 
 ### Before Phase 17:
 
-Bonfyre was **an extremely powerful tool** — but it waited for humans to decide what to investigate.
+Akai was **an extremely powerful tool** — but it waited for humans to decide what to investigate.
 
 ```text
 Human: "Test whether Jeffrey Epstein and J.E. are the same person"
-Bonfyre: [runs Phase 16.5 adversarial testing]
-Bonfyre: "same_person hypothesis wins (515× stronger)"
+Aurekai: [runs Phase 16.5 adversarial testing]
+Aurekai: "same_person hypothesis wins (515× stronger)"
 ```
 
 **The problem**: Humans still had to notice the anomaly and decide to test it.
@@ -24,14 +24,14 @@ Bonfyre: "same_person hypothesis wins (515× stronger)"
 
 ### After Phase 17:
 
-Bonfyre becomes **an autonomous investigator** — it decides what arguments are worth having.
+Akai becomes **an autonomous investigator** — it decides what arguments are worth having.
 
 ```text
-Bonfyre: [scans corpus]
-Bonfyre: "Detected high co-occurrence anomaly: 'Jeffrey Epstein' and 'J.E.'"
-Bonfyre: "Generating competing hypotheses: same_person vs different_people"
-Bonfyre: [runs Phase 16.5]
-Bonfyre: "Winner: same_person (515× stronger). Recommending merge."
+Aurekai: [scans corpus]
+Aurekai: "Detected high co-occurrence anomaly: 'Jeffrey Epstein' and 'J.E.'"
+Aurekai: "Generating competing hypotheses: same_person vs different_people"
+Aurekai: [runs Phase 16.5]
+Aurekai: "Winner: same_person (515× stronger). Recommending merge."
 ```
 
 **The transformation**: The system notices, proposes, tests, and reports — autonomously.
@@ -58,7 +58,7 @@ Bonfyre: "Winner: same_person (515× stronger). Recommending merge."
 > **Who decides what to investigate?**
 
 Before: Human
-After: Bonfyre
+After: Aurekai
 
 ---
 
@@ -393,8 +393,8 @@ from hypothesis_discovery import HypothesisDiscoveryEngine
 
 # Initialize
 engine = HypothesisDiscoveryEngine(
-    memory_dir="/tmp/bonfyre-memory",
-    models_dir="/tmp/bonfyre-models"
+    memory_dir="/tmp/akai-memory",
+    models_dir="/tmp/akai-models"
 )
 
 # Run discovery
@@ -651,7 +651,7 @@ Average degree: 15.3
 Analyst:  "I notice Jeffrey Epstein and J.E. appear together a lot."
 Analyst:  "Let me test if they're the same person."
 Analyst:  [manually runs Phase 16.5]
-Bonfyre:  "same_person wins (57× stronger)"
+Aurekai:  "same_person wins (57× stronger)"
 Analyst:  "Okay, they're the same. What else should I check?"
 Analyst:  [manually scans for next anomaly]
 ```
@@ -663,13 +663,13 @@ Analyst:  [manually scans for next anomaly]
 ### After Phase 17 (Autonomous):
 
 ```text
-Bonfyre: [scans corpus]
-Bonfyre: "Detected 12 signals. Top priority: cooccurrence anomaly (Jeffrey Epstein / J.E.)"
-Bonfyre: "Generating competing hypotheses: same vs different"
-Bonfyre: [runs Phase 16.5]
-Bonfyre: "Winner: same_person (57× stronger). Confidence: high."
-Bonfyre: "Next priority: temporal_inconsistency (Event A / Event B)"
-Bonfyre: [continues autonomously...]
+Aurekai: [scans corpus]
+Aurekai: "Detected 12 signals. Top priority: cooccurrence anomaly (Jeffrey Epstein / J.E.)"
+Aurekai: "Generating competing hypotheses: same vs different"
+Aurekai: [runs Phase 16.5]
+Aurekai: "Winner: same_person (57× stronger). Confidence: high."
+Aurekai: "Next priority: temporal_inconsistency (Event A / Event B)"
+Aurekai: [continues autonomously...]
 ```
 
 **New behavior**: System notices, proposes, tests, reports — without human intervention.
@@ -694,7 +694,7 @@ This is the difference between:
 ### For Investigative Journalism:
 
 **Before**: Journalist manually scans documents for patterns  
-**After**: Bonfyre auto-detects anomalies and proposes investigations
+**After**: Akai auto-detects anomalies and proposes investigations
 
 ---
 
@@ -768,7 +768,7 @@ PHASE 12: HYPOTHESIS SWARM
 
 ## 📝 Summary
 
-**Phase 17 transforms Bonfyre from tool to agent.**
+**Phase 17 transforms Akai from tool to agent.**
 
 **Core capabilities**:
 1. Autonomous signal detection (6 detector types)

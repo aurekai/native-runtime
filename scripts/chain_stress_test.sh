@@ -18,23 +18,23 @@
 #   bash scripts/chain_stress_test.sh [models_dir] [n_iters]
 #
 # Defaults:
-#   models_dir : /tmp/bonfyre-families
+#   models_dir : /tmp/akai-families
 #   n_iters    : 10
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODELS_DIR="${1:-/tmp/bonfyre-families}"
+MODELS_DIR="${1:-/tmp/akai-families}"
 N_ITERS="${2:-10}"
 
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
-FPQX_BIN="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
-OUT_ROOT="/tmp/bonfyre-chain-stress-$$"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
+FPQX_BIN="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
+OUT_ROOT="/tmp/akai-chain-stress-$$"
 
 mkdir -p "$OUT_ROOT"
 
 echo "==================================================================="
-echo " bonfyre-sli chain stress test"
+echo " akai-sli chain stress test"
 echo " models_dir : $MODELS_DIR"
 echo " n_iters    : $N_ITERS"
 echo " out_root   : $OUT_ROOT"

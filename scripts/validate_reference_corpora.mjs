@@ -188,7 +188,7 @@ function parseArgs(argv) {
 
   if (!options.repos.length) {
     options.repos = fs.readdirSync(options.root)
-      .filter((name) => /^(pages-|bonfyre-)/.test(name))
+      .filter((name) => /^(pages-|akai-)/.test(name))
       .map((name) => path.join(options.root, name))
       .filter((repoPath) => exists(path.join(repoPath, '.git')));
   } else {

@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
-scripts/bonfyre_memory.py — Bonfyre transform memory layer.
+scripts/akai_memory.py — Akai transform memory layer.
 
 SQLite-backed persistent memory for run history, routing decisions,
 failure events, escalation events, discovered paths, fragment stats,
 per-transition routing weights, and speech temporal memory.
 
-This module is the foundation of Bonfyre's self-evolution system.
+This module is the foundation of Aurekai's self-evolution system.
 ALL other evolution scripts (failure_detect, routing_adjust, path_discover,
 auto_evolve) read from and write to this store.
 
 Usage — library:
-    from scripts.bonfyre_memory import BonfyreMemory
-    mem = BonfyreMemory("/tmp/bonfyre-memory")
+    from scripts.bonfyre_memory import AkaiMemory
+    mem = AkaiMemory("/tmp/akai-memory")
     mem.record_run(metrics_dict)                    # ingest demo.py --metrics-out
     patterns = mem.get_failure_patterns(min_count=3)
     adj = mem.get_routing_adjustments()              # per-transition weights
@@ -20,11 +20,11 @@ Usage — library:
     mem.record_speech_segment(...)                   # temporal speech memory
 
 Usage — standalone:
-    python3 scripts/bonfyre_memory.py ingest /tmp/runs.json
-    python3 scripts/bonfyre_memory.py summary
-    python3 scripts/bonfyre_memory.py export /tmp/memory_export.json
-    python3 scripts/bonfyre_memory.py routing
-    python3 scripts/bonfyre_memory.py failures [--min-count N]
+    python3 scripts/akai_memory.py ingest /tmp/runs.json
+    python3 scripts/akai_memory.py summary
+    python3 scripts/akai_memory.py export /tmp/memory_export.json
+    python3 scripts/akai_memory.py routing
+    python3 scripts/akai_memory.py failures [--min-count N]
 
 Memory dir layout (created automatically):
     <memory_dir>/
@@ -145,15 +145,15 @@ CREATE INDEX IF NOT EXISTS idx_speech_audio   ON speech_segments(audio_id);
 
 # ══════════════════════════════════════════════════════════════════════════════
 
-class BonfyreMemory:
+class AkaiMemory:
     """
-    Persistent transform memory for Bonfyre self-evolution.
+    Persistent transform memory for Akai self-evolution.
 
     Thread-safe via SQLite WAL mode.  All writes are immediate (no batching).
     All reads return plain Python dicts / lists (no ORM).
     """
 
-    def __init__(self, memory_dir: str = "/tmp/bonfyre-memory"):
+    def __init__(self, memory_dir: str = "/tmp/akai-memory"):
         self.memory_dir = memory_dir
         self._ensure_dirs()
         db_path = os.path.join(memory_dir, "memory.db")
@@ -632,25 +632,25 @@ class BonfyreMemory:
 
 def _cli():
     import argparse
-    ap = argparse.ArgumentParser(description="Bonfyre memory layer CLI")
+    ap = argparse.ArgumentParser(description="Akai memory layer CLI")
     sub = ap.add_subparsers(dest="cmd")
 
     p_ingest = sub.add_parser("ingest", help="Ingest a demo.py --metrics-out JSON")
     p_ingest.add_argument("path", help="Path to metrics JSON (array of run dicts)")
-    p_ingest.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_ingest.add_argument("--memory-dir", default="/tmp/akai-memory")
 
     p_summary = sub.add_parser("summary", help="Print memory summary")
-    p_summary.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_summary.add_argument("--memory-dir", default="/tmp/akai-memory")
 
     p_export = sub.add_parser("export", help="Export full summary JSON")
     p_export.add_argument("out", help="Output path for summary JSON")
-    p_export.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_export.add_argument("--memory-dir", default="/tmp/akai-memory")
 
     p_routing = sub.add_parser("routing", help="Show routing weight table")
-    p_routing.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_routing.add_argument("--memory-dir", default="/tmp/akai-memory")
 
     p_fail = sub.add_parser("failures", help="List detected failure patterns")
-    p_fail.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_fail.add_argument("--memory-dir", default="/tmp/akai-memory")
     p_fail.add_argument("--min-count", type=int, default=3)
 
     args = ap.parse_args()
@@ -658,7 +658,7 @@ def _cli():
         ap.print_help()
         return
 
-    mem = BonfyreMemory(args.memory_dir)
+    mem = AkaiMemory(args.memory_dir)
 
     if args.cmd == "ingest":
         try:

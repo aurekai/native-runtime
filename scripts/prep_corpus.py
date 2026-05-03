@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-prep_corpus.py — download a HuggingFace dataset and write .txt files for bonfyre-run.
+prep_corpus.py — download a HuggingFace dataset and write .txt files for akai-run.
 
 Usage
   python3 scripts/prep_corpus.py --dataset ag_news    --out /tmp/corpus/ag_news    --n 500

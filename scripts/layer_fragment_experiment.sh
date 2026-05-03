@@ -4,13 +4,13 @@
 # End-to-end fragment-level experiment:
 #   1. Inspect a real ONNX model (all-MiniLM-L6-v2)
 #   2. Pull the first transformer layer (encoder.layer.0, nodes 10–42)
-#   3. Quantize the layer fragment to BQFP via bonfyre-quant
-#   4. Inspect the BQFP fragment with bonfyre-sli
-#   5. Run synthetic embeddings through it with bonfyre-sli
+#   3. Quantize the layer fragment to BQFP via akai-quant
+#   4. Inspect the BQFP fragment with akai-sli
+#   5. Run synthetic embeddings through it with akai-sli
 #   6. Bench the fragment transform
 #   7. Emit a complete artifact chain summary
 #
-# This demonstrates that Bonfyre can operate below full-model granularity:
+# This demonstrates that Akai can operate below full-model granularity:
 # individual heads, attention blocks, or FFN slices can each be independently
 # quantized, addressed by SHA-256, and run through the SLI pipeline.
 #
@@ -19,18 +19,18 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-LAYER_BIN="$REPO_ROOT/cmd/BonfyreLayer/bonfyre-layer"
-QUANT_BIN="$REPO_ROOT/cmd/BonfyreQuant/bonfyre-quant"
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
-HASH_BIN="$REPO_ROOT/cmd/BonfyreHash/bonfyre-hash"
-OUT_DIR="${1:-/tmp/bonfyre-fragment-exp}"
+LAYER_BIN="$REPO_ROOT/cmd/AkaiLayer/akai-layer"
+QUANT_BIN="$REPO_ROOT/cmd/AkaiQuant/akai-quant"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
+HASH_BIN="$REPO_ROOT/cmd/AkaiHash/akai-hash"
+OUT_DIR="${1:-/tmp/akai-fragment-exp}"
 
-SOURCE_MODEL="${SOURCE_MODEL:-$HOME/.cache/bonfyre/models/all-MiniLM-L6-v2/onnx/model_O2.onnx}"
+SOURCE_MODEL="${SOURCE_MODEL:-$HOME/.cache/akai/models/all-MiniLM-L6-v2/onnx/model_O2.onnx}"
 
 mkdir -p "$OUT_DIR"
 
 echo "==================================================================="
-echo " bonfyre fragment-level experiment"
+echo " akai fragment-level experiment"
 echo " source  : $SOURCE_MODEL"
 echo " out_dir : $OUT_DIR"
 echo "==================================================================="
@@ -97,10 +97,10 @@ fi
 
 ls -lh "$BQFP_OUT" | awk '{printf "  BQFP fragment: %s (%s)\n", $NF, $5}'
 
-# ── Step 5: Inspect BQFP with bonfyre-sli ───────────────────────────────
+# ── Step 5: Inspect BQFP with akai-sli ───────────────────────────────
 
 echo ""
-echo "── Step 5: Inspect BQFP fragment via bonfyre-sli ──"
+echo "── Step 5: Inspect BQFP fragment via akai-sli ──"
 "$SLI_BIN" inspect --model "$BQFP_OUT" 2>&1 | sed 's/^/  /'
 
 # ── Step 6: Create synthetic embedding vectors and run transform ─────────
@@ -162,7 +162,7 @@ import json, time, os
 d = {
     "bonfyre_artifact": True,
     "type": "layer_fragment",
-    "tool": "bonfyre-layer + bonfyre-quant + bonfyre-sli",
+    "tool": "akai-layer + akai-quant + akai-sli",
     "source_model": "all-MiniLM-L6-v2",
     "source_format": "onnx",
     "source_path": "$SOURCE_MODEL",
@@ -176,13 +176,13 @@ d = {
     "input_vectors": {"n": 4, "dim": 384, "format": "float32"},
     "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     "pipeline": [
-        "bonfyre-layer inspect",
-        "bonfyre-layer pull-layer (10:42)",
-        "bonfyre-layer pull-head (/encoder/layer.0/attention)",
-        "bonfyre-quant compress --bits 3",
-        "bonfyre-sli inspect",
-        "bonfyre-sli run",
-        "bonfyre-sli bench --n 500"
+        "akai-layer inspect",
+        "akai-layer pull-layer (10:42)",
+        "akai-layer pull-head (/encoder/layer.0/attention)",
+        "akai-quant compress --bits 3",
+        "akai-sli inspect",
+        "akai-sli run",
+        "akai-sli bench --n 500"
     ]
 }
 with open("$FRAGMENT_ARTIFACT", "w") as f:
@@ -202,11 +202,11 @@ echo "  BQFP:     $BQFP_OUT"
 echo "  SHA-256:  $BQFP_SHA"
 echo "  SLI run:  4 × 384-dim embeddings transformed"
 echo ""
-echo "  This proves: Bonfyre operates below full-model granularity."
+echo "  This proves: Akai operates below full-model granularity."
 echo "  Individual heads/layers can be:"
-echo "    • Extracted (bonfyre-layer)"
-echo "    • Quantized to BQFP at 3-bit (bonfyre-quant)"  
-echo "    • Content-addressed by SHA-256 (bonfyre-hash)"
-echo "    • Run through the SLI inference path (bonfyre-sli)"
-echo "    • Composed into auto-run loops (bonfyre-sli auto-run)"
+echo "    • Extracted (akai-layer)"
+echo "    • Quantized to BQFP at 3-bit (akai-quant)"  
+echo "    • Content-addressed by SHA-256 (akai-hash)"
+echo "    • Run through the SLI inference path (akai-sli)"
+echo "    • Composed into auto-run loops (akai-sli auto-run)"
 echo "==================================================================="

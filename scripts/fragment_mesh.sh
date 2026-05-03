@@ -6,38 +6,38 @@
 #
 # Pipeline for T04 fragment (layers 0:2, 384→256 Gemm+ReLU):
 #   1. pull-layer 0:2 from T04.onnx → T04-frag.onnx  (98,560 params)
-#   2. bonfyre-quant compress → T04-frag.bqfp
-#   3. bonfyre-fpqx align  T04-frag.bqfp vs T04.bqfp → fragment alignment matrix
-#   4. bonfyre-fpqx eval   → measure fragment↔full-model Procrustes preservation
-#   5. bonfyre-sli run     → apply fragment transform to input vectors
-#   6. bonfyre-sli chain   → T04-frag → T04 (fragment as first-hop pre-processor)
+#   2. akai-quant compress → T04-frag.bqfp
+#   3. akai-fpqx align  T04-frag.bqfp vs T04.bqfp → fragment alignment matrix
+#   4. akai-fpqx eval   → measure fragment↔full-model Procrustes preservation
+#   5. akai-sli run     → apply fragment transform to input vectors
+#   6. akai-sli chain   → T04-frag → T04 (fragment as first-hop pre-processor)
 #
 # Usage:
 #   bash scripts/fragment_mesh.sh [models_dir]
 #
-# Default models_dir: /tmp/bonfyre-families
+# Default models_dir: /tmp/akai-families
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODELS_DIR="${1:-/tmp/bonfyre-families}"
-ONNX_T04="/tmp/bonfyre-diversity/runs/T04-C-ag_news-1000/train/model.onnx"
+MODELS_DIR="${1:-/tmp/akai-families}"
+ONNX_T04="/tmp/akai-diversity/runs/T04-C-ag_news-1000/train/model.onnx"
 
-LAYER_BIN="$REPO_ROOT/cmd/BonfyreLayer/bonfyre-layer"
-QUANT_BIN="$REPO_ROOT/cmd/BonfyreQuant/bonfyre-quant"
-FPQX_BIN="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
+LAYER_BIN="$REPO_ROOT/cmd/AkaiLayer/akai-layer"
+QUANT_BIN="$REPO_ROOT/cmd/AkaiQuant/akai-quant"
+FPQX_BIN="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
 
-FRAG_DIR="/tmp/bonfyre-fragment/T04-frag-L02"
+FRAG_DIR="/tmp/akai-fragment/T04-frag-L02"
 FRAG_ONNX="$FRAG_DIR/layer_fragment.onnx"
 FRAG_BQFP="$MODELS_DIR/T04-frag.bqfp"
 ALIGN_OUT="$MODELS_DIR/align-T04frag-T04"
-OUT_ROOT="/tmp/bonfyre-fragment-mesh-$$"
+OUT_ROOT="/tmp/akai-fragment-mesh-$$"
 
 mkdir -p "$OUT_ROOT"
 
 echo "==================================================================="
-echo " bonfyre fragment mesh pipeline"
+echo " akai fragment mesh pipeline"
 echo " source   : T04  (layers 0:2 of T04.onnx)"
 echo " fragment : 384→256 Gemm + ReLU  (98,560 params)"
 echo " models   : $MODELS_DIR"
@@ -57,18 +57,18 @@ fi
 echo ""
 
 # ── Step 2: Compress fragment to BQFP ─────────────────────────────────────
-echo "── Step 2: bonfyre-quant compress fragment → BQFP ─────────────────"
+echo "── Step 2: akai-quant compress fragment → BQFP ─────────────────"
 "$QUANT_BIN" compress "$FRAG_ONNX" "$FRAG_BQFP" --bits 3 2>&1
 ls -lh "$FRAG_BQFP"
 echo ""
 
 # ── Step 3: Align fragment BQFP against full T04 BQFP ────────────────────
-echo "── Step 3: bonfyre-fpqx align  T04-frag ↔ T04 ─────────────────────"
+echo "── Step 3: akai-fpqx align  T04-frag ↔ T04 ─────────────────────"
 "$FPQX_BIN" align "$FRAG_BQFP" "$MODELS_DIR/T04.bqfp" --out "$ALIGN_OUT" 2>&1
 echo ""
 
 # ── Step 4: Eval Procrustes preservation ──────────────────────────────────
-echo "── Step 4: bonfyre-fpqx eval  fragment alignment quality ───────────"
+echo "── Step 4: akai-fpqx eval  fragment alignment quality ───────────"
 PROC=$("$FPQX_BIN" eval "$FRAG_BQFP" "$ALIGN_OUT/fpqx_alignment.json" 2>&1 | \
     awk '/mean cosine/{print $4}')
 echo "  Procrustes preservation (fragment vs T04): $PROC"
@@ -83,7 +83,7 @@ fi
 echo ""
 
 # ── Step 5: SLI run with fragment ─────────────────────────────────────────
-echo "── Step 5: bonfyre-sli run  with fragment transform ────────────────"
+echo "── Step 5: akai-sli run  with fragment transform ────────────────"
 
 # Generate input vectors (32 × 16)
 VECS="$OUT_ROOT/vecs.bin"

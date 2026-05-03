@@ -1,6 +1,6 @@
 # Self-Hosted SaaS Backend Demo
 
-This example sets up a complete SaaS backend using Bonfyre's infrastructure binaries: API gateway, authentication, API keys, rate limiting, and billing.
+This example sets up a complete SaaS backend using Aurekai's infrastructure binaries: API gateway, authentication, API keys, rate limiting, and billing.
 
 ## What you get
 
@@ -35,27 +35,27 @@ cd examples/saas-backend/
 ## Manual setup
 
 ```bash
-BONFYRE=../../cmd
+AKAI=../../cmd
 
 # 1. Start the API gateway (serves dashboard + REST API)
-$BONFYRE/BonfyreAPI/bonfyre-api --port 9090 --static ../../frontend/ serve &
+$AKAI/AkaiAPI/akai-api --port 9090 --static ../../frontend/ serve &
 API_PID=$!
 
 # 2. Create a user
-$BONFYRE/BonfyreAuth/bonfyre-auth signup \
+$AKAI/AkaiAuth/akai-auth signup \
     --email demo@example.com \
     --password demo123
 
 # 3. Issue an API key
-$BONFYRE/BonfyreGate/bonfyre-gate issue \
+$AKAI/AkaiGate/akai-gate issue \
     --email demo@example.com \
     --tier pro
 
 # 4. Check usage
-$BONFYRE/BonfyreMeter/bonfyre-meter status --email demo@example.com
+$AKAI/AkaiMeter/akai-meter status --email demo@example.com
 
 # 5. Generate an invoice
-$BONFYRE/BonfyrePay/bonfyre-pay invoice \
+$AKAI/AkaiPay/akai-pay invoice \
     --user-id 1 \
     --period 2026-04
 
@@ -67,14 +67,14 @@ kill $API_PID
 
 ```
                         ┌─────────────────┐
-                        │   bonfyre-api    │  ← HTTP gateway (port 9090)
+                        │   akai-api    │  ← HTTP gateway (port 9090)
                         │   69 KB binary   │
                         └────────┬────────┘
                                  │
               ┌──────────────────┼──────────────────┐
               │                  │                   │
      ┌────────┴───────┐  ┌──────┴──────┐  ┌────────┴───────┐
-     │  bonfyre-auth  │  │ bonfyre-gate│  │  bonfyre-pay   │
+     │  akai-auth  │  │ akai-gate│  │  akai-pay   │
      │  35 KB         │  │  33 KB      │  │  35 KB         │
      │  signup/login  │  │  API keys   │  │  invoicing     │
      └────────────────┘  └─────────────┘  └────────────────┘
@@ -82,7 +82,7 @@ kill $API_PID
               └──────────────────┼──────────────────┘
                                  │
                         ┌────────┴────────┐
-                        │  bonfyre-meter  │
+                        │  akai-meter  │
                         │  34 KB          │
                         │  usage tracking │
                         └─────────────────┘

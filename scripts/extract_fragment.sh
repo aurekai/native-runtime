@@ -5,7 +5,7 @@
 # quantizes to BQFP, aligns against the parent full model, and benchmarks.
 #
 # This generalizes the T04-specific fragment_mesh.sh to work with ANY family
-# whose model.onnx lives in a standard bonfyre-72/diversity runs directory.
+# whose model.onnx lives in a standard akai-72/diversity runs directory.
 #
 # Usage:
 #   bash scripts/extract_fragment.sh --family T15 [options]
@@ -16,9 +16,9 @@
 # Optional:
 #   --onnx PATH           explicit path to source model.onnx
 #                         (auto-detected from --runs-dir if omitted)
-#   --runs-dir DIR        root runs directory (default: /tmp/bonfyre-72/runs or
-#                         /tmp/bonfyre-diversity/runs, whichever has the family)
-#   --models-dir DIR      output dir for .bqfp and align (default: /tmp/bonfyre-families)
+#   --runs-dir DIR        root runs directory (default: /tmp/akai-72/runs or
+#                         /tmp/akai-diversity/runs, whichever has the family)
+#   --models-dir DIR      output dir for .bqfp and align (default: /tmp/akai-families)
 #   --range RANGE         layer range to extract (default: 0:2)
 #   --n-anchors N         FPQx anchor count (default: 256)
 #   --no-bench            skip SLI benchmark after extraction
@@ -37,7 +37,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 FAMILY=""
 ONNX_PATH=""
 RUNS_DIR=""
-MODELS_DIR="/tmp/bonfyre-families"
+MODELS_DIR="/tmp/akai-families"
 RANGE="0:2"
 N_ANCHORS=256
 NO_BENCH=0
@@ -61,10 +61,10 @@ if [[ -z "$FAMILY" ]]; then
 fi
 
 # ── tool paths ────────────────────────────────────────────────────────────────
-LAYER_BIN="$REPO_ROOT/cmd/BonfyreLayer/bonfyre-layer"
-QUANT_BIN="$REPO_ROOT/cmd/BonfyreQuant/bonfyre-quant"
-FPQX_BIN="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
+LAYER_BIN="$REPO_ROOT/cmd/AkaiLayer/akai-layer"
+QUANT_BIN="$REPO_ROOT/cmd/AkaiQuant/akai-quant"
+FPQX_BIN="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
 
 for bin in "$LAYER_BIN" "$QUANT_BIN" "$FPQX_BIN" "$SLI_BIN"; do
     if [[ ! -x "$bin" ]]; then
@@ -77,9 +77,9 @@ done
 if [[ -z "$ONNX_PATH" ]]; then
     # Try standard run dirs in priority order
     CANDIDATE_ROOTS=(
-        "/tmp/bonfyre-72/runs"
-        "/tmp/bonfyre-diversity/runs"
-        "/tmp/bonfyre-domain"
+        "/tmp/akai-72/runs"
+        "/tmp/akai-diversity/runs"
+        "/tmp/akai-domain"
     )
 
     # Also respect explicit --runs-dir
@@ -125,12 +125,12 @@ fi
 
 # ── derived paths ─────────────────────────────────────────────────────────────
 RANGE_TAG=$(echo "$RANGE" | tr ':' '-')          # "0:2" → "0-2"
-FRAG_DIR="/tmp/bonfyre-fragment/${FAMILY}-frag-L${RANGE_TAG}"
+FRAG_DIR="/tmp/akai-fragment/${FAMILY}-frag-L${RANGE_TAG}"
 FRAG_ONNX="$FRAG_DIR/layer_fragment.onnx"
 FRAG_BQFP="$MODELS_DIR/${FAMILY}-frag.bqfp"
 PARENT_BQFP="$MODELS_DIR/${FAMILY}.bqfp"
 ALIGN_OUT="$MODELS_DIR/align-${FAMILY}frag-${FAMILY}"
-TEST_OUT="/tmp/bonfyre-fragment-test-${FAMILY}-$$"
+TEST_OUT="/tmp/akai-fragment-test-${FAMILY}-$$"
 
 mkdir -p "$FRAG_DIR" "$MODELS_DIR" "$TEST_OUT"
 
@@ -157,7 +157,7 @@ fi
 echo ""
 
 # ── Step 2: BQFP compress fragment ───────────────────────────────────────────
-echo "── Step 2: bonfyre-quant compress fragment → ${FAMILY}-frag.bqfp ───────"
+echo "── Step 2: akai-quant compress fragment → ${FAMILY}-frag.bqfp ───────"
 if [[ -f "$FRAG_BQFP" ]]; then
     echo "  (cached) $FRAG_BQFP"
 else
@@ -170,12 +170,12 @@ PASS=$((PASS+1))
 echo ""
 
 # ── Step 3: FPQx align fragment vs full model ─────────────────────────────────
-echo "── Step 3: bonfyre-fpqx align fragment ↔ full $FAMILY ─────────────────"
+echo "── Step 3: akai-fpqx align fragment ↔ full $FAMILY ─────────────────"
 if [[ -d "$ALIGN_OUT" ]]; then
     echo "  (cached) $ALIGN_OUT"
 elif [[ ! -f "$PARENT_BQFP" ]]; then
     echo "  WARNING: parent ${FAMILY}.bqfp not found ($PARENT_BQFP)"
-    echo "  Skipping alignment — run 'bonfyre-quant compress' on full model first"
+    echo "  Skipping alignment — run 'akai-quant compress' on full model first"
     FAIL=$((FAIL+1))
 else
     mkdir -p "$ALIGN_OUT"

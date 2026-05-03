@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/demo.py — Bonfyre end-to-end demo
+scripts/demo.py — Akai end-to-end demo
 
 Takes one or more text inputs, runs the full transform mesh pipeline:
 
@@ -16,7 +16,7 @@ Usage:
     python3 scripts/demo.py "Your text here"
     python3 scripts/demo.py --text-file docs/sample.txt
     python3 scripts/demo.py "Short doc" "Another doc" "A third one"
-    python3 scripts/demo.py --loop 5 --models-dir /tmp/bonfyre-families "text..."
+    python3 scripts/demo.py --loop 5 --models-dir /tmp/akai-families "text..."
 
 Output is printed to stdout in a readable summary.
 """
@@ -35,9 +35,9 @@ warnings.filterwarnings("ignore")
 
 # ── Paths ────────────────────────────────────────────────────────────────
 REPO_ROOT   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SLI_BIN     = os.path.join(REPO_ROOT, "cmd", "BonfyreSLI", "bonfyre-sli")
-MODEL_BIN   = os.path.join(REPO_ROOT, "cmd", "BonfyreModel", "bonfyre-model")
-FPQX_BIN    = os.path.join(REPO_ROOT, "cmd", "BonfyreFPQX", "bonfyre-fpqx")
+SLI_BIN     = os.path.join(REPO_ROOT, "cmd", "AkaiSLI", "akai-sli")
+MODEL_BIN   = os.path.join(REPO_ROOT, "cmd", "AkaiModel", "akai-model")
+FPQX_BIN    = os.path.join(REPO_ROOT, "cmd", "AkaiFPQX", "akai-fpqx")
 
 # ── Topic labels (T04 task: 4-class topic-map, ag_news labels) ───────────
 TOPIC_LABELS = {0: "World", 1: "Sports", 2: "Business", 3: "Sci/Tech"}
@@ -46,25 +46,25 @@ CHUNK_LABELS = {0: "continuous", 1: "boundary"}
 # ── Per-family ONNX heads + escalation chain ─────────────────────────────
 FAMILY_HEADS = {
     "T04": {
-        "path": "/tmp/bonfyre-72/runs/T04-C-ag_news-1000/train/model.onnx",
+        "path": "/tmp/akai-72/runs/T04-C-ag_news-1000/train/model.onnx",
         "n_class": 4,
         "labels": {0: "World", 1: "Sports", 2: "Business", 3: "Sci/Tech"},
     },
     "T15": {
-        "path": "/tmp/bonfyre-72/runs/T15-C-cnn_dm-1000/train/model.onnx",
+        "path": "/tmp/akai-72/runs/T15-C-cnn_dm-1000/train/model.onnx",
         "n_class": 6,
         "labels": {0: "Politics", 1: "Tech", 2: "Business", 3: "Health", 4: "World", 5: "Sports"},
     },
     # ── Speech ASR families (populated once speech_pack.sh has run) ──────
     # S01: short-form clean ASR (T30-C collapse on librispeech_clean)
     "S01": {
-        "path": "/tmp/bonfyre-speech/librispeech_clean-500/run/train/model.onnx",
+        "path": "/tmp/akai-speech/librispeech_clean-500/run/train/model.onnx",
         "n_class": 3,
         "labels": {0: "ambiguous", 1: "clear", 2: "noisy"},
     },
     # S02: noisy/diverse ASR (T31-C collapse on librispeech_other/commonvoice_en)
     "S02": {
-        "path": "/tmp/bonfyre-speech/librispeech_other-500/run/train/model.onnx",
+        "path": "/tmp/akai-speech/librispeech_other-500/run/train/model.onnx",
         "n_class": 3,
         "labels": {0: "ambiguous", 1: "clear", 2: "noisy"},
     },
@@ -75,8 +75,8 @@ ESCALATION_CHAIN = {"T04": "T15", "T15": "T16", "T16": None,
 # ── Speech escalation: ASR family chain ───────────────────────────────────
 ASR_ESCALATION_CHAIN = {"S01": "S02", "S02": None}
 
-# ── bonfyre-transcribe binary path ───────────────────────────────────────
-TRANSCRIBE_BIN = os.path.join(REPO_ROOT, "cmd", "BonfyreTranscribe", "bonfyre-transcribe")
+# ── akai-transcribe binary path ───────────────────────────────────────
+TRANSCRIBE_BIN = os.path.join(REPO_ROOT, "cmd", "AkaiTranscribe", "akai-transcribe")
 
 # ── I/O helpers ───────────────────────────────────────────────────────────
 
@@ -130,7 +130,7 @@ def embed_texts(texts):
     return embs.tolist()
 
 
-# ── Route via bonfyre-model ───────────────────────────────────────────────
+# ── Route via akai-model ───────────────────────────────────────────────
 
 def route(stats_path, frontier_path=None, from_family=None):
     cmd = [MODEL_BIN, "route", stats_path]
@@ -146,7 +146,7 @@ def route(stats_path, frontier_path=None, from_family=None):
     return family, cosine_bias
 
 
-# ── Run bonfyre-sli run ───────────────────────────────────────────────────
+# ── Run akai-sli run ───────────────────────────────────────────────────
 
 def sli_run(in_path, model_path, out_path):
     result = subprocess.run(
@@ -156,7 +156,7 @@ def sli_run(in_path, model_path, out_path):
     return result.returncode == 0
 
 
-# ── Run bonfyre-sli auto-run ──────────────────────────────────────────────
+# ── Run akai-sli auto-run ──────────────────────────────────────────────
 
 def sli_auto_run(in_path, stats_path, out_dir, models_dir, loop, chain, fpqx, thresh):
     result = subprocess.run(
@@ -271,7 +271,7 @@ def _transcribe_audio(audio_path: str) -> dict:
     """
     Transcribe an audio file to text.
 
-    Primary path: bonfyre-transcribe C binary (whisper.h backend).
+    Primary path: akai-transcribe C binary (whisper.h backend).
     Fallback path: openai-whisper Python package (if binary unavailable).
 
     Returns dict with keys:
@@ -280,7 +280,7 @@ def _transcribe_audio(audio_path: str) -> dict:
       num_segments     (int)
       first_segment_ms (int)  end time of first segment in ms
       whisper_model    (str)
-      source           (str)  "bonfyre-transcribe" | "openai-whisper"
+      source           (str)  "akai-transcribe" | "openai-whisper"
     """
     import math, time
 
@@ -288,7 +288,7 @@ def _transcribe_audio(audio_path: str) -> dict:
         print(f"[speech] ERROR: audio file not found: {audio_path}")
         return {}
 
-    # Primary: bonfyre-transcribe C binary
+    # Primary: akai-transcribe C binary
     if os.path.exists(TRANSCRIBE_BIN):
         out_json = audio_path + ".transcription.json"
         t0 = time.monotonic()
@@ -314,18 +314,18 @@ def _transcribe_audio(audio_path: str) -> dict:
                     "num_segments":     len(segments),
                     "first_segment_ms": first_ms,
                     "whisper_model":    data.get("model", "unknown"),
-                    "source":           "bonfyre-transcribe",
+                    "source":           "akai-transcribe",
                     "elapsed_ms":       elapsed_ms,
                 }
             except Exception as exc:
-                print(f"[speech] WARNING: could not parse bonfyre-transcribe JSON: {exc}")
+                print(f"[speech] WARNING: could not parse akai-transcribe JSON: {exc}")
 
     # Fallback: openai-whisper Python
     try:
         import whisper, math as _math
     except ImportError:
-        print("[speech] ERROR: bonfyre-transcribe not found and openai-whisper not installed")
-        print("  Install: pip install openai-whisper  or  build bonfyre-transcribe")
+        print("[speech] ERROR: akai-transcribe not found and openai-whisper not installed")
+        print("  Install: pip install openai-whisper  or  build akai-transcribe")
         return {}
 
     model_name = os.environ.get("WHISPER_MODEL", "base")
@@ -388,12 +388,12 @@ def _compute_wer(hyp: str, ref: str) -> float:
 # ── Main ──────────────────────────────────────────────────────────────────
 
 def main():
-    ap = argparse.ArgumentParser(description="Bonfyre end-to-end demo")
+    ap = argparse.ArgumentParser(description="Akai end-to-end demo")
     ap.add_argument("texts", nargs="*", help="Text inputs to process")
     ap.add_argument("--text-file", help="File with one text per line")
     ap.add_argument("--loop",       type=int, default=5)
     ap.add_argument("--thresh",     type=float, default=0.0)
-    ap.add_argument("--models-dir", default="/tmp/bonfyre-families")
+    ap.add_argument("--models-dir", default="/tmp/akai-families")
     ap.add_argument("--chain",      default="fragment:auto")
     ap.add_argument("--fpqx",       default="auto")
     ap.add_argument("--no-fragment", action="store_true",
@@ -412,7 +412,7 @@ def main():
                     help="Write run metrics JSON to this path (appends if file exists as array)")
     ap.add_argument("--speech-in",    default=None,
                     help="Path to audio file (.wav/.mp3/.flac). Transcribes via "
-                         "bonfyre-transcribe (or python whisper fallback), then runs "
+                         "akai-transcribe (or python whisper fallback), then runs "
                          "the full text adaptive pipeline on the transcript.")
     ap.add_argument("--speech-gt",    default=None,
                     help="Ground-truth transcript text or .txt file for WER computation "
@@ -422,7 +422,7 @@ def main():
                          "segment independently, report per-segment escalation, then "
                          "process the full transcript through the text pipeline.")
     ap.add_argument("--memory-dir", default=None,
-                    help="Write run metrics to Bonfyre transform memory (SQLite). "
+                    help="Write run metrics to Akai transform memory (SQLite). "
                          "Creates <memory_dir>/memory.db if absent. "
                          "When set, every run is automatically ingested for "
                          "self-evolution (failure detection, routing adjustment).")
@@ -507,11 +507,11 @@ def main():
     frag_bqfp  = os.path.join(models_dir, "T04-frag.bqfp")
     use_frag   = not args.no_fragment and os.path.exists(frag_bqfp)
     frontier_path = os.path.join(models_dir, "frontier.json")
-    onnx_path = args.onnx_model or "/tmp/bonfyre-72/runs/T04-C-ag_news-1000/train/model.onnx"
+    onnx_path = args.onnx_model or "/tmp/akai-72/runs/T04-C-ag_news-1000/train/model.onnx"
 
     # Metrics event accumulator — populated throughout the run
     _metrics = {
-        "schema":            "bonfyre-metrics-v1",
+        "schema":            "akai-metrics-v1",
         "n_inputs":          0,
         "input_texts":       [],   # stored for failure corpus extraction
         "routed_family":     None,
@@ -585,7 +585,7 @@ def main():
                 _pkg_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
                 if _pkg_root not in _sys.path:
                     _sys.path.insert(0, _pkg_root)
-                from scripts.bonfyre_memory import BonfyreMemory as _BM
+                from scripts.bonfyre_memory import AkaiMemory as _BM
                 _mem = _BM(args.memory_dir)
                 _rid = _mem.record_run(_metrics)
                 print(f"  memory  → {args.memory_dir}  (run_id={_rid})")
@@ -609,7 +609,7 @@ def main():
                 print(f"  [memory] WARNING: {_mem_exc}")
 
     print("=" * 72)
-    print(" BONFYRE  end-to-end demo")
+    print(" AKAI  end-to-end demo")
     print(f"  inputs  : {len(texts)} text(s)")
     if args.speech_in:
         print(f"  speech  : {args.speech_in}"

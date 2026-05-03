@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-scripts/path_discover.py — Bonfyre chain path discovery.
+scripts/path_discover.py — Akai chain path discovery.
 
 Discovers new execution chains by:
   1. Enumerating known families from domain_families.json + FAMILY_REGISTRY
   2. Generating candidate chains (controlled combinatorial expansion)
   3. Benchmarking each candidate against the baseline (fragment:auto)
   4. Scoring: composite = avg_confidence / avg_iterations (efficiency)
-  5. Storing winners in BonfyreMemory.paths table
+  5. Storing winners in AkaiMemory.paths table
 
 WHAT IT EXPLORES
 ================
@@ -20,7 +20,7 @@ Given base families [T04, T15, T16, T08], it tries:
 It does NOT try all permutations (combinatorial explosion). Instead:
   - max chain length = 4 families
   - fragment hops can only be inserted between consecutive families
-  - always starts from the family recommended by bonfyre-model route
+  - always starts from the family recommended by akai-model route
   - max candidates per run = MAX_CANDIDATES (default 20)
 
 SCORING
@@ -32,8 +32,8 @@ A new chain is "discovered" if score > baseline + DISCOVERY_THRESHOLD.
 
 USAGE
 =====
-    python3 scripts/path_discover.py [--memory-dir /tmp/bonfyre-memory]
-                                      [--models-dir /tmp/bonfyre-families]
+    python3 scripts/path_discover.py [--memory-dir /tmp/akai-memory]
+                                      [--models-dir /tmp/akai-families]
                                       [--texts "text1" "text2"]
                                       [--loop 5]
                                       [--max-candidates 20]
@@ -53,11 +53,11 @@ import time
 _SELF = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(_SELF))
 
-from scripts.bonfyre_memory import BonfyreMemory  # noqa: E402
+from scripts.akai_memory import AkaiMemory  # noqa: E402
 
 REPO_ROOT = os.path.dirname(_SELF)
-SLI_BIN   = os.path.join(REPO_ROOT, "cmd", "BonfyreSLI",   "bonfyre-sli")
-MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "BonfyreModel",  "bonfyre-model")
+SLI_BIN   = os.path.join(REPO_ROOT, "cmd", "AkaiSLI",   "akai-sli")
+MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "AkaiModel",  "akai-model")
 
 # ── Constants ─────────────────────────────────────────────────────────────
 
@@ -120,7 +120,7 @@ def compute_stats(texts):
 # ── Parse SLI auto-run log ────────────────────────────────────────────────
 
 def parse_log(log: str) -> list:
-    """Return list of (iter_num, family, delta) from bonfyre-sli output."""
+    """Return list of (iter_num, family, delta) from akai-sli output."""
     import re
     results = []
     for line in log.splitlines():
@@ -155,7 +155,7 @@ def bench_chain(chain_str: str, texts: list, models_dir: str,
          wall_ms, error}
     """
     if not os.path.exists(SLI_BIN):
-        return {"chain": chain_str, "error": "bonfyre-sli not found"}
+        return {"chain": chain_str, "error": "akai-sli not found"}
 
     try:
         embs = embed_texts(texts)
@@ -180,7 +180,7 @@ def bench_chain(chain_str: str, texts: list, models_dir: str,
         frontier = os.path.join(models_dir, "frontier.json")
         # Use adjusted frontier if it exists (prefer learned weights)
         adj_frontier = os.path.join(
-            os.path.dirname(models_dir), "bonfyre-memory", "graph",
+            os.path.dirname(models_dir), "akai-memory", "graph",
             "frontier_adjusted.json")
         if os.path.exists(adj_frontier):
             frontier = adj_frontier
@@ -315,7 +315,7 @@ def discover(memory_dir: str, models_dir: str,
 
     Returns list of winning path dicts (new discoveries only).
     """
-    mem = BonfyreMemory(memory_dir)
+    mem = AkaiMemory(memory_dir)
     families = load_available_families(models_dir)
     candidates = generate_candidates(families, max_total=max_candidates)
 
@@ -386,9 +386,9 @@ def discover(memory_dir: str, models_dir: str,
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Discover new execution chains in the Bonfyre transform graph")
-    ap.add_argument("--memory-dir",     default="/tmp/bonfyre-memory")
-    ap.add_argument("--models-dir",     default="/tmp/bonfyre-families")
+        description="Discover new execution chains in the Akai transform graph")
+    ap.add_argument("--memory-dir",     default="/tmp/akai-memory")
+    ap.add_argument("--models-dir",     default="/tmp/akai-families")
     ap.add_argument("--texts",          nargs="+", default=None,
                     help="Override probe texts (default: 4 built-in)")
     ap.add_argument("--text-file",      default=None,

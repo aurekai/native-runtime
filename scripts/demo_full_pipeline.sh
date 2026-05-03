@@ -9,7 +9,7 @@ set -e
 
 echo ""
 echo "════════════════════════════════════════════════════════════════"
-echo "BONFYRE: FULL AUTONOMOUS PIPELINE"
+echo "AKAI: FULL AUTONOMOUS PIPELINE"
 echo "════════════════════════════════════════════════════════════════"
 echo ""
 echo "This script runs the COMPLETE pipeline:"
@@ -26,9 +26,9 @@ echo ""
 # SETUP
 # ──────────────────────────────────────────────────────────────────
 
-CORPUS_DIR="/tmp/bonfyre-corpus"
-MEMORY_DIR="/tmp/bonfyre-demo"
-REPORT_FILE="/tmp/bonfyre-report.json"
+CORPUS_DIR="/tmp/akai-corpus"
+MEMORY_DIR="/tmp/akai-demo"
+REPORT_FILE="/tmp/akai-report.json"
 
 mkdir -p "$CORPUS_DIR"
 
@@ -97,7 +97,7 @@ echo ""
 
 python3 scripts/hypothesis_discovery.py \
     --memory-dir "$MEMORY_DIR" \
-    --models-dir /tmp/bonfyre-models \
+    --models-dir /tmp/akai-models \
     --max-hypotheses 5 \
     --min-signal-strength 0.4 \
     --output "$REPORT_FILE"

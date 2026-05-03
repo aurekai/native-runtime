@@ -10,7 +10,7 @@
 
 Built Phases 14 (Orthogonal Pressure) and 15 (Structural Intervention) in a single implementation session.
 
-**Core achievement:** Transformed Bonfyre from a system where multiple lenses can agree and all be wrong together, into a system that tests claims against independent orthogonal realities and can modify its own structural machinery in response to pressure.
+**Core achievement:** Transformed Akai from a system where multiple lenses can agree and all be wrong together, into a system that tests claims against independent orthogonal realities and can modify its own structural machinery in response to pressure.
 
 **Files changed:** 9 files, 3,005 insertions  
 **New scripts:** 3 (orthogonal_pressure, structural_intervention, tests)  
@@ -28,7 +28,7 @@ Built Phases 14 (Orthogonal Pressure) and 15 (Structural Intervention) in a sing
 - claim_graph.py (extended, not replaced)
 - convergence_engine.py (integrated, not redesigned)
 - auto_evolve.py (extended evolution order)
-- Existing binaries: bonfyre-quant, bonfyre-layer, bonfyre-fpqx
+- Existing binaries: akai-quant, akai-layer, akai-fpqx
 - Existing fragment extraction pipeline
 - Existing hypothesis swarm infrastructure
 
@@ -228,16 +228,16 @@ CREATE TABLE patch_registry (
 **1. Fragment Specialization (structural_intervention.py:162-229)**
 ```python
 def fragment_specialization(hot_zone, corpus, source_family="T04", layer_range="0-3"):
-    # 1. Extract fragment via bonfyre-layer
+    # 1. Extract fragment via akai-layer
     # 2. Run fragment on hot zone docs
     # 3. Measure pressure improvement
     # 4. Record intervention in DB
     # 5. Return success/failure
 ```
 
-**Calls bonfyre-layer:**
+**Calls akai-layer:**
 ```bash
-bonfyre-layer T04.bqfp --extract-layers 0-3 --out T04_0_3_frag.bqfp
+akai-layer T04.bqfp --extract-layers 0-3 --out T04_0_3_frag.bqfp
 ```
 
 **2. Structural A/B Testing (structural_intervention.py:303-330)**
@@ -374,7 +374,7 @@ Verified:
 - ✅ CLI tools for standalone pressure analysis
 
 **Phase 15:**
-- ✅ Fragment specialization with bonfyre-layer integration
+- ✅ Fragment specialization with akai-layer integration
 - ✅ Structural A/B testing framework
 - ✅ Patch registry and promotion logic
 - ✅ Auto-evolve integration (Step 3.5)
@@ -441,8 +441,8 @@ Verified:
 - **Trade-off:** Lower accuracy now, but 10x faster execution
 - **Future:** Phase 16 can replace with full implementation
 
-**2. Fragment Extraction via bonfyre-layer**
-- **Decision:** Wrap existing bonfyre-layer binary instead of reimplementing
+**2. Fragment Extraction via akai-layer**
+- **Decision:** Wrap existing akai-layer binary instead of reimplementing
 - **Rationale:** DRY principle, avoid duplicating layer extraction logic
 - **Trade-off:** External process overhead, but much cleaner code
 - **Validation:** Reuses battle-tested extraction pipeline
@@ -530,7 +530,7 @@ Test categories:
 Files touched:   6 existing files
 New tables:      3 (structural_interventions, fragment_trials, patch_registry)
 Schema fields:   +6 (pressure fields in claims)
-Binaries used:   bonfyre-layer, bonfyre-quant (not modified)
+Binaries used:   akai-layer, akai-quant (not modified)
 ```
 
 ---
@@ -583,7 +583,7 @@ Binaries used:   bonfyre-layer, bonfyre-quant (not modified)
 - ✅ **Clean integration**: Extended existing code without breaking changes
 - ✅ **Test-driven**: All tests passing before commit
 - ✅ **Documentation-first**: Worked example written alongside code
-- ✅ **Reuse over rewrite**: Wrapped bonfyre-layer instead of reimplementing
+- ✅ **Reuse over rewrite**: Wrapped akai-layer instead of reimplementing
 
 ### What Was Challenging
 

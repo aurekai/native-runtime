@@ -30,7 +30,7 @@ function scoreSource(source) {
   const messy = Number(signal.messy_audio || 0);
   const jargon = Number(signal.jargon_density || 0);
   const social = Number(signal.social_complexity || 0);
-  const fit = Number(signal.bonfyre_fit || 0);
+  const fit = Number(signal.akai_fit || 0);
   const provenance = Number(signal.provenance_confidence || 0);
   const safety = Number(signal.public_safety || 0);
   return messy * 1.4 + jargon * 1.2 + social * 1.1 + fit * 1.8 + provenance * 1.3 + safety * 1.0;
@@ -80,7 +80,7 @@ function deriveFeedback(source, plan) {
   const messy = getSignal(source, 'messy_audio');
   const jargon = getSignal(source, 'jargon_density');
   const social = getSignal(source, 'social_complexity');
-  const fit = getSignal(source, 'bonfyre_fit');
+  const fit = getSignal(source, 'akai_fit');
   const provenance = getSignal(source, 'provenance_confidence');
   const safety = getSignal(source, 'public_safety');
   const complexity = (messy + jargon + social) / 15;
@@ -308,7 +308,7 @@ function summarizeCoverage(appSummary, app, target) {
         'confirm public origin URL',
         'confirm publisher attribution',
         'confirm license or platform posture',
-        'confirm Bonfyre-fit and pattern coverage'
+        'confirm Aurekai-fit and pattern coverage'
       ]
     }))
     .sort((left, right) => right.score - left.score)
@@ -346,7 +346,7 @@ function buildRemediationPlan(report) {
 
 function renderMarkdown(report) {
   const lines = [];
-  lines.push('# Bonfyre Reference Corpus Stress Report');
+  lines.push('# Akai Reference Corpus Stress Report');
   lines.push('');
   lines.push(`Generated: ${report.generated_at}`);
   lines.push('');
@@ -354,7 +354,7 @@ function renderMarkdown(report) {
   lines.push('');
   lines.push(`- Apps stressed: ${report.totals.apps}`);
   lines.push(`- Sources stressed: ${report.totals.sources}`);
-  lines.push(`- Queued Bonfyre jobs: ${report.totals.queued_jobs}`);
+  lines.push(`- Queued Akai jobs: ${report.totals.queued_jobs}`);
   lines.push(`- Average policy score: ${report.totals.avg_policy_score}`);
   lines.push(`- Average information gain: ${report.totals.avg_information_gain}`);
   lines.push(`- Average latency: ${report.totals.avg_latency}`);
@@ -452,7 +452,7 @@ function renderSummaryJson(report) {
 
 function renderRemediationMarkdown(report) {
   const lines = [];
-  lines.push('# Bonfyre Reference Corpus Remediation Packet');
+  lines.push('# Akai Reference Corpus Remediation Packet');
   lines.push('');
   lines.push(`Generated: ${report.generated_at}`);
   lines.push('');
@@ -513,13 +513,13 @@ function renderRemediationTsv(report) {
 function main() {
   const args = parseArgs(process.argv.slice(2));
   if (!args.queuePath) {
-    console.error('usage: stress_reference_corpora_with_bonfyre.mjs <queue.json> [--out-dir DIR] [--repo NAME] [--include-queued] [--orchestrate-bin PATH] [--queue-bin PATH] [--policy-db PATH] [--assert-ready] [--min-verdict VERDICT]');
+    console.error('usage: stress_reference_corpora_with_akai.mjs <queue.json> [--out-dir DIR] [--repo NAME] [--include-queued] [--orchestrate-bin PATH] [--queue-bin PATH] [--policy-db PATH] [--assert-ready] [--min-verdict VERDICT]');
     process.exit(1);
   }
 
   const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-  const orchestrateBin = args.orchestrateBin || path.join(root, 'cmd/BonfyreOrchestrate/bonfyre-orchestrate');
-  const queueBin = args.queueBin || path.join(root, 'cmd/BonfyreQueue/bonfyre-queue');
+  const orchestrateBin = args.orchestrateBin || path.join(root, 'cmd/AkaiOrchestrate/akai-orchestrate');
+  const queueBin = args.queueBin || path.join(root, 'cmd/AkaiQueue/akai-queue');
   const outDir = args.outDir || path.join(root, 'site/demos/reference-stress');
   const policyDb = args.policyDb || path.join(outDir, 'orchestrate.db');
   const queueFile = path.join(outDir, 'reference-stress.queue.tsv');
@@ -617,7 +617,7 @@ function main() {
           source_messy: getSignal(source, 'messy_audio'),
           source_jargon: getSignal(source, 'jargon_density'),
           source_social: getSignal(source, 'social_complexity'),
-          source_fit: getSignal(source, 'bonfyre_fit')
+          source_fit: getSignal(source, 'akai_fit')
         };
         writeJson(requestPath, request);
 
@@ -667,7 +667,7 @@ function main() {
             getSignal(source, 'messy_audio') * 1.4 +
             getSignal(source, 'jargon_density') * 1.2 +
             getSignal(source, 'social_complexity') * 1.1 +
-            getSignal(source, 'bonfyre_fit') * 1.8 +
+            getSignal(source, 'akai_fit') * 1.8 +
             getSignal(source, 'provenance_confidence') * 1.3 +
             getSignal(source, 'public_safety') * 1.0
           ).toFixed(2)),
@@ -771,7 +771,7 @@ function main() {
   writeJson(artifactSummaryPath, renderSummaryJson(report));
   fs.writeFileSync(artifactRemediationPath, renderRemediationMarkdown(report), 'utf8');
 
-  const emitBin = path.join(root, 'cmd/BonfyreEmit/bonfyre-emit');
+  const emitBin = path.join(root, 'cmd/AkaiEmit/akai-emit');
   if (fs.existsSync(emitBin)) {
     try {
       runVoid(emitBin, [artifactDir, '--format', 'bundle', '--out', artifactDir], 'emit stress bundle');

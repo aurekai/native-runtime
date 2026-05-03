@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "bonfyre/layer_artifact.v1",
+  "$id": "akai/layer_artifact.v1",
   "title": "LayerArtifact",
-  "description": "Canonical Bonfyre LayerArtifact schema. layers.db is canonical; graph/index/query/catalog are projections.",
+  "description": "Canonical Akai LayerArtifact schema. layers.db is canonical; graph/index/query/catalog are projections.",
   "type": "object",
   "required": [
     "schema_version",

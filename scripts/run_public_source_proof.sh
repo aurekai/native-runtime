@@ -9,7 +9,7 @@ fi
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 URL="$1"
 TITLE="$2"
-OUT_DIR="${3:-$(mktemp -d /tmp/bonfyre-public-proof.XXXXXX)}"
+OUT_DIR="${3:-$(mktemp -d /tmp/akai-public-proof.XXXXXX)}"
 
 DOWNLOAD_DIR="$OUT_DIR/download"
 TRANS_DIR="$OUT_DIR/transcribe"
@@ -34,11 +34,11 @@ if [[ -z "${SOURCE_FILE:-}" ]]; then
 fi
 
 NORMALIZED_WAV="$OUT_DIR/source.wav"
-"$ROOT/cmd/BonfyreMediaPrep/bonfyre-media-prep" normalize "$SOURCE_FILE" "$NORMALIZED_WAV"
-"$ROOT/cmd/BonfyreTranscribe/bonfyre-transcribe" "$NORMALIZED_WAV" "$TRANS_DIR"
-"$ROOT/cmd/BonfyreTranscriptClean/bonfyre-transcript-clean" --transcript "$TRANS_DIR/transcript.json" --out "$CLEAN_DIR/clean.txt"
-"$ROOT/cmd/BonfyreParagraph/bonfyre-paragraph" --input "$CLEAN_DIR/clean.txt" --out "$PARA_DIR/paragraphs.txt"
-"$ROOT/cmd/BonfyreBrief/bonfyre-brief" "$PARA_DIR/paragraphs.txt" "$BRIEF_DIR" --title "$TITLE"
+"$ROOT/cmd/AkaiMediaPrep/akai-media-prep" normalize "$SOURCE_FILE" "$NORMALIZED_WAV"
+"$ROOT/cmd/AkaiTranscribe/akai-transcribe" "$NORMALIZED_WAV" "$TRANS_DIR"
+"$ROOT/cmd/AkaiTranscriptClean/akai-transcript-clean" --transcript "$TRANS_DIR/transcript.json" --out "$CLEAN_DIR/clean.txt"
+"$ROOT/cmd/AkaiParagraph/akai-paragraph" --input "$CLEAN_DIR/clean.txt" --out "$PARA_DIR/paragraphs.txt"
+"$ROOT/cmd/AkaiBrief/akai-brief" "$PARA_DIR/paragraphs.txt" "$BRIEF_DIR" --title "$TITLE"
 
 TITLE_JSON="$(jq -Rsa . <<<"$TITLE")"
 URL_JSON="$(jq -Rsa . <<<"$URL")"
@@ -78,7 +78,7 @@ jq -n \
   }' > "$PROOF_JSON"
 
 {
-  echo "# Bonfyre Public Source Proof"
+  echo "# Akai Public Source Proof"
   echo
   echo "- Title: $TITLE"
   echo "- Public origin: $URL"

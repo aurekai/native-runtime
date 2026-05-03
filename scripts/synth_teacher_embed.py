@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """
-synth_teacher_embed.py — write per-doc embedding JSON in bonfyre-embed output format.
+synth_teacher_embed.py — write per-doc embedding JSON in akai-embed output format.
 
 Uses sentence-transformers directly (no ONNX runtime required) to produce
 384-dim MiniLM embeddings, one <stem>.json per .txt file in corpus-dir.
 
-Output format matches what bonfyre-embed --backend onnx writes:
+Output format matches what akai-embed --backend onnx writes:
   {"embedding": [...384 floats...], "dims": 384, "backend": "sentence-transformers"}
 
-Usage (inside a bonfyre-run stage or standalone):
+Usage (inside a akai-run stage or standalone):
   python3 scripts/synth_teacher_embed.py <corpus-dir> <out-dir> [--model <name>]
 """
 import argparse

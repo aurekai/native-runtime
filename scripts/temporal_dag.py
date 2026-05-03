@@ -12,7 +12,7 @@ Graph diff:
 
 Two output formats:
   GraphML  — for Gephi / networkx / yEd
-  JSONL    — for Bonfyre pipeline / vector search
+  JSONL    — for Akai pipeline / vector search
 
 Temporal clusters:
   Entities that co-occur in documents filed within N days of each other

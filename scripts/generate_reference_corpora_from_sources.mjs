@@ -42,12 +42,12 @@ function buildRecord(app, source, index) {
     sourceTitle: source.sourceTitle || source.title || '',
     sourceUrl: source.sourceUrl || source.public_url || '',
     sourceLabel: source.sourceLabel || 'Watch original public source',
-    sourceCopy: source.sourceCopy || app.source_copy || 'Trace this card back to the public origin Bonfyre processed.',
+    sourceCopy: source.sourceCopy || app.source_copy || 'Trace this card back to the public origin Akai processed.',
     publisher: source.publisher || '',
     license: source.license || '',
     searchSummary: source.searchSummary || tags.slice(0, 3).join(', '),
     whyItMatters: source.whyItMatters || app.why_it_matters || `${app.title} becomes convincing when each record is tied back to a real public origin.`,
-    searchIntro: source.searchIntro || app.search_intro || `Search across the ${app.slug} corpus to see how Bonfyre handles many real public sources.`,
+    searchIntro: source.searchIntro || app.search_intro || `Search across the ${app.slug} corpus to see how Akai handles many real public sources.`,
     searchOutputs: pickArray(source.searchOutputs, outputs.slice(0, 1))
   };
 }

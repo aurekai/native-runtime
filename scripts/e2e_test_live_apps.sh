@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# E2E smoke/integration test for bonfyre-* live apps
-# - For each discovered bonfyre-* binary, attempt a `status` command (if supported)
-# - For `bonfyre-narrate`, run a self-verify against sample demo WAVs
+# E2E smoke/integration test for akai-* live apps
+# - For each discovered akai-* binary, attempt a `status` command (if supported)
+# - For `akai-narrate`, run a self-verify against sample demo WAVs
 # - Write per-app logs to `site/demos/e2e-results/` and print a summary
 
 OUT_DIR="site/demos/e2e-results"
@@ -12,13 +12,13 @@ mkdir -p "$OUT_DIR"
 BIN_DIRS=(./cmd)
 declare -a BINS
 
-# discover executables named bonfyre-*
+# discover executables named akai-*
 while IFS= read -r bin; do
   BINS+=("$bin")
-done < <(find ${BIN_DIRS[@]} -maxdepth 2 -type f -name 'bonfyre-*' -perm -111 2>/dev/null | sort)
+done < <(find ${BIN_DIRS[@]} -maxdepth 2 -type f -name 'akai-*' -perm -111 2>/dev/null | sort)
 
 if [ ${#BINS[@]} -eq 0 ]; then
-  echo "No bonfyre-* binaries found in ${BIN_DIRS[*]}. Try running 'make'." >&2
+  echo "No akai-* binaries found in ${BIN_DIRS[*]}. Try running 'make'." >&2
   exit 2
 fi
 
@@ -61,8 +61,8 @@ for bin in "${BINS[@]}"; do
     fi
   fi
 
-  # special-case: run a more thorough narrate self-verify if binary is bonfyre-narrate
-  if [ "$name" = "bonfyre-narrate" ]; then
+  # special-case: run a more thorough narrate self-verify if binary is akai-narrate
+  if [ "$name" = "akai-narrate" ]; then
     if [ -f site/demos/test_a.wav ]; then
       echo "Running narrate self-verify on site/demos/test_a.wav" | tee -a "$app_out/summary.txt"
       set +e

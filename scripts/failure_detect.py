@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/failure_detect.py — Bonfyre failure pattern detector.
+scripts/failure_detect.py — Akai failure pattern detector.
 
 Reads the transform memory (SQLite) and emits structured failure events
 for four failure modes:
@@ -11,13 +11,13 @@ for four failure modes:
     fragment_fail  — fragment exit never fires for a family (fragment is dead weight)
 
 When patterns are found they are:
-  1. Written to memory.failures table (via BonfyreMemory.record_failure)
+  1. Written to memory.failures table (via AkaiMemory.record_failure)
   2. Written as human-readable JSON to <memory_dir>/failures/
 
 Caller (auto_evolve.py) decides what to do with each pattern.
 
 Usage:
-    python3 scripts/failure_detect.py [--memory-dir /tmp/bonfyre-memory]
+    python3 scripts/failure_detect.py [--memory-dir /tmp/akai-memory]
                                        [--min-count N]
                                        [--last-runs N]
                                        [--dry-run]
@@ -33,7 +33,7 @@ import time
 _SELF = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(_SELF))
 
-from scripts.bonfyre_memory import BonfyreMemory  # noqa: E402
+from scripts.bonfyre_memory import AkaiMemory  # noqa: E402
 
 
 # ── Detector ────────────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ class FailureDetector:
       - min_count is the minimum occurrence threshold before a pattern fires
     """
 
-    def __init__(self, mem: BonfyreMemory,
+    def __init__(self, mem: AkaiMemory,
                  min_count: int = 3, last_runs: int = 50):
         self.mem = mem
         self.min_count = min_count
@@ -203,7 +203,7 @@ def run_detection(memory_dir: str, min_count: int = 3,
     """
     Run all detectors, persist new patterns, return full list.
     """
-    mem = BonfyreMemory(memory_dir)
+    mem = AkaiMemory(memory_dir)
     det = FailureDetector(mem, min_count=min_count, last_runs=last_runs)
 
     # Merge: from memory queries + extended detectors
@@ -253,8 +253,8 @@ def run_detection(memory_dir: str, min_count: int = 3,
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Detect failure patterns in Bonfyre transform memory")
-    ap.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+        description="Detect failure patterns in Akai transform memory")
+    ap.add_argument("--memory-dir", default="/tmp/akai-memory")
     ap.add_argument("--min-count",  type=int, default=3,
                     help="Minimum occurrences before pattern fires (default: 3)")
     ap.add_argument("--last-runs",  type=int, default=50,

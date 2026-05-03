@@ -90,7 +90,7 @@ def cmd_summarize(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(description="Parameter Golf tooling for Bonfyre recipes")
+    p = argparse.ArgumentParser(description="Parameter Golf tooling for Akai recipes")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     fetch = sub.add_parser("fetch", help="Fetch minimal record metadata files")

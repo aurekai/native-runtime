@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Bridge: BonfyreGraph output → hypothesis_discovery input
+Bridge: AkaiGraph output → hypothesis_discovery input
 
 Converts graph.json (nodes + edges) into claims format for Phase 17.
 This is the proper symbolic front-end, replacing ad-hoc text extraction.
@@ -15,7 +15,7 @@ import argparse
 
 
 def load_graph(graph_path: str) -> Dict[str, Any]:
-    """Load graph.json from BonfyreGraph or compatible format."""
+    """Load graph.json from AkaiGraph or compatible format."""
     with open(graph_path) as f:
         return json.load(f)
 
@@ -149,10 +149,10 @@ def write_claims_json(claims: List[Dict[str, Any]], output_path: str):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Convert BonfyreGraph output to claims for hypothesis discovery"
+        description="Convert AkaiGraph output to claims for hypothesis discovery"
     )
     parser.add_argument("--graph", required=True,
-                        help="Path to graph.json from BonfyreGraph")
+                        help="Path to graph.json from AkaiGraph")
     parser.add_argument("--memory-dir", 
                         help="Memory directory for claims (creates memory.db)")
     parser.add_argument("--json", 

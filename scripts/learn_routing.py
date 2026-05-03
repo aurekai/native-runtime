@@ -21,7 +21,7 @@ Output:
 
 Usage:
     python3 scripts/learn_routing.py
-    python3 scripts/learn_routing.py --models-dir /tmp/bonfyre-families --alphas 11
+    python3 scripts/learn_routing.py --models-dir /tmp/akai-families --alphas 11
     python3 scripts/learn_routing.py --write
 
 Note:
@@ -42,24 +42,24 @@ import warnings
 warnings.filterwarnings("ignore")
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "BonfyreModel", "bonfyre-model")
+MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "AkaiModel", "akai-model")
 
 # ── Family metadata (mirrors compare.py) ─────────────────────────────────────
 FAMILIES = {
     "T04": {
-        "path":    "/tmp/bonfyre-72/runs/T04-C-ag_news-1000/train/model.onnx",
+        "path":    "/tmp/akai-72/runs/T04-C-ag_news-1000/train/model.onnx",
         "n_class": 4,
         "labels":  {0: "World", 1: "Sports", 2: "Business", 3: "Sci/Tech"},
     },
     "T15": {
-        "path":    "/tmp/bonfyre-72/runs/T15-C-cnn_dm-1000/train/model.onnx",
+        "path":    "/tmp/akai-72/runs/T15-C-cnn_dm-1000/train/model.onnx",
         "n_class": 6,
         "labels":  {0: "Politics", 1: "Tech", 2: "Business",
                     3: "Health", 4: "World", 5: "Sports"},
     },
 }
 
-# ── Family DB data (from bonfyre-model, replicated for offline scoring) ───────
+# ── Family DB data (from akai-model, replicated for offline scoring) ───────
 # These are the fixed values — routing weights only change the blend ratio.
 FAMILY_DATA = {
     "T04": {"f1": 0.914, "condition": "avg_doc_len <= 300"},
@@ -194,7 +194,7 @@ def avg_max_conf(embs, family):
 
 def main():
     ap = argparse.ArgumentParser(description="Learn routing weights from observed confidence")
-    ap.add_argument("--models-dir", default="/tmp/bonfyre-families")
+    ap.add_argument("--models-dir", default="/tmp/akai-families")
     ap.add_argument("--alphas",     type=int, default=11,
                     help="Number of alpha values to sweep (default 11: 0.0 to 1.0 step 0.1)")
     ap.add_argument("--write",      action="store_true",
@@ -212,7 +212,7 @@ def main():
         frontier = json.load(f)
 
     print("=" * 72)
-    print(" BONFYRE  learn routing weights")
+    print(" AKAI  learn routing weights")
     print(f"  method : grid sweep over alpha (f1_weight) with {args.alphas} steps")
     print(f"  origin : --from {args.from_family}")
     print(f"  corpora: news ({len(NEWS_TEXTS)} texts) + article ({len(ARTICLE_TEXTS)} texts)")
@@ -292,7 +292,7 @@ def main():
 
     # ── Write output ──────────────────────────────────────────────────────────
     weights = {
-        "schema":        "bonfyre-routing-weights-v1",
+        "schema":        "akai-routing-weights-v1",
         "f1_weight":     best_alpha,
         "cosine_weight": round(best_cos_w, 10),
         "learned_from":  list(CORPORA.keys()),

@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # scripts/verify_routing.sh
 #
-# Verify that bonfyre-model route picks the correct promoted transform family
-# across three realistic corpus geometry regimes, then run bonfyre-sli auto-run
+# Verify that akai-model route picks the correct promoted transform family
+# across three realistic corpus geometry regimes, then run akai-sli auto-run
 # with FPQx alignment enabled to demonstrate the full loop.
 #
 # Promoted family registry:
@@ -21,16 +21,16 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODELS_DIR="${1:-/tmp/bonfyre-families}"
-MODEL_BIN="$REPO_ROOT/cmd/BonfyreModel/bonfyre-model"
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
-OUT_ROOT="/tmp/bonfyre-routing-test"
+MODELS_DIR="${1:-/tmp/akai-families}"
+MODEL_BIN="$REPO_ROOT/cmd/AkaiModel/akai-model"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
+OUT_ROOT="/tmp/akai-routing-test"
 PASS=0; FAIL=0
 
 mkdir -p "$OUT_ROOT"
 
 echo "==================================================================="
-echo " bonfyre routing verification + auto-run end-to-end test"
+echo " akai routing verification + auto-run end-to-end test"
 echo " models_dir : $MODELS_DIR"
 echo "==================================================================="
 
@@ -54,7 +54,7 @@ assert_route() {
     echo "     stats: $(cat $stats | python3 -c 'import json,sys; d=json.load(sys.stdin); print(f\"n_docs={d[\\\"n_docs\\\"]}, avg_doc_len={d[\\\"avg_doc_len\\\"]}, vocab_size={d[\\\"vocab_size\\\"]}\")' 2>/dev/null || cat $stats)"
     local route_out
     route_out=$("$MODEL_BIN" route "$stats" 2>/dev/null) || {
-        echo "  [ERROR] bonfyre-model route failed"
+        echo "  [ERROR] akai-model route failed"
         FAIL=$((FAIL+1)); return
     }
     local got_family
@@ -117,7 +117,7 @@ AUTO_OUT="$OUT_ROOT/auto-short"
 write_vectors "$IN_VECS" 8 16
 
 echo ""
-echo "  Running: bonfyre-sli auto-run"
+echo "  Running: akai-sli auto-run"
 echo "    --stats $STATS_A"
 echo "    --in    $IN_VECS"
 echo "    --out   $AUTO_OUT"

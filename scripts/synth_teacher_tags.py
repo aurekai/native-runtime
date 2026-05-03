@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-synth_teacher_tags.py — write per-doc tags.json in bonfyre-tag output format.
+synth_teacher_tags.py — write per-doc tags.json in akai-tag output format.
 
 Two modes:
 

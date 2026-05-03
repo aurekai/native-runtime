@@ -43,7 +43,7 @@ Data → Extract → Summarize → Single Truth → Done
 
 ---
 
-### Bonfyre Investigation Paradigm
+### Akai Investigation Paradigm
 
 ```
 Data → Entities → Canon → Graph → Claims → Hypotheses → Adversarial Testing → Convergence → RANKED Interpretations
@@ -70,8 +70,8 @@ modal    mapping  occur   edges    predicate  discovery      search             
 
 **Pipeline**:
 ```bash
-Audio → BonfyreSpeechLoop (VAD) → BonfyreTranscribe (Whisper) → 
-BonfyreEntity → BonfyreCanon → BonfyreGraph → claims.db → 
+Audio → AkaiSpeechLoop (VAD) → AkaiTranscribe (Whisper) → 
+AkaiEntity → AkaiCanon → AkaiGraph → claims.db → 
 hypothesis_discovery.py → hypothesis_engine.py → convergence_engine.py
 ```
 
@@ -87,7 +87,7 @@ hypothesis_discovery.py → hypothesis_engine.py → convergence_engine.py
 
 **Pipeline**:
 ```bash
-Documents → BonfyreIngest → BonfyreEntity → BonfyreCanon → BonfyreGraph → 
+Documents → AkaiIngest → AkaiEntity → AkaiCanon → AkaiGraph → 
 claims.db → hypothesis_discovery.py → hypothesis_engine.py → convergence_engine.py
 ```
 
@@ -123,28 +123,28 @@ The pipeline is **modality-agnostic**. Any data source that produces **entities 
 │ STAGE 1: INTAKE                                                 │
 │ Input: ANY structured/unstructured data                         │
 │ Output: Normalized representation                               │
-│ Tools: BonfyreIngest (universal), modality-specific extractors  │
+│ Tools: AkaiIngest (universal), modality-specific extractors  │
 └─────────────────────────────────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │ STAGE 2: ENTITY EXTRACTION                                      │
 │ Input: Normalized data                                          │
 │ Output: Entities with types, spans, scores                      │
-│ Tools: BonfyreEntity (structural filtering)                     │
+│ Tools: AkaiEntity (structural filtering)                     │
 └─────────────────────────────────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │ STAGE 3: CANONICALIZATION                                       │
 │ Input: Raw entities (variants, duplicates)                      │
 │ Output: Canonical entities + variant mapping                    │
-│ Tools: BonfyreCanon (fuzzy matching, tree-sitter)               │
+│ Tools: AkaiCanon (fuzzy matching, tree-sitter)               │
 └─────────────────────────────────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────────────────────────────────┐
 │ STAGE 4: GRAPH CONSTRUCTION                                     │
 │ Input: Canonical entities + contexts                            │
 │ Output: Entity graph (nodes + edges with weights)               │
-│ Tools: BonfyreGraph (co-occurrence, temporal, causal edges)     │
+│ Tools: AkaiGraph (co-occurrence, temporal, causal edges)     │
 └─────────────────────────────────────────────────────────────────┘
               ↓
 ┌─────────────────────────────────────────────────────────────────┐
@@ -179,7 +179,7 @@ The pipeline is **modality-agnostic**. Any data source that produces **entities 
 │ STAGE 9: MULTI-DIMENSIONAL REPRESENTATION                       │
 │ Input: Convergence results                                      │
 │ Output: Fragments (perspectives) + Layers (dimensions)          │
-│ Tools: BonfyreCMS (fragment system)                             │
+│ Tools: AkaiCMS (fragment system)                             │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -381,7 +381,7 @@ void fpqx_lora_update(FPQTensor* W_base, const FPQTensor* A, const FPQTensor* B,
 Multiple perspectives → Force agreement → Single truth → Discard alternatives
 ```
 
-**Bonfyre**:
+**Aurekai**:
 ```
 Multiple perspectives → Test each → Preserve all → Rank by pressure → Query by dimension
 ```
@@ -393,7 +393,7 @@ Multiple perspectives → Test each → Preserve all → Rank by pressure → Qu
 **Definition**: A **fragment** is a self-contained knowledge subgraph representing ONE perspective.
 
 ```sql
--- Fragment schema (BonfyreCMS)
+-- Fragment schema (AkaiCMS)
 CREATE TABLE fragments (
     fragment_id TEXT PRIMARY KEY,
     family_id TEXT,
@@ -465,7 +465,7 @@ Raw data representation before processing
 - Source code AST (code investigation)
 - Time-series samples (sensor data)
 
-**Tools**: BonfyreIngest, BonfyreSpeechLoop, modality-specific extractors
+**Tools**: AkaiIngest, AkaiSpeechLoop, modality-specific extractors
 
 ---
 
@@ -481,7 +481,7 @@ Symbolic/semantic transformations
 - Embedding generation (text → vectors)
 - Entity extraction (text → structured)
 
-**Tools**: BonfyreTranscribe, BonfyreEntity, BonfyreCanon, BonfyreEmbed
+**Tools**: AkaiTranscribe, AkaiEntity, AkaiCanon, AkaiEmbed
 
 ---
 
@@ -497,7 +497,7 @@ Human-readable representations
 - Narrative summaries (claim clusters)
 - Comparison tables (fragment deltas)
 
-**Tools**: BonfyreEmit (pandoc), Pages apps (WASM frontends)
+**Tools**: AkaiEmit (pandoc), Pages apps (WASM frontends)
 
 ---
 
@@ -508,12 +508,12 @@ Utility assessment and portfolio accounting
 ```
 
 **Examples**:
-- Cost tracking (BonfyreMeter: $21.60/hr transcription)
-- Value quantification (BonfyreLedger: $45K insights from 50 interviews)
+- Cost tracking (AkaiMeter: $21.60/hr transcription)
+- Value quantification (AkaiLedger: $45K insights from 50 interviews)
 - ROI calculation (41× return on speech investigation)
 - Quality gates (reject confidence < threshold)
 
-**Tools**: BonfyreMeter, BonfyreLedger, BonfyreGate
+**Tools**: AkaiMeter, AkaiLedger, AkaiGate
 
 ---
 
@@ -566,7 +566,7 @@ WHERE fragments.perspective = 'confidence_stable'
 
 ---
 
-### Bonfyre Recipe System
+### Akai Recipe System
 
 **Definition**: A **recipe** is a **declarative DAG** of transformations with dependency tracking.
 
@@ -580,7 +580,7 @@ WHERE fragments.perspective = 'confidence_stable'
       "steps": [
         {
           "step_id": "audio_segment",
-          "operator": "BonfyreSpeechLoop",
+          "operator": "AkaiSpeechLoop",
           "input": "raw_audio.wav",
           "output": "segments/*.wav",
           "flags": ["--vad-threshold", "0.3"]
@@ -592,21 +592,21 @@ WHERE fragments.perspective = 'confidence_stable'
       "steps": [
         {
           "step_id": "transcribe",
-          "operator": "BonfyreTranscribe",
+          "operator": "AkaiTranscribe",
           "input": "segments/*.wav",
           "output": "transcripts/*.txt",
           "depends_on": ["audio_segment"]
         },
         {
           "step_id": "entity_extract",
-          "operator": "BonfyreEntity",
+          "operator": "AkaiEntity",
           "input": "transcripts/*.txt",
           "output": "entities.json",
           "depends_on": ["transcribe"]
         },
         {
           "step_id": "canonicalize",
-          "operator": "BonfyreCanon",
+          "operator": "AkaiCanon",
           "input": "entities.json",
           "output": "canonical.json",
           "depends_on": ["entity_extract"]
@@ -625,7 +625,7 @@ WHERE fragments.perspective = 'confidence_stable'
 **Benefits**:
 1. **Declarative**: What to compute, not how
 2. **Composable**: Recipes can include other recipes
-3. **Cacheable**: BonfyreStitch tracks dependencies, skips unchanged
+3. **Cacheable**: AkaiStitch tracks dependencies, skips unchanged
 4. **Optimizable**: Runtime can reorder, parallelize, fuse ops
 5. **Portable**: Same recipe runs local/Docker/K8s
 
@@ -683,7 +683,7 @@ WHERE fragments.perspective = 'confidence_stable'
       {"recipe": "investigate_company_a", "output": "graph_a.json"},
       {"recipe": "investigate_company_b", "output": "graph_b.json"}
     ],
-    "merge_operator": "BonfyreGraph",
+    "merge_operator": "AkaiGraph",
     "merge_mode": "privacy_preserving"
   }
 }
@@ -711,13 +711,13 @@ WHERE fragments.perspective = 'confidence_stable'
 
 ---
 
-### BonfyreStitch — Recipe Executor
+### AkaiStitch — Recipe Executor
 
 ```c
 // Plan recipe execution (lazy evaluation)
 void bonfyre_stitch_plan(const char* recipe_json, const char* cache_dir) {
     // 1. Parse recipe DAG
-    // 2. Check cache for each step (content-addressed via BonfyreHash)
+    // 2. Check cache for each step (content-addressed via AkaiHash)
     // 3. Prune already-completed steps
     // 4. Topological sort for execution order
     // 5. Detect parallelizable steps
@@ -731,8 +731,8 @@ void bonfyre_stitch_execute(const char* plan_json) {
     //    - If hit: symlink cached output
     //    - If miss: fork+exec operator binary
     //    - Store output in cache
-    // 2. Record execution metrics (BonfyreMeter)
-    // 3. Update ledger (BonfyreLedger)
+    // 2. Record execution metrics (AkaiMeter)
+    // 3. Update ledger (AkaiLedger)
 }
 ```
 
@@ -757,18 +757,18 @@ ffmpeg -i video.mp4 frames/%04d.png
 ffmpeg -i video.mp4 -vn audio.wav
 
 # Transform layer (parallel)
-BonfyreTranscribe audio.wav → transcript.txt
+AkaiTranscribe audio.wav → transcript.txt
 python3 ocr_frames.py frames/ → frame_text.json
 python3 object_detection.py frames/ → objects.json
 
 # Entity extraction (unified)
-BonfyreEntity \
+AkaiEntity \
   --input transcript.txt frame_text.json objects.json \
   --mode multi_modal \
   --output entities.json
 
 # Cross-modal graph
-BonfyreGraph \
+AkaiGraph \
   --entities entities.json \
   --temporal-sync video  # Sync audio+visual entities by timestamp
   --output graph.json
@@ -796,14 +796,14 @@ git clone repo.git
 git log --all --format=json > commits.json
 
 # Entity extraction
-BonfyreEntity \
+AkaiEntity \
   --input src/**/*.py \
   --type code \
   --structural-filter tree-sitter \
   --output entities.json
 
 # Call graph + dependency graph
-BonfyreGraph \
+AkaiGraph \
   --entities entities.json \
   --edges call,import,inherit \
   --output graph.json
@@ -847,7 +847,7 @@ python3 ocr_extract.py normalized/ → text.json
 python3 face_cluster.py normalized/ → people.json
 
 # Entity graph
-BonfyreGraph \
+AkaiGraph \
   --entities objects.json text.json people.json \
   --edges spatial,temporal \
   --output graph.json
@@ -890,7 +890,7 @@ python3 event_detect.py normalized.json → events.json
   # Spike detection, anomaly detection, regime changes
 
 # Temporal graph
-BonfyreGraph \
+AkaiGraph \
   --entities events.json \
   --edges causal,correlation \
   --lag-detection \
@@ -922,22 +922,22 @@ python3 hypothesis_discovery.py claims.db
 
 ```bash
 # Intake: speech + video + documents + metrics
-BonfyreSpeechLoop meeting.mp4 → audio/
-BonfyreTranscribe audio/ → transcript.txt
+AkaiSpeechLoop meeting.mp4 → audio/
+AkaiTranscribe audio/ → transcript.txt
 ffmpeg -i meeting.mp4 frames/ → frames/*.png
 python3 ocr_slides.py frames/ → slides.json
 python3 ingest_docs.py related_docs/*.pdf → docs.json
 python3 metrics_sync.py server_metrics.csv meeting_time → metrics.json
 
 # Entity extraction (unified)
-BonfyreEntity \
+AkaiEntity \
   --input transcript.txt slides.json docs.json metrics.json \
   --mode multi_modal \
   --cross_reference \
   --output entities.json
 
 # Multi-modal graph
-BonfyreGraph \
+AkaiGraph \
   --entities entities.json \
   --edges speech_to_visual,doc_to_speech,metric_to_decision \
   --output graph.json
@@ -1041,11 +1041,11 @@ SLI: y = z^T @ FWHT(signs ⊙ x)
 
 ---
 
-### 4. Pipeline Optimization — BonfyrePipeline
+### 4. Pipeline Optimization — AkaiPipeline
 
 **Baseline**: 76ms (fork+exec chain of 7 binaries)
 
-**BonfyrePipeline**: 5-8ms (single-process composition)
+**AkaiPipeline**: 5-8ms (single-process composition)
 
 **Latency reduction**: 90-93%
 
@@ -1086,7 +1086,7 @@ SLI: y = z^T @ FWHT(signs ⊙ x)
 Data → Extract → Converge to ONE truth → Discard alternatives → Done
 ```
 
-**Bonfyre**:
+**Aurekai**:
 ```
 Data → Extract → Preserve ALL interpretations → Test ALL → Rank by pressure → Query by dimension
 ```
@@ -1105,7 +1105,7 @@ Data → Extract → Preserve ALL interpretations → Test ALL → Rank by press
 Compressed → Decompress → Compute → Recompress
 ```
 
-**Bonfyre FPQx**:
+**Akai FPQx**:
 ```
 Compressed → Compute directly (no decompression) → Results
 ```
@@ -1120,7 +1120,7 @@ Compressed → Compute directly (no decompression) → Results
 
 **All prior systems**: Store ONE interpretation
 
-**Bonfyre**: Store many perspectives × many layers = multi-dimensional knowledge space
+**Aurekai**: Store many perspectives × many layers = multi-dimensional knowledge space
 
 **Query model**:
 ```sql
@@ -1152,7 +1152,7 @@ SELECT * FROM fragments WHERE perspective='confidence_stable' AND confidence > 0
 
 **All prior systems**: Specialized per modality (speech, text, vision)
 
-**Bonfyre**: Same pipeline for ALL modalities (speech, text, video, images, code, time-series, multi-modal)
+**Aurekai**: Same pipeline for ALL modalities (speech, text, video, images, code, time-series, multi-modal)
 
 **Architecture**:
 ```
@@ -1200,7 +1200,7 @@ Modality-specific intake → Universal investigation pipeline → Modality-agnos
 4. Document operator reference
 
 **Deliverables**:
-- `BonfyreFPQx` binary (FPQx algebra operations)
+- `AkaiFPQx` binary (FPQx algebra operations)
 - `fpqx_algebra.h` (C API)
 - `docs/FPQx-Algebra-Reference.md` (comprehensive guide)
 - Test suite (operator composition, correctness, performance)
@@ -1214,12 +1214,12 @@ Modality-specific intake → Universal investigation pipeline → Modality-agnos
 **Goals**:
 1. Formalize recipe schema (JSON)
 2. Implement composition operators (⊕, ⊗, ⊕, 🔁)
-3. Build BonfyreStitch executor
+3. Build AkaiStitch executor
 4. Create recipe library
 
 **Deliverables**:
 - `recipe.schema.json` (formal schema)
-- `BonfyreStitch` enhancements (recipe execution)
+- `AkaiStitch` enhancements (recipe execution)
 - `recipes/` directory (library of pre-built recipes)
 - `docs/Recipe-Composition-Guide.md`
 
@@ -1238,7 +1238,7 @@ Modality-specific intake → Universal investigation pipeline → Modality-agnos
 **Deliverables**:
 - `scripts/video_investigation.sh` (video → insights)
 - `scripts/code_investigation.sh` (repo → patterns)
-- `BonfyreGraph --mode multimodal` (cross-modal edges)
+- `AkaiGraph --mode multimodal` (cross-modal edges)
 - `docs/Multi-Modal-Investigation.md`
 
 **Validation**: Detect speech-vs-visual contradictions in real videos
@@ -1254,7 +1254,7 @@ Modality-specific intake → Universal investigation pipeline → Modality-agnos
 4. Create fragment comparison tools
 
 **Deliverables**:
-- `BonfyreCMS fragment` subcommands (create, merge, diff)
+- `AkaiCMS fragment` subcommands (create, merge, diff)
 - `fragment_query.py` (perspective-based queries)
 - `layer_transform.py` (cross-layer transformations)
 - `docs/Fragment-Layer-System.md`
@@ -1290,9 +1290,9 @@ Modality-specific intake → Universal investigation pipeline → Modality-agnos
 4. Zero-copy pipelines
 
 **Deliverables**:
-- `BonfyreFPQx --fuse` (operator fusion)
-- `BonfyreSLI --simd avx512` (kernel tuning)
-- `BonfyreStitch --compile` (AOT compilation)
+- `AkaiFPQx --fuse` (operator fusion)
+- `AkaiSLI --simd avx512` (kernel tuning)
+- `AkaiStitch --compile` (AOT compilation)
 - `docs/Extreme-Optimization-Guide.md`
 
 **Target**: 10× faster than Phase 6

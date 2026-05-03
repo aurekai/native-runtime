@@ -2,7 +2,7 @@
 """
 synth_teacher_paragraphs.py — T16-C synthetic paragraph-boundary teacher.
 
-Uses bonfyre-paragraph to split documents into paragraph-level chunks,
+Uses akai-paragraph to split documents into paragraph-level chunks,
 then embeds each chunk with two sentence-transformer models (MiniLM + MPNet).
 The resulting per-paragraph embeddings in sorted order give collapse_train.py
 chunk-boundary a cleaner boundary signal than document-level embeddings:
@@ -16,7 +16,7 @@ Usage:
   python3 synth_teacher_paragraphs.py <corpus_dir> <out_dir>
                                       [--model-a all-MiniLM-L6-v2]
                                       [--model-b all-mpnet-base-v2]
-                                      [--bonfyre-paragraph bonfyre-paragraph]
+                                      [--akai-paragraph akai-paragraph]
 """
 import argparse
 import json
@@ -42,7 +42,7 @@ def split_paragraphs_fallback(text):
 
 
 def run_bonfyre_paragraph(bin_path, input_file, out_file):
-    """Run bonfyre-paragraph; return True on success."""
+    """Run akai-paragraph; return True on success."""
     try:
         result = subprocess.run(
             [bin_path, "--input", input_file, "--out", out_file],
@@ -65,7 +65,7 @@ def main():
     p.add_argument("out_dir")
     p.add_argument("--model-a", default=MODEL_A)
     p.add_argument("--model-b", default=MODEL_B)
-    p.add_argument("--bonfyre-paragraph", default="bonfyre-paragraph")
+    p.add_argument("--akai-paragraph", default="akai-paragraph")
     args = p.parse_args()
 
     dir_a = os.path.join(args.out_dir, "embed-a")
@@ -88,15 +88,15 @@ def main():
     model_a = SentenceTransformer(args.model_a)
     model_b = SentenceTransformer(args.model_b)
 
-    # Check if bonfyre-paragraph is available
+    # Check if akai-paragraph is available
     try:
         probe = subprocess.run([args.bonfyre_paragraph, "--help"],
                                capture_output=True, timeout=5)
         bf_para_ok = True
-        print(f"[synth_paragraphs] bonfyre-paragraph available")
+        print(f"[synth_paragraphs] akai-paragraph available")
     except Exception:
         bf_para_ok = False
-        print(f"[synth_paragraphs] bonfyre-paragraph not found — using fallback splitter")
+        print(f"[synth_paragraphs] akai-paragraph not found — using fallback splitter")
 
     # Collect all paragraph chunks globally
     all_chunks  = []   # list of (global_idx, text)
@@ -108,7 +108,7 @@ def main():
 
         paragraphs = None
         if bf_para_ok:
-            # Write doc to temp file, run bonfyre-paragraph, read result
+            # Write doc to temp file, run akai-paragraph, read result
             with tempfile.NamedTemporaryFile(mode="w", suffix=".txt",
                                              delete=False, encoding="utf-8") as tmp_in:
                 tmp_in.write(text)
@@ -117,7 +117,7 @@ def main():
             if run_bonfyre_paragraph(args.bonfyre_paragraph, tmp_in_path, tmp_out_path):
                 try:
                     para_text = open(tmp_out_path, encoding="utf-8").read()
-                    # bonfyre-paragraph writes paragraphs separated by blank lines
+                    # akai-paragraph writes paragraphs separated by blank lines
                     paragraphs = [p.strip() for p in para_text.split("\n\n") if p.strip()]
                 except Exception:
                     pass

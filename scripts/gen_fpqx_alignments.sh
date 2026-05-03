@@ -6,7 +6,7 @@
 #   T15 ↔ T16   (global → conditional long-doc)
 #   T04 ↔ T16   (direct global → long-doc bridge)
 #
-# Output convention (matching bonfyre-sli auto-run --fpqx auto):
+# Output convention (matching akai-sli auto-run --fpqx auto):
 #   <MODELS_DIR>/T04-T15-align.bin
 #   <MODELS_DIR>/T15-T16-align.bin
 #   <MODELS_DIR>/T04-T16-align.bin
@@ -14,18 +14,18 @@
 # Usage:
 #   bash scripts/gen_fpqx_alignments.sh [models_dir]
 #
-# Default models_dir: /tmp/bonfyre-families
+# Default models_dir: /tmp/akai-families
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODELS_DIR="${1:-/tmp/bonfyre-families}"
-FPQX="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
+MODELS_DIR="${1:-/tmp/akai-families}"
+FPQX="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
 
 mkdir -p "$MODELS_DIR"
 
 echo "==================================================================="
-echo " bonfyre-fpqx alignment generation"
+echo " akai-fpqx alignment generation"
 echo " models_dir : $MODELS_DIR"
 echo "==================================================================="
 
@@ -68,7 +68,7 @@ for fam in T04 T15 T16; do
 done
 echo "  All three family BQFP files present."
 
-# ── 2. Run bonfyre-fpqx align for all three pairs ───────────────────────
+# ── 2. Run akai-fpqx align for all three pairs ───────────────────────
 
 echo ""
 echo "── Step 2: Compute cross-family alignment matrices ──"
@@ -88,7 +88,7 @@ align_pair() {
         "$MODELS_DIR/${fb}.bqfp" \
         --out "$out_dir"
 
-    # Rename to naming convention expected by bonfyre-sli auto-run
+    # Rename to naming convention expected by akai-sli auto-run
     cp "$out_dir/fpqx_alignment.bin"  "$target_bin"
     cp "$out_dir/fpqx_alignment.json" "$target_json"
 
@@ -125,5 +125,5 @@ echo "==================================================================="
 echo " FPQx alignment artifacts:"
 ls -lh "$MODELS_DIR"/*.bin "$MODELS_DIR"/*.json 2>/dev/null || true
 echo ""
-echo " Done. Use with bonfyre-sli auto-run --fpqx auto --models-dir $MODELS_DIR"
+echo " Done. Use with akai-sli auto-run --fpqx auto --models-dir $MODELS_DIR"
 echo "==================================================================="

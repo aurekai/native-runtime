@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-scripts/auto_evolve.py — Bonfyre self-evolution coordinator.
+scripts/auto_evolve.py — Akai self-evolution coordinator.
 
-This is the main driver for Bonfyre's self-improvement loop.
+This is the main driver for Aurekai's self-improvement loop.
 It reads transform memory, detects failures, adjusts routing,
 discovers new paths, and — when failure patterns are severe enough —
 generates new transform families automatically.
@@ -24,7 +24,7 @@ When a failure pattern (oscillation or repeat_esc) has count >= AUTO_GEN_THRESHO
   1. Extract the failing input texts from memory (raw_json of escalation runs)
   2. Write them to a temp corpus dir as .txt + .label files
   3. Determine the next auto family ID (T50, T51, T52, ...)
-  4. Run: bonfyre-run T04-C <corpus> --out <models_dir>/auto/<family>/run
+  4. Run: akai-run T04-C <corpus> --out <models_dir>/auto/<family>/run
   5. Quantize, extract fragment, align
   6. Register the new family in auto_families.json
   7. Add it to FAMILY_HEADS for future routing
@@ -36,7 +36,7 @@ DESIGN RULES (from user spec)
 ==============================
   - NO neural training loops in this script
   - NO RL
-  - NO external dependencies beyond what bonfyre already uses
+  - NO external dependencies beyond what akai already uses
   - Does NOT replace existing runtime
   - Everything incremental, observable, reversible
   - All generated families stored in auto_families.json (easily deleted)
@@ -47,7 +47,7 @@ USAGE
     python3 scripts/auto_evolve.py --ingest /tmp/runs.json
 
     # Ingest from directory of run files
-    python3 scripts/auto_evolve.py --ingest-dir /tmp/bonfyre-memory/runs/
+    python3 scripts/auto_evolve.py --ingest-dir /tmp/akai-memory/runs/
 
     # Full evolution cycle (no new ingestion)
     python3 scripts/auto_evolve.py --evolve
@@ -71,16 +71,16 @@ import time
 _SELF = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(_SELF))
 
-from scripts.bonfyre_memory import BonfyreMemory       # noqa: E402
+from scripts.akai_memory import AkaiMemory       # noqa: E402
 from scripts.failure_detect  import run_detection       # noqa: E402
 from scripts.routing_adjust  import run_adjustment      # noqa: E402
 from scripts.meta_metrics    import compute_meta_metrics # noqa: E402
 
 REPO_ROOT   = os.path.dirname(_SELF)
-RUN_BIN     = os.path.join(REPO_ROOT, "cmd", "BonfyreRun",   "bonfyre-run")
-QUANT_BIN   = os.path.join(REPO_ROOT, "cmd", "BonfyreQuant", "bonfyre-quant")
-LAYER_BIN   = os.path.join(REPO_ROOT, "cmd", "BonfyreLayer", "bonfyre-layer")
-FPQX_BIN    = os.path.join(REPO_ROOT, "cmd", "BonfyreFPQX",  "bonfyre-fpqx")
+RUN_BIN     = os.path.join(REPO_ROOT, "cmd", "AkaiRun",   "akai-run")
+QUANT_BIN   = os.path.join(REPO_ROOT, "cmd", "AkaiQuant", "akai-quant")
+LAYER_BIN   = os.path.join(REPO_ROOT, "cmd", "AkaiLayer", "akai-layer")
+FPQX_BIN    = os.path.join(REPO_ROOT, "cmd", "AkaiFPQX",  "akai-fpqx")
 
 # ── Thresholds ─────────────────────────────────────────────────────────────
 
@@ -125,7 +125,7 @@ def _next_family_code(models_dir: str) -> str:
 
 # ── Extract failure corpus ────────────────────────────────────────────────
 
-def extract_failure_corpus(mem: BonfyreMemory, family: str,
+def extract_failure_corpus(mem: AkaiMemory, family: str,
                             pattern: str, out_dir: str) -> int:
     """
     Extract input texts from escalation runs involving `family`.
@@ -187,10 +187,10 @@ def generate_new_transform(family_id: str, corpus_dir: str,
     Train a new collapse head on the failure corpus.
 
     Steps:
-      1. bonfyre-run T04-C <corpus_dir> --out <out_dir>
-      2. bonfyre-quant <model.onnx> <family.bqfp>
-      3. bonfyre-layer <family.bqfp> --frag → <family>-frag.bqfp
-      4. bonfyre-fpqx align <family.bqfp> <T04.bqfp> → align-<family>-T04/
+      1. akai-run T04-C <corpus_dir> --out <out_dir>
+      2. akai-quant <model.onnx> <family.bqfp>
+      3. akai-layer <family.bqfp> --frag → <family>-frag.bqfp
+      4. akai-fpqx align <family.bqfp> <T04.bqfp> → align-<family>-T04/
 
     Returns dict with {family_id, model_path, bqfp_path, frag_path, error}
     """
@@ -213,7 +213,7 @@ def generate_new_transform(family_id: str, corpus_dir: str,
 
     # Step 1: collapse train
     if not os.path.exists(RUN_BIN):
-        return {"family_id": family_id, "error": "bonfyre-run not found"}
+        return {"family_id": family_id, "error": "akai-run not found"}
     t0 = time.monotonic()
     try:
         result = subprocess.run(
@@ -221,9 +221,9 @@ def generate_new_transform(family_id: str, corpus_dir: str,
             capture_output=True, text=True, timeout=600)
         if result.returncode != 0:
             return {"family_id": family_id,
-                    "error": f"bonfyre-run failed: {result.stderr[:300]}"}
+                    "error": f"akai-run failed: {result.stderr[:300]}"}
     except subprocess.TimeoutExpired:
-        return {"family_id": family_id, "error": "bonfyre-run timeout"}
+        return {"family_id": family_id, "error": "akai-run timeout"}
 
     if not os.path.exists(model_path):
         return {"family_id": family_id,
@@ -281,7 +281,7 @@ def evolve(memory_dir: str, models_dir: str,
     Run one full evolution cycle.  Returns a report dict.
     """
     ts = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
-    mem = BonfyreMemory(memory_dir)
+    mem = AkaiMemory(memory_dir)
 
     report = {
         "evolved_at":       ts,
@@ -764,7 +764,7 @@ def _log(msg: str):
 
 # ── Ingest ────────────────────────────────────────────────────────────────
 
-def ingest(mem: BonfyreMemory, path: str) -> int:
+def ingest(mem: AkaiMemory, path: str) -> int:
     """Ingest a metrics JSON file. Returns number of runs ingested."""
     try:
         data = json.load(open(path))
@@ -780,7 +780,7 @@ def ingest(mem: BonfyreMemory, path: str) -> int:
     return count
 
 
-def ingest_dir(mem: BonfyreMemory, ingest_directory: str) -> int:
+def ingest_dir(mem: AkaiMemory, ingest_directory: str) -> int:
     """Ingest all *.json files from a directory."""
     total = 0
     for fname in sorted(os.listdir(ingest_directory)):
@@ -796,7 +796,7 @@ def ingest_dir(mem: BonfyreMemory, ingest_directory: str) -> int:
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Bonfyre self-evolution coordinator")
+        description="Akai self-evolution coordinator")
 
     ap.add_argument("--ingest",       default=None,
                     help="Path to a demo.py --metrics-out JSON to ingest")
@@ -804,8 +804,8 @@ def main():
                     help="Directory of metrics JSONs to ingest (processed in order)")
     ap.add_argument("--evolve",       action="store_true",
                     help="Run the full evolution cycle after ingestion")
-    ap.add_argument("--memory-dir",   default="/tmp/bonfyre-memory")
-    ap.add_argument("--models-dir",   default="/tmp/bonfyre-families")
+    ap.add_argument("--memory-dir",   default="/tmp/akai-memory")
+    ap.add_argument("--models-dir",   default="/tmp/akai-families")
     ap.add_argument("--min-count",    type=int, default=AUTO_GEN_THRESHOLD,
                     help=f"Failure count threshold for auto-generation "
                          f"(default: {AUTO_GEN_THRESHOLD})")
@@ -820,7 +820,7 @@ def main():
                     help="Output evolution report as JSON")
     args = ap.parse_args()
 
-    mem = BonfyreMemory(args.memory_dir)
+    mem = AkaiMemory(args.memory_dir)
 
     # ── Ingest ────────────────────────────────────────────────────────
     if args.ingest:
@@ -864,7 +864,7 @@ def main():
                 print("[auto_evolve] (dry-run: no files written)")
     else:
         # Just ingested — show summary
-        mem = BonfyreMemory(args.memory_dir)
+        mem = AkaiMemory(args.memory_dir)
         summary = mem.summary()
         _log(f"Memory summary: {summary['total_runs']} runs  "
              f"{summary['total_escalations']} escalations  "

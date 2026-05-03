@@ -8,7 +8,7 @@
       "default_outputs": ["civic summary card", "searchable record", "vector memory", "public issue trail"],
       "why_it_matters": "Town Box becomes convincing when every record can be traced to a real public meeting or civic video.",
       "search_intro": "Search across real public meeting records to connect hearings, updates, and recurring issues.",
-      "source_copy": "Watch the original public source, then compare how Bonfyre turns it into a civic summary, search surface, and durable public trail.",
+      "source_copy": "Watch the original public source, then compare how Akai turns it into a civic summary, search surface, and durable public trail.",
       "sources": [
         {
           "id": "salt-lake-work-session-001",
@@ -34,7 +34,7 @@
       "default_outputs": ["shift summary", "handoff board", "critical tasks"],
       "why_it_matters": "Handoff quality is only believable when the input sounds like a real rushed workplace exchange.",
       "search_intro": "Search across real handoff recordings to see repeated risks and recurring task patterns.",
-      "source_copy": "Open the original public source, then compare it to the handoff board Bonfyre generates.",
+      "source_copy": "Open the original public source, then compare it to the handoff board Akai generates.",
       "sources": [
         {
           "id": "practice-nursing-handoff-001",
@@ -58,7 +58,7 @@
       "default_outputs": ["show notes", "clip list", "article draft", "RSS-ready bundle"],
       "why_it_matters": "Podcast Plant only earns trust when every episode card traces back to the public episode page or video.",
       "search_intro": "Search across real public episodes to compare topics, clips, and publish surfaces.",
-      "source_copy": "Open the original public source, then compare it to the notes, clips, and bundle Bonfyre emits.",
+      "source_copy": "Open the original public source, then compare it to the notes, clips, and bundle Akai emits.",
       "sources": [
         {
           "id": "podcast-source-001",

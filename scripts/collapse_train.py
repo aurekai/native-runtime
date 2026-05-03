@@ -2,20 +2,20 @@
 """
 collapse_train.py — distill teacher outputs into a small ONNX student model.
 
-Called as a stage inside bonfyre-run DAGs (T04, T07, T14, ...).
-Reads teacher output directories produced by bonfyre-tag / bonfyre-embed /
+Called as a stage inside akai-run DAGs (T04, T07, T14, ...).
+Reads teacher output directories produced by akai-tag / akai-embed /
 collapse_consensus.py and trains a frozen-MiniLM + MLP student.
 
 Tasks
-  topic-map        bonfyre-tag + bonfyre-embed → K-class topic softmax
-  chunk-boundary   two bonfyre-embed passes → boundary probability
+  topic-map        akai-tag + akai-embed → K-class topic softmax
+  chunk-boundary   two akai-embed passes → boundary probability
   ner-bio          consensus NER labels → BIO token classifier
   risk-score       toxicity+sentiment logits → 2-class risk signal
 
 Output (written to --out/):
   model.onnx        ONNX student (dynamic batch + sequence axes)
-  metrics.json      eval results consumed by bonfyre-learn feedback
-  artifact.json     BfArtifact manifest for bonfyre-model add
+  metrics.json      eval results consumed by akai-learn feedback
+  artifact.json     BfArtifact manifest for akai-model add
 
 Usage
   python3 scripts/collapse_train.py \\
@@ -154,7 +154,7 @@ def load_risk_embed(embed_dir: str, risk_dir: str):
 
 def load_tag_embed(tag_dir: str, embed_dir: str):
     """
-    Load bonfyre-tag output (tags.json) and bonfyre-embed output (*.json)
+    Load akai-tag output (tags.json) and akai-embed output (*.json)
     from their respective output directories.
     Returns (embeddings: np.array [N, 384], labels: np.array [N], label_names: list[str])
     """
@@ -168,7 +168,7 @@ def load_tag_embed(tag_dir: str, embed_dir: str):
             with open(path) as f:
                 obj = json.load(f)
             stem = fname[:-5]  # strip .json
-            # bonfyre-embed json format: {"embedding": [...], ...} or {"vector": [...]}
+            # akai-embed json format: {"embedding": [...], ...} or {"vector": [...]}
             vec = obj.get("embedding") or obj.get("vector")
             if vec:
                 emb_map[stem] = np.array(vec, dtype=np.float32)
@@ -185,7 +185,7 @@ def load_tag_embed(tag_dir: str, embed_dir: str):
             with open(path) as f:
                 obj = json.load(f)
             stem = fname[:-5]
-            # bonfyre-tag json: {"tags": [{"label": str, "score": float}, ...]}
+            # akai-tag json: {"tags": [{"label": str, "score": float}, ...]}
             tags = obj.get("tags") or obj.get("predictions") or []
             if tags:
                 tag_map[stem] = tags[0].get("label", "unknown") if tags else "unknown"
@@ -209,7 +209,7 @@ def load_tag_embed(tag_dir: str, embed_dir: str):
 
 def load_two_embeds(dir_a: str, dir_b: str):
     """
-    Load two bonfyre-embed output directories (one per model).
+    Load two akai-embed output directories (one per model).
     Returns (pairs: np.array [N, 384*2], boundaries: np.array [N])
     Boundary = 1 when both models agree cosine similarity drops below their
     respective adaptive thresholds between consecutive sentence embeddings.
@@ -402,15 +402,15 @@ def write_artifact(out_dir: str, task: str, metrics: dict, onnx_path: str):
     sha = hashlib.sha256(open(onnx_path, "rb").read()).hexdigest()
     size_mb = round(os.path.getsize(onnx_path) / 1024 / 1024, 3)
     obj = {
-        "id":          f"bonfyre-{task}-v1",
-        "name":        f"Bonfyre {task.replace('-', ' ').title()} v1",
+        "id":          f"akai-{task}-v1",
+        "name":        f"Akai {task.replace('-', ' ').title()} v1",
         "format":      "onnx",
         "sha256":      sha,
         "size_mb":     size_mb,
         "task":        task,
         "metrics":     metrics,
         "created_at":  int(time.time()),
-        "sourceSystem": "BonfyreCollapse",
+        "sourceSystem": "AkaiCollapse",
     }
     with open(os.path.join(out_dir, "artifact.json"), "w") as f:
         json.dump(obj, f, indent=2)

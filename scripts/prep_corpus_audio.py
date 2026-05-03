@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 prep_corpus_audio.py — download an audio+transcript HuggingFace dataset
-and write .wav/.txt/.label files for bonfyre-run speech recipes (T30-C etc.).
+and write .wav/.txt/.label files for akai-run speech recipes (T30-C etc.).
 
 Analogous to prep_corpus.py but operates on audio datasets instead of text.
 
@@ -124,7 +124,7 @@ def write_wav(path: str, array, sr: int = TARGET_SR):
 
 def main():
     p = argparse.ArgumentParser(
-        description="Prepare audio corpus from HuggingFace for Bonfyre speech recipes")
+        description="Prepare audio corpus from HuggingFace for Akai speech recipes")
     p.add_argument("--dataset",      required=True, choices=list(AUDIO_CONFIGS),
                    help="Dataset key: " + " | ".join(AUDIO_CONFIGS))
     p.add_argument("--out",          required=True,

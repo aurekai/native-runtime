@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bonfyre-selfloop-v4.sh — Recursive value-driven self-improvement
+# akai-selfloop-v4.sh — Recursive value-driven self-improvement
 #
 #  Lambda Tensors (λT) = memory           compact state, random-access per-field
 #  SLI/GDN            = nervous system    pattern recognition on embeddings
@@ -25,12 +25,12 @@
 #   1 compression   2 compute   3 policy   4 memory   5 precision
 #   6 time          7 graph     8 surface  9 learning  10 discipl
 #
-# Usage: bash scripts/bonfyre-selfloop-v4.sh [--iters N] [--dir WORKDIR]
+# Usage: bash scripts/akai-selfloop-v4.sh [--iters N] [--dir WORKDIR]
 
 set -euo pipefail
 
 ITERS=10
-WORKDIR="/tmp/bonfyre-selfloop-v4"
+WORKDIR="/tmp/akai-selfloop-v4"
 PROMOTE_AFTER=5
 
 while [[ $# -gt 0 ]]; do
@@ -46,12 +46,12 @@ mkdir -p "$WORKDIR"
 LOG="$WORKDIR/selfloop-v4.log"
 exec > >(tee -a "$LOG") 2>&1
 
-BF="bonfyre"
+BF="akai"
 VEC_DB="$WORKDIR/selfloop.vecdb"
 FRAG_DB="$WORKDIR/fragments.db"
 GRAPH_DB="$WORKDIR/selfloop.graphdb"
 LT_DIR="$WORKDIR/lt-state"
-SPACE_NAME="bonfyre-selfloop-v4"
+SPACE_NAME="akai-selfloop-v4"
 mkdir -p "$LT_DIR"
 export LT_DIR  # Python final-report heredocs read this
 
@@ -132,7 +132,7 @@ make_artifact() {
   local trend; trend=$([ $((iter % 2)) -eq 0 ] && echo "rising" || echo "stable")
   local depth=$([ "$route" = "local" ] && echo $((iter*5+30)) || echo $((iter*3+10)))
   cat > "$outdir/doc.txt" <<EOF
-Bonfyre self-improvement v4 — iteration ${iter}
+Akai self-improvement v4 — iteration ${iter}
 Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 Category: ${cat}
 Confidence: ${conf}
@@ -158,7 +158,7 @@ json.dump({
   'confidence': float('${conf}'),
   'anomaly': '${anomaly}' == 'true',
   'trend': '${trend}', 'route': '${route}',
-  'source': 'bonfyre-selfloop-v4',
+  'source': 'akai-selfloop-v4',
   'inputs': [{'path': 'doc.txt', 'type': 'text'}]
 }, open('$outdir/artifact.json', 'w'), indent=2)
 " 2>/dev/null
@@ -168,7 +168,7 @@ json.dump({
 # ═══════════════════════════════════════════════════════════════════════
 # BOOT
 # ═══════════════════════════════════════════════════════════════════════
-banner "bonfyre-selfloop-v4 — DisCIPL executive + λT state machine (${ITERS} iters)"
+banner "akai-selfloop-v4 — DisCIPL executive + λT state machine (${ITERS} iters)"
 echo "  workdir:  $WORKDIR"
 echo "  lt-state: $LT_DIR"
 echo ""
@@ -188,7 +188,7 @@ print(f'    {len(c)} contracts  {len(set(x[\"src_family\"] for x in c))} source 
 
 step "BOOT: gate + economy + finance"
 GATE_KEY_FILE="$WORKDIR/gate.json"
-GATE_KEY=$($BF gate issue --tier pro --org bonfyre-selfloop-v4 --out "$GATE_KEY_FILE" 2>/dev/null \
+GATE_KEY=$($BF gate issue --tier pro --org akai-selfloop-v4 --out "$GATE_KEY_FILE" 2>/dev/null \
   | grep "bfk_" | head -1 || echo "")
 ok "gate key: ${GATE_KEY:-issued}"
 
@@ -415,7 +415,7 @@ with open('$ITER_DIR/vecs.bin','wb') as f:
     for v in vec: f.write(struct.pack('<f', float(v)))
 " 2>/dev/null
     $BF sli chain --in "$ITER_DIR/vecs.bin" --chain T04:gdn:T16 \
-        --models-dir "$HOME/.local/share/bonfyre/models" --out "$ITER_DIR/sli_out.bin" 2>/dev/null \
+        --models-dir "$HOME/.local/share/akai/models" --out "$ITER_DIR/sli_out.bin" 2>/dev/null \
       && ok "sli chain: written" \
       || warn "sli chain: T04/T16 absent (graceful)"
   fi
@@ -774,7 +774,7 @@ print(f"  2. compute:       backends used: {sorted(set(r.get('route_id','?') for
 print(f"  3. policy:        discipl accepted {sum(1 for r in rows if r.get('verification_status')=='accepted')}/{len(rows)}  compete-driven changes {sum(1 for r in rows if r.get('next_route_decision')=='compete')}")
 print(f"  4. memory:        cache hits {sum(1 for r in rows if r.get('arb_memory_hit'))}/{len(rows)}  avoided_work total \${sum(r.get('avoided_work',0) for r in rows):.8f}")
 print(f"  5. precision:     path selection active (cheap/standard/full per vpc)")
-print(f"  6. time:          deferred artifacts queued via bonfyre-time (vpc < 1.0)")
+print(f"  6. time:          deferred artifacts queued via akai-time (vpc < 1.0)")
 print(f"  7. graph:         {last.get('graph_atoms',0)} atoms  {last.get('graph_ops',0)} ops  full causal lineage with accept/reject trail")
 print(f"  8. surface:       emit gated by ledger portfolio_value > \$0.003 threshold")
 print(f"  9. learning:      deltas {[round(r.get('arb_learning_delta',0),4) for r in rows]}  (threshold drift over loop history)")

@@ -1,6 +1,6 @@
 # Migration
 
-This repository is the runtime extraction target from bonfyre-oss into Aurekai.
+This repository is the runtime extraction target from akai-oss into Aurekai.
 
 Initial import policy:
 - Include: cmd, lib, scripts, docs, examples, Makefile, install scripts

@@ -91,7 +91,7 @@ ALTER TABLE claims ADD COLUMN orthogonal_pressure     REAL DEFAULT NULL;
 from scripts.orthogonal_pressure import OrthogonalPressure
 from scripts.claim_graph import ClaimGraph
 
-cg = ClaimGraph("/tmp/bonfyre-memory")
+cg = ClaimGraph("/tmp/akai-memory")
 engine = OrthogonalPressure()
 
 # Claim: John Smith in NYC on 2024-03-14
@@ -141,7 +141,7 @@ Claim B:
 
 ### What it does
 
-When hot zones persist after orthogonal pressure, Bonfyre now has **3 structural intervention strategies** before falling back to full family generation:
+When hot zones persist after orthogonal pressure, Akai now has **3 structural intervention strategies** before falling back to full family generation:
 
 1. **FRAGMENT SPECIALIZATION** — Extract fragment from existing family, quantize, test on hot zone
 2. **STRUCTURAL A/B TESTING** — Compare fragment vs full family on same hot zone
@@ -225,8 +225,8 @@ CREATE TABLE patch_registry (
 from scripts.structural_intervention import StructuralInterventionEngine
 
 engine = StructuralInterventionEngine(
-    memory_dir="/tmp/bonfyre-memory",
-    models_dir="/tmp/bonfyre-families"
+    memory_dir="/tmp/akai-memory",
+    models_dir="/tmp/akai-families"
 )
 
 # Hot zone with high pressure after Phase 14
@@ -275,7 +275,7 @@ Legal discovery corpus with timeline conflicts across 3 documents:
 python3 scripts/hypothesis_swarm.py \
     --docs '/tmp/corpus/*.txt' \
     --lenses all \
-    --memory-dir /tmp/bonfyre-memory
+    --memory-dir /tmp/akai-memory
 ```
 
 Output:
@@ -299,7 +299,7 @@ claim_3: (John Smith, traveled_on, "2024-03-14") [L10, conf=0.65]
 ```bash
 python3 scripts/convergence_engine.py \
     --docs '/tmp/corpus/*.txt' \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --max-iterations 3
 ```
 
@@ -379,7 +379,7 @@ Instead of generating a full new family, try fragment specialization:
 ```python
 from scripts.structural_intervention import StructuralInterventionEngine
 
-engine = StructuralInterventionEngine("/tmp/bonfyre-memory")
+engine = StructuralInterventionEngine("/tmp/akai-memory")
 
 result = engine.try_intervention(
     hot_zone=cluster_42,
@@ -447,7 +447,7 @@ Evolution report:
 ✅ **Unresolved hot zone re-run through fragment intervention**  
    → cluster_42 resolved via T04 fragment (layers 0-3)
 
-✅ **Bonfyre can compare full family vs fragment on same hot zone**  
+✅ **Akai can compare full family vs fragment on same hot zone**  
    → Fragment: 82ms, pressure=0.82  
    → Full family: 340ms, pressure=0.79  
    → Fragment wins (faster + better)
@@ -465,7 +465,7 @@ Evolution report:
 
 **Before Phases 14 & 15:**
 ```
-Bonfyre = Self-evolving hypothesis + convergence system
+Akai = Self-evolving hypothesis + convergence system
   → generates many claims
   → scores by semantic agreement
   → resolves conflicts via more lenses
@@ -474,7 +474,7 @@ Bonfyre = Self-evolving hypothesis + convergence system
 
 **After Phases 14 & 15:**
 ```
-Bonfyre = Self-evolving pressure engine with structural self-modification
+Akai = Self-evolving pressure engine with structural self-modification
   → generates many claims (Phase 12)
   → scores by semantic agreement (Phase 13)
   → tests against orthogonal realities (Phase 14)

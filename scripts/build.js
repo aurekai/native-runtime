@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Bonfyre npm postinstall — compiles C binaries from source
+// Akai npm postinstall — compiles C binaries from source
 const { execSync } = require('child_process');
 const { existsSync, mkdirSync } = require('fs');
 const path = require('path');
@@ -7,7 +7,7 @@ const path = require('path');
 const root = path.resolve(__dirname, '..');
 const binDir = path.join(root, 'bin');
 
-console.log('🔥 Building Bonfyre from source...');
+console.log('🔥 Building Akai from source...');
 
 if (!existsSync(binDir)) mkdirSync(binDir, { recursive: true });
 
@@ -16,9 +16,9 @@ try {
 
   // Copy key binaries to bin/ for npm bin links
   const bins = [
-    'bonfyre-cms', 'bonfyre-api', 'bonfyre-pipeline', 'bonfyre-ingest',
-    'bonfyre-transcribe', 'bonfyre-brief', 'bonfyre-pack', 'bonfyre-auth',
-    'bonfyre-cli', 'bonfyre-hash', 'bonfyre-gate', 'bonfyre-meter'
+    'akai-cms', 'akai-api', 'akai-pipeline', 'akai-ingest',
+    'akai-transcribe', 'akai-brief', 'akai-pack', 'akai-auth',
+    'akai-cli', 'akai-hash', 'akai-gate', 'akai-meter'
   ];
 
   const { readdirSync } = require('fs');
@@ -26,7 +26,7 @@ try {
   for (const dir of readdirSync(cmdDir)) {
     const full = path.join(cmdDir, dir);
     for (const file of readdirSync(full)) {
-      if (file.startsWith('bonfyre-')) {
+      if (file.startsWith('akai-')) {
         const src = path.join(full, file);
         const dst = path.join(binDir, file);
         require('fs').copyFileSync(src, dst);
@@ -35,7 +35,7 @@ try {
     }
   }
 
-  console.log('✓ Bonfyre built successfully');
+  console.log('✓ Akai built successfully');
 } catch (e) {
   console.error('Build failed. Ensure you have a C11 compiler and SQLite3 headers installed.');
   console.error('  macOS:  xcode-select --install');

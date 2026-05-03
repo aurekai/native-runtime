@@ -2,7 +2,7 @@
 set -euo pipefail
 
 if [ "$#" -eq 0 ]; then
-  echo "usage: $0 BonfyreBrief [BonfyreTag ...]" >&2
+  echo "usage: $0 AkaiBrief [AkaiTag ...]" >&2
   exit 64
 fi
 
@@ -16,7 +16,7 @@ COMMON_CFLAGS="${BONFYRE_PORTABLE_CFLAGS:--O3 -Wall -Wextra -std=c11 -D_GNU_SOUR
 
 mkdir -p "$BINDIR" "$LIBDIR" "$INCDIR"
 
-echo "=== Building portable Bonfyre runtime ==="
+echo "=== Building portable Akai runtime ==="
 echo "prefix: $PREFIX"
 echo "targets: $*"
 
@@ -40,7 +40,7 @@ for target in "$@"; do
   echo "--- $target ---"
   make -C "$dir" clean >/dev/null 2>&1 || true
   make -C "$dir" CC="${CC:-cc}" CFLAGS="$COMMON_CFLAGS"
-  find "$dir" -maxdepth 1 -name 'bonfyre-*' -type f -perm -111 -exec cp {} "$BINDIR/" \;
+  find "$dir" -maxdepth 1 -name 'akai-*' -type f -perm -111 -exec cp {} "$BINDIR/" \;
 done
 
 echo "=== Portable runtime ready at $BINDIR ==="

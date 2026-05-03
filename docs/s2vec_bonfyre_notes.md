@@ -1,6 +1,6 @@
-# S2Vec In Bonfyre
+# S2Vec In Aurekai
 
-S2Vec is integrated as a metadata-first Bonfyre import pack, separate from the Recursive DisCIPL runtime upgrade.
+S2Vec is integrated as a metadata-first Akai import pack, separate from the Recursive DisCIPL runtime upgrade.
 
 ## Why It Matters
 
@@ -13,7 +13,7 @@ S2Vec is useful as a future domain-expansion primitive for:
 - graph-to-map flow planning
 - non-AI civic and economic workflows
 
-## Bonfyre Shape
+## Akai Shape
 
 - recipe: `recipes/community/geospatial/s2vec_geospatial_embeddings.yaml`
 - metadata: `docs/metadata_s2vec.json`
@@ -34,22 +34,22 @@ S2Vec is useful as a future domain-expansion primitive for:
 
 Recursive DisCIPL and S2Vec are intentionally separate:
 
-- DisCIPL provides actor, contract, chain, and loop substrate for Bonfyre OS planning.
+- DisCIPL provides actor, contract, chain, and loop substrate for Akai OS planning.
 - S2Vec provides a geospatial embedding domain pack that can later participate in DisCIPL chains and civic/economic loops.
 
 ## Sanity Commands
 
 ```bash
-make -C lib/libbonfyre clean all && make -C cmd/BonfyreCLI clean all
+make -C lib/libbonfyre clean all && make -C cmd/AkaiCLI clean all
 
-cmd/BonfyreCLI/bonfyre discipl init --root layeros/state
-cmd/BonfyreCLI/bonfyre discipl actors import --root layeros/state
-cmd/BonfyreCLI/bonfyre discipl contracts import --root layeros/state
+cmd/AkaiCLI/akai discipl init --root layeros/state
+cmd/AkaiCLI/akai discipl actors import --root layeros/state
+cmd/AkaiCLI/akai discipl contracts import --root layeros/state
 
-cmd/BonfyreCLI/bonfyre discipl chain-plan --root layeros/state \
+cmd/AkaiCLI/akai discipl chain-plan --root layeros/state \
   T_AUDIO_MODEL T_AUDIO_GENERATOR T_SAMPLE_OUTPUT T_LATENT_SPACE T_DIFFUSION_UNET T_VIDEO_OUTPUT
 
-cmd/BonfyreCLI/bonfyre layer import-recipe recipes/community/geospatial/s2vec_geospatial_embeddings.yaml --root layeros/state
-cmd/BonfyreCLI/bonfyre index layers --root layeros/state
-cmd/BonfyreCLI/bonfyre query layers --family T_GEOSPATIAL_EMBED --root layeros/state
+cmd/AkaiCLI/akai layer import-recipe recipes/community/geospatial/s2vec_geospatial_embeddings.yaml --root layeros/state
+cmd/AkaiCLI/akai index layers --root layeros/state
+cmd/AkaiCLI/akai query layers --family T_GEOSPATIAL_EMBED --root layeros/state
 ```

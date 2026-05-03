@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Symbolic entity extraction (stub for BonfyreEntity)
+Symbolic entity extraction (stub for AkaiEntity)
 
 Extracts entities from text with proper canonicalization.
-This is a minimal implementation - will be replaced by BonfyreEntity binary.
+This is a minimal implementation - will be replaced by AkaiEntity binary.
 """
 
 import json
@@ -147,7 +147,7 @@ def extract_entities_from_text(text: str, doc_id: str, corpus_stats: Counter = N
 
 def canonicalize_entities(entities: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
-    Canonicalize entity variants (stub for BonfyreCanon).
+    Canonicalize entity variants (stub for AkaiCanon).
     
     Groups:
     - Plural/singular forms
@@ -205,7 +205,7 @@ def canonicalize_entities(entities: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 def build_graph(entities: List[Dict[str, Any]], canon: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Build entity graph (stub for BonfyreGraph).
+    Build entity graph (stub for AkaiGraph).
     
     Creates nodes and edges from entity co-occurrences.
     """
@@ -311,7 +311,7 @@ def process_corpus(corpus_pattern: str, output_dir: str):
     
     # Step 1b: Extract entities with filtering
     print("=" * 70)
-    print("STEP 1b: Entity Extraction (stub for BonfyreEntity)")
+    print("STEP 1b: Entity Extraction (stub for AkaiEntity)")
     print("=" * 70)
     print()
     
@@ -350,7 +350,7 @@ def process_corpus(corpus_pattern: str, output_dir: str):
     
     # Step 2: Canonicalize
     print("=" * 70)
-    print("STEP 2: Canonicalization (stub for BonfyreCanon)")
+    print("STEP 2: Canonicalization (stub for AkaiCanon)")
     print("=" * 70)
     print()
     
@@ -367,7 +367,7 @@ def process_corpus(corpus_pattern: str, output_dir: str):
     
     # Step 3: Build graph
     print("=" * 70)
-    print("STEP 3: Graph Construction (stub for BonfyreGraph)")
+    print("STEP 3: Graph Construction (stub for AkaiGraph)")
     print("=" * 70)
     print()
     

@@ -4,14 +4,14 @@ set -euo pipefail
 # batch_all_apps.sh — Run full-chain pipeline across ALL apps' seeds
 #
 # Usage: ./scripts/batch_all_apps.sh [seeds-per-app] [out-base]
-#   Default: 3 seeds per app, output to /tmp/bonfyre-bench-all
+#   Default: 3 seeds per app, output to /tmp/akai-bench-all
 #
 # Processes every app in site/demos/*/seeds.json through the full-chain pipeline.
 # Produces per-app and aggregate benchmarks.
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 SEEDS_PER_APP="${1:-3}"
-OUT_BASE="${2:-/tmp/bonfyre-bench-all}"
+OUT_BASE="${2:-/tmp/akai-bench-all}"
 DEMOS_DIR="$ROOT/site/demos"
 
 mkdir -p "$OUT_BASE"
@@ -19,7 +19,7 @@ mkdir -p "$OUT_BASE"
 export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 
 echo "================================================================"
-echo " Bonfyre Full-Chain Benchmark — ALL APPS"
+echo " Akai Full-Chain Benchmark — ALL APPS"
 echo " Seeds per app: $SEEDS_PER_APP"
 echo " Output: $OUT_BASE"
 echo "================================================================"
@@ -130,7 +130,7 @@ total_audio = sum(all_durations)
 total_wall = sum(all_walls)
 
 benchmark = {
-    "title": "Bonfyre Full-Chain Benchmark — All Apps",
+    "title": "Akai Full-Chain Benchmark — All Apps",
     "batch_wall_s": batch_wall,
     "apps_processed": app_count,
     "seeds_processed": total_seeds - total_fails,
@@ -171,7 +171,7 @@ with open(os.path.join(out_base, "benchmark.json"), "w") as f:
 
 # ── Master benchmark.md ──────────────────────────────────────
 L = [
-    "# Bonfyre Full-Chain Benchmark — All Apps", "",
+    "# Akai Full-Chain Benchmark — All Apps", "",
     "## Headline Numbers", "",
     f"| Metric | Value |", "|--------|-------|",
     f"| Apps processed | **{app_count}** |",

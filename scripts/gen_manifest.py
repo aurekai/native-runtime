@@ -43,12 +43,12 @@ def main() -> None:
         if not os.path.isfile(path):
             continue
         base = os.path.basename(path)
-        if not (base == "bonfyre" or base.startswith("bonfyre-")):
+        if not (base == "akai" or base.startswith("akai-")):
             continue
         if not os.access(path, os.X_OK):
             continue
         operators.append({
-            "name": base.replace("bonfyre-", ""),
+            "name": base.replace("akai-", ""),
             "binary": base,
             "sha256": sha256_file(path),
             "required": True,
@@ -116,7 +116,7 @@ def main() -> None:
         "built_at": datetime.datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
         "target": args.target,
         "hyper": {
-            "path": "bin/bonfyre-hyper",
+            "path": "bin/akai-hyper",
             "bun_target": args.target,
             "version": args.release,
         },

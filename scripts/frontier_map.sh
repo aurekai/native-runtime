@@ -8,13 +8,13 @@
 # Usage:
 #   bash scripts/frontier_map.sh [models_dir]
 #
-# Default models_dir: /tmp/bonfyre-families
+# Default models_dir: /tmp/akai-families
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODELS_DIR="${1:-/tmp/bonfyre-families}"
-FPQX="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
+MODELS_DIR="${1:-/tmp/akai-families}"
+FPQX="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
 OUT_JSON="$MODELS_DIR/frontier.json"
 
 # ── Family metadata ───────────────────────────────────────────────────────
@@ -69,7 +69,7 @@ PAIRS=(
 )
 
 echo "==================================================================="
-echo " bonfyre-fpqx transform network frontier map"
+echo " akai-fpqx transform network frontier map"
 echo " models_dir : $MODELS_DIR"
 echo "==================================================================="
 echo ""
@@ -141,7 +141,7 @@ echo ""
 # ── Write frontier.json ───────────────────────────────────────────────────
 cat > "$OUT_JSON" <<JSONEOF
 {
-  "schema": "bonfyre-frontier-map-v1",
+  "schema": "akai-frontier-map-v1",
   "families": ["T04","T08","T14","T15","T16"],
   "n_pairs": ${#PAIRS[@]},
   "pairs": [$JSON_ROWS

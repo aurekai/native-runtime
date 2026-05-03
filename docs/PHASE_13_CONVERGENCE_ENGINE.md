@@ -9,7 +9,7 @@
 
 ## 🎯 WHAT THIS IS
 
-Phase 13 transforms Bonfyre from:
+Phase 13 transforms Akai from:
 
 > **a system that generates many interpretations**
 
@@ -17,7 +17,7 @@ into:
 
 > **a system that identifies which interpretations survive repeated independent pressure**
 
-Instead of stopping at "generate disagreement", Bonfyre now:
+Instead of stopping at "generate disagreement", Akai now:
 1. **Generates competing claims** (Phase 12 swarm)
 2. **Scores claims by strength** (independent support × lens diversity)
 3. **Re-runs swarm on conflicts** (convergence loop)
@@ -94,7 +94,7 @@ def run_convergence(
 ```bash
 python3 scripts/convergence_engine.py \
     --docs '/tmp/corpus/*.txt' \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --max-iterations 5 \
     --pressure-threshold 1.0
 ```
@@ -164,7 +164,7 @@ def extract_graph_layers(claim_graph, min_strength=0.5, max_conflict_density=0.3
 **CLI:**
 ```bash
 python3 scripts/stable_graph.py \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --min-strength 0.5 \
     --out-stable /tmp/stable_graph.json \
     --out-fragile /tmp/fragile_graph.json \
@@ -394,7 +394,7 @@ ls /tmp/epstein-corpus/*.txt
 # Run convergence
 python3 scripts/convergence_engine.py \
     --docs '/tmp/epstein-corpus/*.txt' \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --max-iterations 5 \
     --pressure-threshold 1.0 \
     --min-strength 0.5
@@ -434,7 +434,7 @@ python3 scripts/convergence_engine.py \
 ```bash
 # After convergence run
 python3 scripts/stable_graph.py \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --min-strength 0.5 \
     --out-stable /tmp/stable_graph.json \
     --out-fragile /tmp/fragile_graph.json \
@@ -455,7 +455,7 @@ python3 scripts/stable_graph.py \
 ### Example 3: Check lens performance
 ```bash
 # After auto-evolve run
-cat /tmp/bonfyre-memory/lens_scores.json
+cat /tmp/akai-memory/lens_scores.json
 
 # Output:
 # {
@@ -590,7 +590,7 @@ cae244e  PHASE 13: Structural Convergence Engine
 
 **Before Phase 13:**
 ```
-Bonfyre = Hypothesis Generator
+Akai = Hypothesis Generator
   → produces many claims
   → reports conflicts
   → stops
@@ -598,7 +598,7 @@ Bonfyre = Hypothesis Generator
 
 **After Phase 13:**
 ```
-Bonfyre = Truth Convergence Engine
+Akai = Truth Convergence Engine
   → produces many claims (swarm)
   → scores by independent support
   → re-runs on conflicts (convergence)

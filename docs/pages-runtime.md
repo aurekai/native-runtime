@@ -1,13 +1,13 @@
-# Bonfyre Pages Runtime
+# Akai Pages Runtime
 
-`bonfyre-oss` provides a reusable GitHub Actions workflow for Bonfyre Pages apps:
+`akai-oss` provides a reusable GitHub Actions workflow for Akai Pages apps:
 
 - workflow: `.github/workflows/pages-runtime.yml`
-- purpose: build Bonfyre on the runner, detect changed `input/**` files, run an app-local processing script, upload artifacts, commit outputs, and deploy Pages
+- purpose: build Akai on the runner, detect changed `input/**` files, run an app-local processing script, upload artifacts, commit outputs, and deploy Pages
 
 ## Intended split
 
-- `bonfyre-oss`
+- `akai-oss`
   - reusable workflow
   - shared runtime conventions
   - future shared frontend helpers

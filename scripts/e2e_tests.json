@@ -1,10 +1,10 @@
 {
   "tests": [
     {
-      "name": "bonfyre-narrate-verify",
-      "binary": "./cmd/BonfyreNarrate/bonfyre-narrate",
+      "name": "akai-narrate-verify",
+      "binary": "./cmd/AkaiNarrate/akai-narrate",
       "commands": [
-        "./cmd/BonfyreNarrate/bonfyre-narrate verify site/demos/test_a.wav site/demos/test_a.wav"
+        "./cmd/AkaiNarrate/akai-narrate verify site/demos/test_a.wav site/demos/test_a.wav"
       ],
       "expect": {
         "stdout_json": true,
@@ -13,20 +13,20 @@
       }
     },
     {
-      "name": "bonfyre-brief-smoke",
-      "binary": "./cmd/BonfyreBrief/bonfyre-brief",
+      "name": "akai-brief-smoke",
+      "binary": "./cmd/AkaiBrief/akai-brief",
       "commands": [
-        "./cmd/BonfyreBrief/bonfyre-brief status"
+        "./cmd/AkaiBrief/akai-brief status"
       ],
       "expect": {
         "rc": 0
       }
     },
     {
-      "name": "bonfyre-transcribe-smoke",
-      "binary": "./cmd/BonfyreTranscribe/bonfyre-transcribe",
+      "name": "akai-transcribe-smoke",
+      "binary": "./cmd/AkaiTranscribe/akai-transcribe",
       "commands": [
-        "./cmd/BonfyreTranscribe/bonfyre-transcribe status"
+        "./cmd/AkaiTranscribe/akai-transcribe status"
       ],
       "expect": {
         "rc": 0

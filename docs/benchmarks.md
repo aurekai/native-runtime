@@ -10,7 +10,7 @@ End-to-end processing of a single audio file through the full pipeline:
 |---|---|---|
 | Sequential (10 separate binaries) | 76 ms | Fork/exec overhead per step |
 | Optimized (inline SHA-256, direct SQLite) | 20–35 ms | After per-binary optimization |
-| **Unified (`bonfyre-pipeline run`)** | **5–8 ms** | Single process, no fork/exec |
+| **Unified (`akai-pipeline run`)** | **5–8 ms** | Single process, no fork/exec |
 
 ### Breakdown (unified mode)
 
@@ -52,7 +52,7 @@ Advantage grows with family size because the generator + codebook amortize bette
 
 ## CMS operations
 
-BonfyreCMS (299 KB binary) benchmarked in-process:
+AkaiCMS (299 KB binary) benchmarked in-process:
 
 | Operation | Throughput | Notes |
 |---|---|---|
@@ -65,9 +65,9 @@ BonfyreCMS (299 KB binary) benchmarked in-process:
 
 | Component | Peak RSS |
 |---|---|
-| BonfyreIndex (N=3,000 artifacts) | 2.18 MB |
-| BonfyrePipeline (N=3,000 artifacts) | 2.36 MB |
-| BonfyreCMS idle | 15 MB |
+| AkaiIndex (N=3,000 artifacts) | 2.18 MB |
+| AkaiPipeline (N=3,000 artifacts) | 2.36 MB |
+| AkaiCMS idle | 15 MB |
 | Lambda Tensors compression (N=10,000) | 66 MB |
 
 ## Binary sizes (measured)
@@ -80,9 +80,9 @@ BonfyreCMS (299 KB binary) benchmarked in-process:
 | Orchestration | 5 | 190 KB |
 | **All 47 binaries** | **47** | **~2.1 MB** |
 
-## Transcription quality (BonfyreTranscribe v3.1 + HCP v3.1)
+## Transcription quality (AkaiTranscribe v3.1 + HCP v3.1)
 
-BonfyreTranscribe v3.1 uses the libwhisper C API directly (no fork/exec, no Python) and applies Complex-Domain Hierarchical Constraint Propagation (HCP) v3.1 — a quad-channel spectral refinement algorithm with formant anchoring and context-seeded constrained re-decode — as a post-processing pass.
+AkaiTranscribe v3.1 uses the libwhisper C API directly (no fork/exec, no Python) and applies Complex-Domain Hierarchical Constraint Propagation (HCP) v3.1 — a quad-channel spectral refinement algorithm with formant anchoring and context-seeded constrained re-decode — as a post-processing pass.
 
 ### Algorithm
 
@@ -150,7 +150,7 @@ Pure C11 — hand-rolled FFT, no external math library.
 
 ### vs cloud transcription services
 
-| | Deepgram | OpenAI Whisper API | **Bonfyre + HCP v3.1** |
+| | Deepgram | OpenAI Whisper API | **Akai + HCP v3.1** |
 |---|---|---|---|
 | Cost | $0.006/min | $0.006/min | **$0/min** |
 | Quality | ~0.85–0.90 | ~0.87 (base) | **0.999** (base) / **0.997** (tiny) |
@@ -170,10 +170,10 @@ Pure C11 — hand-rolled FFT, no external math library.
 | Library | 2 | liblambda-tensors + libbonfyre |
 | **Total** | **47 + 2 libs** | **93% pure C11** |
 
-## Embedding & vector search (BonfyreEmbed + BonfyreVec)
+## Embedding & vector search (AkaiEmbed + AkaiVec)
 
-BonfyreEmbed: ONNX Runtime C API, BERT WordPiece tokenizer in C, mean pooling + L2 normalize.
-BonfyreVec: SQLite C API + sqlite-vec extension, no Python.
+AkaiEmbed: ONNX Runtime C API, BERT WordPiece tokenizer in C, mean pooling + L2 normalize.
+AkaiVec: SQLite C API + sqlite-vec extension, no Python.
 
 ### ONNX inference (all-MiniLM-L6-v2, 384-dim, Apple M-series)
 
@@ -200,7 +200,7 @@ Replaced hash-table Vocab with trie-based tokenizer:
 Embed + insert into sqlite-vec in a single process, zero intermediate file I/O:
 
 ```bash
-bonfyre-embed --text doc.txt --insert-db my.db --backend onnx
+akai-embed --text doc.txt --insert-db my.db --backend onnx
 ```
 
 | Mode | Steps | File I/O |
@@ -237,7 +237,7 @@ For batch ingestion of 10K embeddings: JSON parse = ~1 second; VECF binary = ~10
 
 ### SIMD cosine similarity (P2)
 
-BonfyreVec hand-rolled NEON (ARM) cosine for exact search and pairwise comparison:
+AkaiVec hand-rolled NEON (ARM) cosine for exact search and pairwise comparison:
 
 | Mode | Backend | Use case |
 |---|---|---|
@@ -253,8 +253,8 @@ Self-match: cosine = 1.00000000, distance = 0.00000000.
 
 | Mode | 3 files | Model loads |
 |---|---|---|
-| 3 × `bonfyre-embed --text` | ~1.8 s | 3 |
-| **`bonfyre-embed --input-dir`** | **~0.9 s** | **1** |
+| 3 × `akai-embed --text` | ~1.8 s | 3 |
+| **`akai-embed --input-dir`** | **~0.9 s** | **1** |
 
 ### libbonfyre shared runtime (P2)
 
@@ -269,7 +269,7 @@ Binaries: Repurpose, Segment, Clips, SpeechLoop, Tone, Canon, Query, Tag.
 
 ## P3: Connection pooling, full libbonfyre, native fastText
 
-### BonfyreTag: fastText inference in pure C
+### AkaiTag: fastText inference in pure C
 
 | Metric | Before (Python subprocess) | After (native C) |
 |---|---|---|
@@ -279,7 +279,7 @@ Binaries: Repurpose, Segment, Clips, SpeechLoop, Tone, Canon, Query, Tag.
 | Status latency | ~150 ms (Python import overhead) | **6 ms** |
 | Binary size | ~50 KB + Python runtime | ~55 KB standalone |
 
-### BonfyreEmbed: batch DB connection pooling (measured)
+### AkaiEmbed: batch DB connection pooling (measured)
 
 | Metric | Before | After |
 |---|---|---|
@@ -300,9 +300,9 @@ Binaries added in P3: Brief, CMS, Compress, Embed, Emit, Graph, Ingest, MediaPre
 MFADict, Narrate, Offer, Pack, Paragraph, Pipeline, Proof, Render, Stitch,
 Transcribe, TranscriptClean, TranscriptFamily, WeaviateIndex.
 
-## Comparison: Bonfyre CMS vs Strapi
+## Comparison: Akai CMS vs Strapi
 
-| Metric | Strapi | Bonfyre CMS |
+| Metric | Strapi | Akai CMS |
 |---|---|---|
 | Install size | ~500 MB | 299 KB |
 | Dependencies | 400+ npm packages | libc + SQLite |
@@ -315,14 +315,14 @@ Transcribe, TranscriptClean, TranscriptFamily, WeaviateIndex.
 
 ```bash
 # Build and run the CMS benchmark
-cd cmd/BonfyreCMS
+cd cmd/AkaiCMS
 make
-./bonfyre-cms bench --rounds 1000
+./akai-cms bench --rounds 1000
 
 # Run the pipeline benchmark
-cd cmd/BonfyrePipeline
+cd cmd/AkaiPipeline
 make
-./bonfyre-pipeline bench --input test.md --rounds 100
+./akai-pipeline bench --input test.md --rounds 100
 ```
 
 ## Cumulative P0→P5 results (measured, Apple M-series)
@@ -349,7 +349,7 @@ All measurements taken after P5 on `98561b0`.
 |---|---|---|---|
 | Full pipeline | 76 ms (10 separate fork/exec) | **8 ms** (unified + SHA-256 dedup) | **9.5×** |
 
-### BonfyreTag (text classification)
+### AkaiTag (text classification)
 
 | Metric | Pre-P3 (Python fastText) | After P3 (pure C) | Improvement |
 |---|---|---|---|
@@ -362,10 +362,10 @@ All measurements taken after P5 on `98561b0`.
 
 | Optimization | Impact | Details |
 |---|---|---|
-| BonfyreTel hardening | Crypto-safe session IDs, 0-latency TCP | `arc4random`, `TCP_NODELAY`, O(1) ESL header lookup |
-| BonfyreAPI robustness | Crash-proof under load | `SIGPIPE` ignored, thread pool, `vasprintf`, heap buffers |
+| AkaiTel hardening | Crypto-safe session IDs, 0-latency TCP | `arc4random`, `TCP_NODELAY`, O(1) ESL header lookup |
+| AkaiAPI robustness | Crash-proof under load | `SIGPIPE` ignored, thread pool, `vasprintf`, heap buffers |
 | libbonfyre FNV hash | **O(1) operator lookup** | FNV-1a hash table replaces linear scan of 47-operator registry |
-| BonfyrePipeline dedup | **SHA-256 content dedup** | 279-line dedup engine — skips already-processed artifacts |
+| AkaiPipeline dedup | **SHA-256 content dedup** | 279-line dedup engine — skips already-processed artifacts |
 | Build system | PGO targets, CFLAGS propagation | `make pgo-gen` / `make pgo-use`; root flags reach all sub-makes |
 
 ## P5: syntax/datatype optimizations

@@ -13,7 +13,7 @@ The BQFP binary format (v1):
     blocks[n_blocks] — each block = scale(4)+warp_norm(4)+e8i[256](1 each)+tile_idx[16](1 each)
 
 We synthesize distinct weight distributions per family so that alignment
-matrices computed via bonfyre-fpqx are geometrically meaningful.
+matrices computed via akai-fpqx are geometrically meaningful.
 
 Family distribution parameters:
   T04: Gaussian N(0, 0.8)  — broad, global
@@ -72,7 +72,7 @@ def e8_snap(v):
 
 def encode_block(weights, haar_seed, lattice_scale):
     """Encode one BLOCK_DIM block. Returns (scale, warp_norm, e8i[256], tile_idx[16])."""
-    # Random sign flip (mirrors bonfyre-quant xorshift64)
+    # Random sign flip (mirrors akai-quant xorshift64)
     buf = list(weights) + [0.0] * (BLOCK_DIM - len(weights))
     rng = haar_seed & 0xFFFFFFFFFFFFFFFF
 
@@ -150,7 +150,7 @@ def write_bqfp(path, family, n_elements=1024, seed=0):
     lattice_scale = 8.0 * bits
     n_blocks = (n_elements + BLOCK_DIM - 1) // BLOCK_DIM
 
-    # Haar seed from family name (mirrors bonfyre-quant behavior)
+    # Haar seed from family name (mirrors akai-quant behavior)
     haar_seed = 0x12345678
     for ch in family:
         haar_seed = (haar_seed * 31 + ord(ch)) & 0xFFFFFFFFFFFFFFFF

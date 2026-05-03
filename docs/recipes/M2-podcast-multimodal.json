@@ -44,7 +44,7 @@
     {
       "id": "s01",
       "name": "Audio Normalization",
-      "operator": "BonfyreAudioNormalize",
+      "operator": "AkaiAudioNormalize",
       "args": [
         "--input", "{input}",
         "--out", "{out}/normalized.wav",
@@ -55,7 +55,7 @@
     {
       "id": "s02",
       "name": "Speech Segmentation",
-      "operator": "BonfyreSpeechLoop",
+      "operator": "AkaiSpeechLoop",
       "args": [
         "--input", "{out}/normalized.wav",
         "--out", "{out}/segments"
@@ -66,7 +66,7 @@
     {
       "id": "s03",
       "name": "Transcription",
-      "operator": "BonfyreTranscribe",
+      "operator": "AkaiTranscribe",
       "args": [
         "--input", "{out}/segments.json",
         "--out", "{out}/transcript",
@@ -79,7 +79,7 @@
     {
       "id": "s04",
       "name": "Speaker Diarization",
-      "operator": "BonfyreDiarize",
+      "operator": "AkaiDiarize",
       "args": [
         "--input", "{out}/normalized.wav",
         "--out", "{out}/speakers.json",
@@ -91,7 +91,7 @@
     {
       "id": "s05",
       "name": "Transcript + Speaker Merge",
-      "operator": "BonfyreMergeSpeakers",
+      "operator": "AkaiMergeSpeakers",
       "args": [
         "--transcript", "{out}/transcript",
         "--speakers", "{out}/speakers.json",
@@ -103,7 +103,7 @@
     {
       "id": "s06",
       "name": "Topic Segmentation",
-      "operator": "BonfyreTopicSegment",
+      "operator": "AkaiTopicSegment",
       "args": [
         "--input", "{out}/full-transcript.json",
         "--out", "{out}/topics.json",
@@ -116,7 +116,7 @@
     {
       "id": "s07",
       "name": "Highlight Detection",
-      "operator": "BonfyreHighlights",
+      "operator": "AkaiHighlights",
       "args": [
         "--input", "{out}/full-transcript.json",
         "--out", "{out}/highlights.json",
@@ -129,7 +129,7 @@
     {
       "id": "s08",
       "name": "Waveform Visualization",
-      "operator": "BonfyreWaveform",
+      "operator": "AkaiWaveform",
       "args": [
         "--input", "{out}/normalized.wav",
         "--out", "{out}/waveform.png",
@@ -142,7 +142,7 @@
     {
       "id": "s09",
       "name": "Audiogram Generation",
-      "operator": "BonfyreAudiogram",
+      "operator": "AkaiAudiogram",
       "args": [
         "--audio", "{out}/normalized.wav",
         "--waveform", "{out}/waveform.png",
@@ -157,7 +157,7 @@
     {
       "id": "s10",
       "name": "Video Clips from Highlights",
-      "operator": "BonfyreClipsFromHighlights",
+      "operator": "AkaiClipsFromHighlights",
       "args": [
         "--audio", "{out}/normalized.wav",
         "--highlights", "{out}/highlights.json",
@@ -170,7 +170,7 @@
     {
       "id": "s11",
       "name": "Blog Post Generation",
-      "operator": "BonfyreBlogPost",
+      "operator": "AkaiBlogPost",
       "args": [
         "--transcript", "{out}/full-transcript.json",
         "--topics", "{out}/topics.json",
@@ -183,7 +183,7 @@
     {
       "id": "s12",
       "name": "Social Card Design",
-      "operator": "BonfyreSocialCards",
+      "operator": "AkaiSocialCards",
       "args": [
         "--highlights", "{out}/highlights.json",
         "--out", "{out}/cards",
@@ -197,7 +197,7 @@
     {
       "id": "s13",
       "name": "Package Deliverables",
-      "operator": "BonfyrePackage",
+      "operator": "AkaiPackage",
       "args": [
         "--input", "{out}",
         "--out", "{out}/deliverables.zip",
@@ -222,7 +222,7 @@
   "metadata": {
     "estimated_time_per_hour": "35 minutes",
     "tags": ["podcast", "multi-modal", "repurposing", "media"],
-    "author": "bonfyre-core",
+    "author": "akai-core",
     "license": "MIT"
   }
 }

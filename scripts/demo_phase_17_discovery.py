@@ -417,7 +417,7 @@ if __name__ == "__main__":
     print("    TOOL:  Waits for human instructions")
     print("    AGENT: Acts autonomously")
     print()
-    print("  Bonfyre is now an AUTONOMOUS INVESTIGATOR.")
+    print("  Akai is now an AUTONOMOUS INVESTIGATOR.")
     print()
     print("═" * 70)
     print()

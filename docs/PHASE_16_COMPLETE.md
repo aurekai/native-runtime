@@ -1,4 +1,4 @@
-# 🔥 BONFYRE PHASE 16 COMPLETE
+# 🔥 AKAI PHASE 16 COMPLETE
 
 **Commit:** 23b1144  
 **Date:** April 20, 2026  
@@ -62,8 +62,8 @@ For each hypothesis:
 **System behavior:**
 ```
 User: "Here are some documents about Epstein"
-Bonfyre: *processes documents*
-Bonfyre: "I found 342 claims. 127 are stable. 43 conflicts."
+Aurekai: *processes documents*
+Aurekai: "I found 342 claims. 127 are stable. 43 conflicts."
 User: "Okay... but what does that MEAN?"
 ```
 
@@ -74,14 +74,14 @@ User: "Okay... but what does that MEAN?"
 **System behavior:**
 ```
 User: "I think Jeffrey Epstein and J.E. are the same person. Test that."
-Bonfyre: *orchestrates full pipeline*
-Bonfyre: "Hypothesis CONFIRMED (survival rate: 87%)"
-Bonfyre: "Evidence: 23 stable claims linking the names"
-Bonfyre: "Timeline consistent, no pressure violations"
+Aurekai: *orchestrates full pipeline*
+Aurekai: "Hypothesis CONFIRMED (survival rate: 87%)"
+Aurekai: "Evidence: 23 stable claims linking the names"
+Aurekai: "Timeline consistent, no pressure violations"
 
 User: "Now test if he was in two places on July 8, 2019"
-Bonfyre: "Hypothesis REFUTED (temporal pressure = 0.0)"
-Bonfyre: "Physical impossibility detected"
+Aurekai: "Hypothesis REFUTED (temporal pressure = 0.0)"
+Aurekai: "Physical impossibility detected"
 ```
 
 **Solution:** System now pursues **specific testable theories**.
@@ -130,7 +130,7 @@ Bonfyre: "Physical impossibility detected"
 
 ## 🔬 SCIENTIFIC INSTRUMENT ANALOGY
 
-**Bonfyre is now like a particle accelerator:**
+**Akai is now like a particle accelerator:**
 
 - **Phase 12:** Generate particles (competing claims)
 - **Phase 13:** Collision detection (stable vs fragile)
@@ -235,7 +235,7 @@ python3 scripts/hypothesis_engine.py --history alias_network
 from hypothesis_engine import HypothesisEngine, BUILTIN_HYPOTHESES
 
 # Initialize
-engine = HypothesisEngine("/tmp/bonfyre-memory", "/tmp/bonfyre-models")
+engine = HypothesisEngine("/tmp/akai-memory", "/tmp/akai-models")
 
 # Register hypothesis
 hypothesis = BUILTIN_HYPOTHESES["alias_network"]
@@ -261,10 +261,10 @@ else:
 ## 🎯 THE ONE-LINE TAKEAWAY
 
 **Before Phase 16:**  
-Bonfyre = extremely complex document processor (directionless)
+Akai = extremely complex document processor (directionless)
 
 **After Phase 16:**  
-Bonfyre = scientific instrument that tests theories about reality (purposeful)
+Akai = scientific instrument that tests theories about reality (purposeful)
 
 ---
 
@@ -301,7 +301,7 @@ It was like building the world's most advanced telescope... and then just pointi
 
 **Phase 16 adds the research questions** — the specific theories you want to test.
 
-Now Bonfyre is:
+Now Akai is:
 
 - Not just generating claims → **testing specific theories**
 - Not just finding patterns → **validating specific hypotheses**
@@ -315,32 +315,32 @@ Now Bonfyre is:
 
 ```
 Hypothesis: "These 5 shell companies are controlled by the same person"
-Bonfyre: *tests hypothesis*
-Bonfyre: "CONFIRMED (survival rate: 73%)"
+Aurekai: *tests hypothesis*
+Aurekai: "CONFIRMED (survival rate: 73%)"
 ```
 
 ### Historical Research
 
 ```
 Hypothesis: "This timeline is internally consistent"
-Bonfyre: *tests hypothesis*
-Bonfyre: "REFUTED (3 temporal violations detected)"
+Aurekai: *tests hypothesis*
+Aurekai: "REFUTED (3 temporal violations detected)"
 ```
 
 ### Intelligence Analysis
 
 ```
 Hypothesis: "Subject was in location X on date Y"
-Bonfyre: *tests hypothesis*
-Bonfyre: "INCONCLUSIVE (orthogonal pressure: 0.45)"
+Aurekai: *tests hypothesis*
+Aurekai: "INCONCLUSIVE (orthogonal pressure: 0.45)"
 ```
 
 ### Legal Discovery
 
 ```
 Hypothesis: "These emails describe the same meeting"
-Bonfyre: *tests hypothesis*
-Bonfyre: "CONFIRMED (network discovery + temporal consistency)"
+Aurekai: *tests hypothesis*
+Aurekai: "CONFIRMED (network discovery + temporal consistency)"
 ```
 
 ---
@@ -385,7 +385,7 @@ ALL TESTS PASSED ✓
 PHASE 16: HYPOTHESIS ENGINE COMPLETE
 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
-Bonfyre now has PURPOSE.
+Akai now has PURPOSE.
 ```
 
 ---
@@ -394,7 +394,7 @@ Bonfyre now has PURPOSE.
 
 You asked for hypothesis drivers.
 
-I delivered **the PURPOSE layer** that transforms Bonfyre from:
+I delivered **the PURPOSE layer** that transforms Akai from:
 
 ❌ "Process these documents"
 

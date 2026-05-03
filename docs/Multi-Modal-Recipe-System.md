@@ -56,50 +56,50 @@ Phase 4 extends the recipe system to support **multi-modal pipelines** that proc
 ## Multi-Modal Operators
 
 ### Video Processing
-- `BonfyreVideoDemux` — Separate video/audio streams
-- `BonfyreFrameExtract` — Extract frames at specified FPS
-- `BonfyreSceneDetect` — Detect scene changes via frame similarity
-- `BonfyreDetectObjects` — YOLOv8 object detection
-- `BonfyreFaceTrack` — Track individuals across frames
-- `BonfyreOCR` — Extract on-screen text
-- `BonfyreTemporalAlign` — Align visual scenes with audio timeline
+- `AkaiVideoDemux` — Separate video/audio streams
+- `AkaiFrameExtract` — Extract frames at specified FPS
+- `AkaiSceneDetect` — Detect scene changes via frame similarity
+- `AkaiDetectObjects` — YOLOv8 object detection
+- `AkaiFaceTrack` — Track individuals across frames
+- `AkaiOCR` — Extract on-screen text
+- `AkaiTemporalAlign` — Align visual scenes with audio timeline
 
 ### Image Processing
-- `BonfyreImageNormalize` — Resize and standardize format
-- `BonfyreFaceDetect` — Detect faces in single image
-- `BonfyreSceneClassify` — Classify scene type (indoor, outdoor, etc)
-- `BonfyreImageCaption` — Generate natural language description (BLIP2)
-- `BonfyreImageMeta` — Extract EXIF, GPS, camera metadata
-- `BonfyreFuseAnalysis` — Merge multiple analyses into unified report
+- `AkaiImageNormalize` — Resize and standardize format
+- `AkaiFaceDetect` — Detect faces in single image
+- `AkaiSceneClassify` — Classify scene type (indoor, outdoor, etc)
+- `AkaiImageCaption` — Generate natural language description (BLIP2)
+- `AkaiImageMeta` — Extract EXIF, GPS, camera metadata
+- `AkaiFuseAnalysis` — Merge multiple analyses into unified report
 
 ### Code Analysis
-- `BonfyreRepoScan` — Catalog files and git history
-- `BonfyreDetectLanguages` — Detect programming languages
-- `BonfyreDepsAnalyze` — Parse package manifests (package.json, requirements.txt, etc)
-- `BonfyreCodeAST` — Parse source files into AST
-- `BonfyreExtractSymbols` — Extract functions, classes, imports
-- `BonfyreCallGraph` — Build function call graph
-- `BonfyreSecurityScan` — Scan for secrets, vulnerabilities
-- `BonfyreQualityMetrics` — Complexity, duplication, maintainability
-- `BonfyreCodeGraph` — Fuse symbols + callgraph + dependencies
+- `AkaiRepoScan` — Catalog files and git history
+- `AkaiDetectLanguages` — Detect programming languages
+- `AkaiDepsAnalyze` — Parse package manifests (package.json, requirements.txt, etc)
+- `AkaiCodeAST` — Parse source files into AST
+- `AkaiExtractSymbols` — Extract functions, classes, imports
+- `AkaiCallGraph` — Build function call graph
+- `AkaiSecurityScan` — Scan for secrets, vulnerabilities
+- `AkaiQualityMetrics` — Complexity, duplication, maintainability
+- `AkaiCodeGraph` — Fuse symbols + callgraph + dependencies
 
 ### Cross-Modal Fusion
-- `BonfyreEntityFusion` — Merge entities across modalities (speaker + face + object)
-- `BonfyreCrossReference` — Match transcript mentions to code symbols
-- `BonfyreCodeWalkthrough` — Align code discussion to video timestamps
-- `BonfyreGraphFusion` — Merge multiple knowledge graphs
-- `BonfyreCrossModalBrief` — Generate unified investigation report
+- `AkaiEntityFusion` — Merge entities across modalities (speaker + face + object)
+- `AkaiCrossReference` — Match transcript mentions to code symbols
+- `AkaiCodeWalkthrough` — Align code discussion to video timestamps
+- `AkaiGraphFusion` — Merge multiple knowledge graphs
+- `AkaiCrossModalBrief` — Generate unified investigation report
 
 ### Media Production
-- `BonfyreAudioNormalize` — Normalize audio to target LUFS
-- `BonfyreDiarize` — Speaker diarization (Pyannote)
-- `BonfyreTopicSegment` — Detect topic changes for clip boundaries
-- `BonfyreHighlights` — Find shareable moments (humor, insight, quotes)
-- `BonfyreWaveform` — Generate waveform visualization
-- `BonfyreAudiogram` — Video with animated waveform + captions
-- `BonfyreClipsFromHighlights` — Extract video clips from timestamps
-- `BonfyreBlogPost` — Generate blog post from transcript
-- `BonfyreSocialCards` — Create quote cards for social media
+- `AkaiAudioNormalize` — Normalize audio to target LUFS
+- `AkaiDiarize` — Speaker diarization (Pyannote)
+- `AkaiTopicSegment` — Detect topic changes for clip boundaries
+- `AkaiHighlights` — Find shareable moments (humor, insight, quotes)
+- `AkaiWaveform` — Generate waveform visualization
+- `AkaiAudiogram` — Video with animated waveform + captions
+- `AkaiClipsFromHighlights` — Extract video clips from timestamps
+- `AkaiBlogPost` — Generate blog post from transcript
+- `AkaiSocialCards` — Create quote cards for social media
 
 ## Schema Extensions
 
@@ -131,7 +131,7 @@ Supported MIME types:
   "stages": [
     {
       "id": "s01",
-      "operator": "BonfyreRun",  // Call another recipe
+      "operator": "AkaiRun",  // Call another recipe
       "args": ["V1", "--input", "{input}", "--out", "{out}/video"]
     }
   ]
@@ -162,8 +162,8 @@ Supported MIME types:
 
 ### Phase 3 (Complete) ✓
 - [x] Recipe schema v1
-- [x] BonfyreRecipe binary (init, add, list, show, validate, hash)
-- [x] BonfyreRun executor (DAG scheduler, run manifests)
+- [x] AkaiRecipe binary (init, add, list, show, validate, hash)
+- [x] AkaiRun executor (DAG scheduler, run manifests)
 - [x] SQLite registry with FTS5
 - [x] SHA-256 content addressing
 - [x] Basic recipes (A1, A3)
@@ -178,7 +178,7 @@ Supported MIME types:
 - [ ] Implement video processing binaries
 - [ ] Implement image processing binaries
 - [ ] Implement code analysis binaries
-- [ ] Add parallel execution to BonfyreRun
+- [ ] Add parallel execution to AkaiRun
 - [ ] Add conditional execution support
 - [ ] Test full V1 pipeline
 
@@ -197,13 +197,13 @@ Supported MIME types:
 ## Next Steps
 
 1. **Implement Core Multi-Modal Binaries**:
-   - `BonfyreVideoDemux` (ffmpeg wrapper)
-   - `BonfyreFrameExtract` (ffmpeg wrapper)
-   - `BonfyreImageNormalize` (imagemagick wrapper)
-   - `BonfyreDetectObjects` (YOLOv8 integration)
+   - `AkaiVideoDemux` (ffmpeg wrapper)
+   - `AkaiFrameExtract` (ffmpeg wrapper)
+   - `AkaiImageNormalize` (imagemagick wrapper)
+   - `AkaiDetectObjects` (YOLOv8 integration)
 
 2. **Add Parallel Execution**:
-   - Modify BonfyreRun to actually execute stages in parallel
+   - Modify AkaiRun to actually execute stages in parallel
    - Use fork() + wait() for process management
    - Respect `parallel: N` stage attribute
 
@@ -212,13 +212,13 @@ Supported MIME types:
    - Add `condition` field for custom logic
 
 4. **Recipe Composition**:
-   - Implement `BonfyreCompose` binary
+   - Implement `AkaiCompose` binary
    - Support serial/parallel/merge/loop operators
    - Validate composition semantics
 
 5. **Test Full Pipelines**:
    - Run V1 on sample video
-   - Run C1 on Bonfyre repository
+   - Run C1 on Akai repository
    - Run X1 on coding tutorial video
 
 ## Design Principles
@@ -232,19 +232,19 @@ Supported MIME types:
 ## Example: Video Investigation Flow
 
 ```
-video.mp4 → BonfyreVideoDemux → audio.wav + video.mp4
+video.mp4 → AkaiVideoDemux → audio.wav + video.mp4
                                     ↓               ↓
-                          BonfyreSpeechLoop    BonfyreFrameExtract
+                          AkaiSpeechLoop    AkaiFrameExtract
                                     ↓               ↓
-                          BonfyreTranscribe    BonfyreDetectObjects
+                          AkaiTranscribe    AkaiDetectObjects
                                     ↓               ↓
                                    [Transcripts]  [Objects]
                                          ↓           ↓
-                                    BonfyreEntityFusion
+                                    AkaiEntityFusion
                                          ↓
                                   [Merged Entities]
                                          ↓
-                                   BonfyreGraph
+                                   AkaiGraph
                                          ↓
                                  [Knowledge Graph]
 ```

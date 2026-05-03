@@ -1,74 +1,74 @@
 # Compatibility
 
-## Bonfyre ABI Compatibility
+## Akai ABI Compatibility
 
-Legacy Bonfyre command names and ABI remain fully supported in v0.8.x.
+Legacy Akai command names and ABI remain fully supported in v0.8.x.
 The `akai` dispatcher (see `bin/akai`) maps Aurekai-native command names
-to the underlying Bonfyre operator binaries.
+to the underlying Akai operator binaries.
 
 ## Operator Name Mapping
 
-`akai <command>` calls the corresponding `Bonfyre<Operator>` binary.
+`akai <command>` calls the corresponding `Aurekai<Operator>` binary.
 
-| akai command       | Bonfyre binary          | akai command       | Bonfyre binary          |
+| akai command       | Akai binary          | akai command       | Akai binary          |
 |--------------------|-------------------------|--------------------|-------------------------|
-| api                | BonfyreAPI              | narrate            | BonfyreNarrate          |
-| auth               | BonfyreAuth             | net                | BonfyreNet              |
-| brief              | BonfyreBrief            | offer              | BonfyreOffer            |
-| canon              | BonfyreCanon            | orchestrate        | BonfyreOrchestrate      |
-| capability         | BonfyreCapability       | outreach           | BonfyreOutreach         |
-| cli                | BonfyreCLI              | pack               | BonfyrePack             |
-| clips              | BonfyreClips            | paragraph          | BonfyreParagraph        |
-| cms                | BonfyreCMS              | pay                | BonfyrePay              |
-| compete            | BonfyreCompete          | physics            | BonfyrePhysics          |
-| compress           | BonfyreCompress         | pipeline           | BonfyrePipeline         |
-| control            | BonfyreControl          | project            | BonfyreProject          |
-| detect-objects     | BonfyreDetectObjects    | proof              | BonfyreProof            |
-| discip             | BonfyreDiscipl          | proxy              | BonfyreProxy            |
-| distribute         | BonfyreDistribute       | quant              | BonfyreQuant            |
-| economy            | BonfyreEconomy          | query              | BonfyreQuery            |
-| embed              | BonfyreEmbed            | queue              | BonfyreQueue            |
-| emit               | BonfyreEmit             | reason             | BonfyreReason           |
-| entity             | BonfyreEntity           | recipe             | BonfyreRecipe           |
-| family             | BonfyreFamily           | render             | BonfyreRender           |
-| finance            | BonfyreFinance          | repurpose          | BonfyreRepurpose        |
-| flash-qla          | BonfyreFlashQLA         | run                | BonfyreRun              |
-| flow               | BonfyreFlow             | runtime            | BonfyreRuntime          |
-| fpq                | BonfyreFPQ              | sae                | BonfyreSAE              |
-| fpqx               | BonfyreFPQx             | scene-detect       | BonfyreSceneDetect      |
-| fragment           | BonfyreFragment         | segment            | BonfyreSegment          |
-| frame-extract      | BonfyreFrameExtract     | sli                | BonfyreSLI              |
-| gate               | BonfyreGate             | space              | BonfyreSpace            |
-| gen                | BonfyreGen              | speech-loop        | BonfyreSpeechLoop       |
-| graph              | BonfyreGraph            | stitch             | BonfyreStitch           |
-| hash               | BonfyreHash             | surface            | BonfyreSurface          |
-| index              | BonfyreIndex            | swarm              | BonfyreSwarm            |
-| ingest             | BonfyreIngest           | sync               | BonfyreSync             |
-| kv-cache           | BonfyreKVCache          | tag                | BonfyreTag              |
-| layer              | BonfyreLayer            | tel                | BonfyreTel              |
-| leapfrog           | BonfyreLeapfrog         | tier               | BonfyreTier             |
-| learn              | BonfyreLearn            | time               | BonfyreTime             |
-| ledger             | BonfyreLedger           | tone               | BonfyreTone             |
-| media-prep         | BonfyreMediaPrep        | transcribe         | BonfyreTranscribe       |
-| meter              | BonfyreMeter            | transcript-clean   | BonfyreTranscriptClean  |
-| mfa-dict           | BonfyreMFADict          | transcript-family  | BonfyreTranscriptFamily |
-| model              | BonfyreModel            | vec                | BonfyreVec              |
-| moq                | BonfyreMoQ              | video-demux        | BonfyreVideoDemux       |
-|                    |                         | violence           | BonfyreViolence         |
-|                    |                         | watch              | BonfyreWatch            |
-|                    |                         | weaviate-index     | BonfyreWeaviateIndex    |
-|                    |                         | wire               | BonfyreWire             |
-|                    |                         | workflow           | BonfyreWorkflow         |
+| api                | AkaiAPI              | narrate            | AkaiNarrate          |
+| auth               | AkaiAuth             | net                | AkaiNet              |
+| brief              | AkaiBrief            | offer              | AkaiOffer            |
+| canon              | AkaiCanon            | orchestrate        | AkaiOrchestrate      |
+| capability         | AkaiCapability       | outreach           | AkaiOutreach         |
+| cli                | AkaiCLI              | pack               | AkaiPack             |
+| clips              | AkaiClips            | paragraph          | AkaiParagraph        |
+| cms                | AkaiCMS              | pay                | AkaiPay              |
+| compete            | AkaiCompete          | physics            | AkaiPhysics          |
+| compress           | AkaiCompress         | pipeline           | AkaiPipeline         |
+| control            | AkaiControl          | project            | AkaiProject          |
+| detect-objects     | AkaiDetectObjects    | proof              | AkaiProof            |
+| discip             | AkaiDiscipl          | proxy              | AkaiProxy            |
+| distribute         | AkaiDistribute       | quant              | AkaiQuant            |
+| economy            | AkaiEconomy          | query              | AkaiQuery            |
+| embed              | AkaiEmbed            | queue              | AkaiQueue            |
+| emit               | AkaiEmit             | reason             | AkaiReason           |
+| entity             | AkaiEntity           | recipe             | AkaiRecipe           |
+| family             | AkaiFamily           | render             | AkaiRender           |
+| finance            | AkaiFinance          | repurpose          | AkaiRepurpose        |
+| flash-qla          | AkaiFlashQLA         | run                | AkaiRun              |
+| flow               | AkaiFlow             | runtime            | AkaiRuntime          |
+| fpq                | AkaiFPQ              | sae                | AkaiSAE              |
+| fpqx               | AkaiFPQx             | scene-detect       | AkaiSceneDetect      |
+| fragment           | AkaiFragment         | segment            | AkaiSegment          |
+| frame-extract      | AkaiFrameExtract     | sli                | AkaiSLI              |
+| gate               | AkaiGate             | space              | AkaiSpace            |
+| gen                | AkaiGen              | speech-loop        | AkaiSpeechLoop       |
+| graph              | AkaiGraph            | stitch             | AkaiStitch           |
+| hash               | AkaiHash             | surface            | AkaiSurface          |
+| index              | AkaiIndex            | swarm              | AkaiSwarm            |
+| ingest             | AkaiIngest           | sync               | AkaiSync             |
+| kv-cache           | AkaiKVCache          | tag                | AkaiTag              |
+| layer              | AkaiLayer            | tel                | AkaiTel              |
+| leapfrog           | AkaiLeapfrog         | tier               | AkaiTier             |
+| learn              | AkaiLearn            | time               | AkaiTime             |
+| ledger             | AkaiLedger           | tone               | AkaiTone             |
+| media-prep         | AkaiMediaPrep        | transcribe         | AkaiTranscribe       |
+| meter              | AkaiMeter            | transcript-clean   | AkaiTranscriptClean  |
+| mfa-dict           | AkaiMFADict          | transcript-family  | AkaiTranscriptFamily |
+| model              | AkaiModel            | vec                | AkaiVec              |
+| moq                | AkaiMoQ              | video-demux        | AkaiVideoDemux       |
+|                    |                         | violence           | AkaiViolence         |
+|                    |                         | watch              | AkaiWatch            |
+|                    |                         | weaviate-index     | AkaiWeaviateIndex    |
+|                    |                         | wire               | AkaiWire             |
+|                    |                         | workflow           | AkaiWorkflow         |
 
 Total: **89 operators**
 
 ## Artifact Format Mapping
 
-Bonfyre `.bf*` formats are canonical on-disk in v0.8.x. Aurekai-native `.ak*` names
+Aurekai `.bf*` formats are canonical on-disk in v0.8.x. Aurekai-native `.ak*` names
 are the migration target for v1.0+. All formats share the same ABI (`bonfyre-abi-v1`).
 See [`schemas/format-bridge.json`](schemas/format-bridge.json) for the full machine-readable mapping.
 
-| Bonfyre extension | Aurekai extension | Description                            |
+| Akai extension | Aurekai extension | Description                            |
 |-------------------|-------------------|----------------------------------------|
 | `.bf`             | `.ak`             | General packed artifact bundle         |
 | `.bfa`            | `.aka`            | Artifact archive (multi-item bundle)   |

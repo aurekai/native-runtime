@@ -27,7 +27,7 @@
     {
       "id": "s01",
       "name": "VAD Segmentation",
-      "operator": "BonfyreSpeechLoop",
+      "operator": "AkaiSpeechLoop",
       "args": ["--input", "{input}", "--out", "{out}/segments"],
       "inputs": ["{input}"],
       "outputs": ["{out}/segments"],
@@ -37,7 +37,7 @@
     {
       "id": "s02",
       "name": "Transcription",
-      "operator": "BonfyreTranscribe",
+      "operator": "AkaiTranscribe",
       "args": ["--input", "{out}/segments", "--model", "whisper-base", "--out", "{out}/transcript.txt"],
       "inputs": ["{out}/segments"],
       "outputs": ["{out}/transcript.txt"],
@@ -47,7 +47,7 @@
     {
       "id": "s03",
       "name": "Brief Generation",
-      "operator": "BonfyreBrief",
+      "operator": "AkaiBrief",
       "args": ["--transcript", "{out}/transcript.txt", "--out", "{out}/brief.md"],
       "inputs": ["{out}/transcript.txt"],
       "outputs": ["{out}/brief.md"],
@@ -72,7 +72,7 @@
   "metadata": {
     "category": "audio-brief",
     "tags": ["audio", "brief", "quick"],
-    "author": "bonfyre",
+    "author": "aurekai",
     "complexity": "low",
     "estimated_time_minutes": 0.5
   }

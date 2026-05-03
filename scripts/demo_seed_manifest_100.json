@@ -8,7 +8,7 @@
       "out_path": "/Users/nickgonzales/Projects/pages-podcast-plant/site/demos/podcast-plant/demo-items.json",
       "default_outputs": ["show notes", "clip list", "article draft", "RSS-ready bundle"],
       "why_it_matters": "A deep episode set makes repurposing, search, and orchestration obvious inside the app instead of sounding like a claim.",
-      "search_intro": "Search across many reference episodes to compare topics, clips, and publish surfaces from one shared Bonfyre pipeline.",
+      "search_intro": "Search across many reference episodes to compare topics, clips, and publish surfaces from one shared Akai pipeline.",
       "template": {
         "dimensions": {
           "series": ["Creator Systems", "City Makers", "Product Lines", "Local Operators", "Founder Ledger"],
@@ -18,10 +18,10 @@
         },
         "id": "pod-{series}-{episode}-{topic}",
         "file": "{series} Episode {episode} — {topic}",
-        "brief": "Episode explores {topic} with a focus on {angle}. The Bonfyre path turns the same source into notes, clips, drafts, and a publish-ready bundle.",
+        "brief": "Episode explores {topic} with a focus on {angle}. The Akai path turns the same source into notes, clips, drafts, and a publish-ready bundle.",
         "tags": ["podcast", "{topic}", "{series}"],
         "searchSummary": "{series}, {topic}, {angle}",
-        "whyItMatters": "With many reference episodes, users can feel how Bonfyre clusters topics, reuses artifacts, and branches outputs without changing the core source object.",
+        "whyItMatters": "With many reference episodes, users can feel how Akai clusters topics, reuses artifacts, and branches outputs without changing the core source object.",
         "searchOutputs": ["clip list", "RSS-ready bundle"],
         "flagged_every": 11
       }

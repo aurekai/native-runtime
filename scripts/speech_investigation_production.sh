@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# Bonfyre Speech Investigation — Production Pipeline
+# Akai Speech Investigation — Production Pipeline
 #
-# Uses C binaries from /tmp/bonfyre-oss/build/ instead of Python stubs.
-# Fully integrated with Bonfyre infrastructure (metering, quality scoring, compression, indexing).
+# Uses C binaries from /tmp/akai-oss/build/ instead of Python stubs.
+# Fully integrated with Akai infrastructure (metering, quality scoring, compression, indexing).
 #
 # Usage:
 #   bash scripts/speech_investigation_production.sh "audio/*.mp3" investigation_out [--speakers]
@@ -15,7 +15,7 @@ set -e
 # CONFIGURATION
 # ══════════════════════════════════════════════════════════════════════
 
-BONFYRE_BIN_PATH="${BONFYRE_BIN_PATH:-/tmp/bonfyre-oss/build}"
+BONFYRE_BIN_PATH="${BONFYRE_BIN_PATH:-/tmp/akai-oss/build}"
 WITH_SPEAKERS=false
 ENABLE_EMBEDDINGS=false
 ENABLE_SLI=false
@@ -64,7 +64,7 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 echo "══════════════════════════════════════════════════════════════════════"
-echo "BONFYRE SPEECH INVESTIGATION — PRODUCTION PIPELINE"
+echo "AKAI SPEECH INVESTIGATION — PRODUCTION PIPELINE"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 echo "Audio pattern:    $AUDIO_PATTERN"
@@ -79,12 +79,12 @@ echo ""
 # Create output structure
 mkdir -p "$OUTPUT_DIR"/{audio,transcripts,entities,canon,graphs,claims,embeddings,reports,interventions,artifacts,metrics}
 
-# Check for Bonfyre binaries
+# Check for Akai binaries
 if [ ! -d "$BONFYRE_BIN_PATH" ]; then
-    echo -e "${RED}✗ Bonfyre binaries not found at: $BONFYRE_BIN_PATH${NC}"
+    echo -e "${RED}✗ Aurekai binaries not found at: $BONFYRE_BIN_PATH${NC}"
     echo ""
     echo "Build binaries with:"
-    echo "  cd /tmp/bonfyre-oss"
+    echo "  cd /tmp/akai-oss"
     echo "  make"
     echo ""
     exit 1
@@ -102,7 +102,7 @@ echo "Found ${#audio_files[@]} audio file(s)"
 echo ""
 
 # ══════════════════════════════════════════════════════════════════════
-# PHASE 0: AUDIO SEGMENTATION (BonfyreSpeechLoop)
+# PHASE 0: AUDIO SEGMENTATION (AkaiSpeechLoop)
 # ══════════════════════════════════════════════════════════════════════
 
 echo "══════════════════════════════════════════════════════════════════════"
@@ -110,8 +110,8 @@ echo "PHASE 0: AUDIO SEGMENTATION"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-speech-loop" ]; then
-    echo "Using BonfyreSpeechLoop for VAD + segmentation"
+if [ -x "$BONFYRE_BIN_PATH/akai-speech-loop" ]; then
+    echo "Using AkaiSpeechLoop for VAD + segmentation"
     
     for audio_file in "${audio_files[@]}"; do
         filename=$(basename "$audio_file")
@@ -119,8 +119,8 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-speech-loop" ]; then
         
         echo "  Processing: $filename"
         
-        # Run BonfyreSpeechLoop
-        "$BONFYRE_BIN_PATH/bonfyre-speech-loop" \
+        # Run AkaiSpeechLoop
+        "$BONFYRE_BIN_PATH/akai-speech-loop" \
             --input "$audio_file" \
             --output "$OUTPUT_DIR/audio/$name/" \
             --vad-threshold 0.3 \
@@ -131,7 +131,7 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-speech-loop" ]; then
         }
     done
 else
-    echo -e "${YELLOW}⚠ BonfyreSpeechLoop not available, copying audio files${NC}"
+    echo -e "${YELLOW}⚠ AkaiSpeechLoop not available, copying audio files${NC}"
     for audio_file in "${audio_files[@]}"; do
         cp "$audio_file" "$OUTPUT_DIR/audio/"
     done
@@ -140,7 +140,7 @@ fi
 echo ""
 
 # ══════════════════════════════════════════════════════════════════════
-# PHASE 1: TRANSCRIPTION (BonfyreTranscribe)
+# PHASE 1: TRANSCRIPTION (AkaiTranscribe)
 # ══════════════════════════════════════════════════════════════════════
 
 echo "══════════════════════════════════════════════════════════════════════"
@@ -148,8 +148,8 @@ echo "PHASE 1: TRANSCRIPTION"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-transcribe" ]; then
-    echo "Using BonfyreTranscribe (Whisper-based)"
+if [ -x "$BONFYRE_BIN_PATH/akai-transcribe" ]; then
+    echo "Using AkaiTranscribe (Whisper-based)"
     
     segments=$(find "$OUTPUT_DIR/audio" -name "*.wav" -o -name "*.mp3")
     
@@ -160,7 +160,7 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-transcribe" ]; then
         echo "  Transcribing: $filename"
         
         # Build command
-        cmd="$BONFYRE_BIN_PATH/bonfyre-transcribe"
+        cmd="$BONFYRE_BIN_PATH/akai-transcribe"
         cmd="$cmd --input $segment"
         cmd="$cmd --output $OUTPUT_DIR/transcripts/$name.txt"
         cmd="$cmd --json $OUTPUT_DIR/transcripts/$name.json"
@@ -176,9 +176,9 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-transcribe" ]; then
         }
         
         # Meter if enabled
-        if [ "$ENABLE_METERING" = true ] && [ -x "$BONFYRE_BIN_PATH/bonfyre-meter" ]; then
+        if [ "$ENABLE_METERING" = true ] && [ -x "$BONFYRE_BIN_PATH/akai-meter" ]; then
             duration=$(soxi -D "$segment" 2>/dev/null || echo "0")
-            "$BONFYRE_BIN_PATH/bonfyre-meter" record \
+            "$BONFYRE_BIN_PATH/akai-meter" record \
                 --operation transcribe \
                 --input-size "$duration" \
                 --output "$OUTPUT_DIR/transcripts/$name.json" \
@@ -187,7 +187,7 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-transcribe" ]; then
         fi
     done
 else
-    echo -e "${YELLOW}⚠ BonfyreTranscribe not available, using fallback Whisper${NC}"
+    echo -e "${YELLOW}⚠ AkaiTranscribe not available, using fallback Whisper${NC}"
     
     # Fallback: Use Python Whisper
     python3 << 'PYTHON_EOF'
@@ -225,7 +225,7 @@ echo -e "${GREEN}✓ Transcribed $transcript_count files${NC}"
 echo ""
 
 # ══════════════════════════════════════════════════════════════════════
-# PHASE 1b: TRANSCRIPT CLEANING (BonfyreTranscriptClean)
+# PHASE 1b: TRANSCRIPT CLEANING (AkaiTranscriptClean)
 # ══════════════════════════════════════════════════════════════════════
 
 echo "══════════════════════════════════════════════════════════════════════"
@@ -233,14 +233,14 @@ echo "PHASE 1b: TRANSCRIPT CLEANING"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-transcript-clean" ]; then
-    echo "Using BonfyreTranscriptClean for post-processing"
+if [ -x "$BONFYRE_BIN_PATH/akai-transcript-clean" ]; then
+    echo "Using AkaiTranscriptClean for post-processing"
     
     for transcript in "$OUTPUT_DIR/transcripts"/*.txt; do
         filename=$(basename "$transcript")
         name="${filename%.*}"
         
-        "$BONFYRE_BIN_PATH/bonfyre-transcript-clean" \
+        "$BONFYRE_BIN_PATH/akai-transcript-clean" \
             --input "$transcript" \
             --output "$OUTPUT_DIR/transcripts/${name}_clean.txt" \
             --mode conversational \
@@ -259,13 +259,13 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-transcript-clean" ]; then
         mv "$f" "$orig"
     done
 else
-    echo -e "${YELLOW}⚠ BonfyreTranscriptClean not available, skipping${NC}"
+    echo -e "${YELLOW}⚠ AkaiTranscriptClean not available, skipping${NC}"
 fi
 
 echo ""
 
 # ══════════════════════════════════════════════════════════════════════
-# PHASE 2: ENTITY EXTRACTION (BonfyreEntity)
+# PHASE 2: ENTITY EXTRACTION (AkaiEntity)
 # ══════════════════════════════════════════════════════════════════════
 
 echo "══════════════════════════════════════════════════════════════════════"
@@ -273,10 +273,10 @@ echo "PHASE 2: ENTITY EXTRACTION"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-entity" ]; then
-    echo "Using BonfyreEntity (C binary)"
+if [ -x "$BONFYRE_BIN_PATH/akai-entity" ]; then
+    echo "Using AkaiEntity (C binary)"
     
-    "$BONFYRE_BIN_PATH/bonfyre-entity" \
+    "$BONFYRE_BIN_PATH/akai-entity" \
         --input "$OUTPUT_DIR/transcripts/*.txt" \
         --type conversational \
         --structural-filter \
@@ -284,7 +284,7 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-entity" ]; then
         --output "$OUTPUT_DIR/entities/entities.json" \
         --artifact "$OUTPUT_DIR/artifacts/entity_extraction.json"
 else
-    echo -e "${YELLOW}⚠ BonfyreEntity not available, using Python stub${NC}"
+    echo -e "${YELLOW}⚠ AkaiEntity not available, using Python stub${NC}"
     
     python3 scripts/symbolic_extract.py \
         --corpus "$OUTPUT_DIR/transcripts/*.txt" \
@@ -295,7 +295,7 @@ fi
 echo ""
 
 # ══════════════════════════════════════════════════════════════════════
-# PHASE 3: CANONICALIZATION (BonfyreCanon)
+# PHASE 3: CANONICALIZATION (AkaiCanon)
 # ══════════════════════════════════════════════════════════════════════
 
 echo "══════════════════════════════════════════════════════════════════════"
@@ -303,10 +303,10 @@ echo "PHASE 3: CANONICALIZATION"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-canon" ]; then
-    echo "Using BonfyreCanon (C binary with tree-sitter)"
+if [ -x "$BONFYRE_BIN_PATH/akai-canon" ]; then
+    echo "Using AkaiCanon (C binary with tree-sitter)"
     
-    "$BONFYRE_BIN_PATH/bonfyre-canon" \
+    "$BONFYRE_BIN_PATH/akai-canon" \
         --input "$OUTPUT_DIR/entities/entities.json" \
         --fuzzy-threshold 0.85 \
         --detect-acronyms \
@@ -314,7 +314,7 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-canon" ]; then
         --output "$OUTPUT_DIR/canon/canon.json" \
         --canonical-list "$OUTPUT_DIR/canon/canonical_entities.json"
 else
-    echo -e "${YELLOW}⚠ BonfyreCanon not available, using Python stub${NC}"
+    echo -e "${YELLOW}⚠ AkaiCanon not available, using Python stub${NC}"
     
     python3 scripts/symbolic_extract.py \
         --corpus "$OUTPUT_DIR/transcripts/*.txt" \
@@ -326,7 +326,7 @@ fi
 echo ""
 
 # ══════════════════════════════════════════════════════════════════════
-# PHASE 4: GRAPH CONSTRUCTION (BonfyreGraph)
+# PHASE 4: GRAPH CONSTRUCTION (AkaiGraph)
 # ══════════════════════════════════════════════════════════════════════
 
 echo "══════════════════════════════════════════════════════════════════════"
@@ -334,10 +334,10 @@ echo "PHASE 4: GRAPH CONSTRUCTION"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-graph" ]; then
-    echo "Using BonfyreGraph (C binary)"
+if [ -x "$BONFYRE_BIN_PATH/akai-graph" ]; then
+    echo "Using AkaiGraph (C binary)"
     
-    "$BONFYRE_BIN_PATH/bonfyre-graph" \
+    "$BONFYRE_BIN_PATH/akai-graph" \
         --entities "$OUTPUT_DIR/canon/canonical_entities.json" \
         --cooccurrence-window 5 \
         --temporal-edges \
@@ -345,7 +345,7 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-graph" ]; then
         --output "$OUTPUT_DIR/graphs/graph.json" \
         --stats "$OUTPUT_DIR/graphs/stats.json"
 else
-    echo -e "${YELLOW}⚠ BonfyreGraph not available, using Python stub${NC}"
+    echo -e "${YELLOW}⚠ AkaiGraph not available, using Python stub${NC}"
     
     python3 scripts/symbolic_extract.py \
         --corpus "$OUTPUT_DIR/transcripts/*.txt" \
@@ -376,7 +376,7 @@ echo -e "${GREEN}✓ Generated $claims_count claims${NC}"
 echo ""
 
 # ══════════════════════════════════════════════════════════════════════
-# PHASE 6: EMBEDDINGS (BonfyreEmbed + optional SLI)
+# PHASE 6: EMBEDDINGS (AkaiEmbed + optional SLI)
 # ══════════════════════════════════════════════════════════════════════
 
 if [ "$ENABLE_EMBEDDINGS" = true ]; then
@@ -385,10 +385,10 @@ if [ "$ENABLE_EMBEDDINGS" = true ]; then
     echo "══════════════════════════════════════════════════════════════════════"
     echo ""
     
-    if [ -x "$BONFYRE_BIN_PATH/bonfyre-embed" ]; then
-        echo "Using BonfyreEmbed (ONNX Runtime)"
+    if [ -x "$BONFYRE_BIN_PATH/akai-embed" ]; then
+        echo "Using AkaiEmbed (ONNX Runtime)"
         
-        "$BONFYRE_BIN_PATH/bonfyre-embed" \
+        "$BONFYRE_BIN_PATH/akai-embed" \
             --input "$OUTPUT_DIR/claims/claims.json" \
             --model all-MiniLM-L6-v2 \
             --batch-size 256 \
@@ -396,8 +396,8 @@ if [ "$ENABLE_EMBEDDINGS" = true ]; then
             --output "$OUTPUT_DIR/embeddings/claims.fpq"
         
         # Build vector index
-        if [ -x "$BONFYRE_BIN_PATH/bonfyre-vec" ]; then
-            "$BONFYRE_BIN_PATH/bonfyre-vec" create \
+        if [ -x "$BONFYRE_BIN_PATH/akai-vec" ]; then
+            "$BONFYRE_BIN_PATH/akai-vec" create \
                 --embeddings "$OUTPUT_DIR/embeddings/claims.fpq" \
                 --index-type hnsw \
                 --m 16 \
@@ -406,10 +406,10 @@ if [ "$ENABLE_EMBEDDINGS" = true ]; then
         fi
         
         # Optional: Prepare for SLI
-        if [ "$ENABLE_SLI" = true ] && [ -x "$BONFYRE_BIN_PATH/bonfyre-sli" ]; then
+        if [ "$ENABLE_SLI" = true ] && [ -x "$BONFYRE_BIN_PATH/akai-sli" ]; then
             echo "  Preparing SLI index (4.4× bandwidth reduction)"
             
-            "$BONFYRE_BIN_PATH/bonfyre-sli" prepare \
+            "$BONFYRE_BIN_PATH/akai-sli" prepare \
                 --embeddings "$OUTPUT_DIR/embeddings/claims.fpq" \
                 --output "$OUTPUT_DIR/embeddings/claims_sli.fpq" \
                 --fwht-on-z
@@ -417,7 +417,7 @@ if [ "$ENABLE_EMBEDDINGS" = true ]; then
             echo -e "${GREEN}✓ SLI index ready (25ms queries vs 65ms dense)${NC}"
         fi
     else
-        echo -e "${YELLOW}⚠ BonfyreEmbed not available, skipping embeddings${NC}"
+        echo -e "${YELLOW}⚠ AkaiEmbed not available, skipping embeddings${NC}"
     fi
     
     echo ""
@@ -485,10 +485,10 @@ echo "PHASE 10: COMPRESSION + INDEXING"
 echo "══════════════════════════════════════════════════════════════════════"
 echo ""
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-compress" ]; then
-    echo "Using BonfyreCompress (zstd family-aware)"
+if [ -x "$BONFYRE_BIN_PATH/akai-compress" ]; then
+    echo "Using AkaiCompress (zstd family-aware)"
     
-    "$BONFYRE_BIN_PATH/bonfyre-compress" \
+    "$BONFYRE_BIN_PATH/akai-compress" \
         --family speech_investigation \
         --inputs "$OUTPUT_DIR/reports/*.json" "$OUTPUT_DIR/graphs/*.json" \
         --codec zstd \
@@ -496,10 +496,10 @@ if [ -x "$BONFYRE_BIN_PATH/bonfyre-compress" ]; then
         --output "$OUTPUT_DIR/artifacts/compressed.zst"
 fi
 
-if [ -x "$BONFYRE_BIN_PATH/bonfyre-index" ]; then
-    echo "Using BonfyreIndex (SQLite FTS5)"
+if [ -x "$BONFYRE_BIN_PATH/akai-index" ]; then
+    echo "Using AkaiIndex (SQLite FTS5)"
     
-    "$BONFYRE_BIN_PATH/bonfyre-index" \
+    "$BONFYRE_BIN_PATH/akai-index" \
         --artifacts "$OUTPUT_DIR/artifacts/" \
         --fts5 \
         --output "$OUTPUT_DIR/metrics/index.db"
@@ -517,8 +517,8 @@ if [ "$ENABLE_METERING" = true ]; then
     echo "══════════════════════════════════════════════════════════════════════"
     echo ""
     
-    if [ -x "$BONFYRE_BIN_PATH/bonfyre-ledger" ]; then
-        "$BONFYRE_BIN_PATH/bonfyre-ledger" assess \
+    if [ -x "$BONFYRE_BIN_PATH/akai-ledger" ]; then
+        "$BONFYRE_BIN_PATH/akai-ledger" assess \
             --artifacts "$OUTPUT_DIR/artifacts/" \
             --meter "$OUTPUT_DIR/metrics/ledger.db" \
             --output "$OUTPUT_DIR/metrics/portfolio.json"

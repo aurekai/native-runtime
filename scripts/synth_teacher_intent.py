@@ -31,7 +31,7 @@ Urgency detection rules:
 Combined label = intent + "-" + urgency (high/low only — medium folds to low for
 a clean 5-class space that collapse_train can handle robustly).
 
-Output format per doc (bonfyre-tag schema):
+Output format per doc (akai-tag schema):
   {"tags": [{"label": "command-high", "score": 0.9}]}
 
 Usage:

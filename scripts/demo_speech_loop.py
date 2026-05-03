@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 """
-scripts/demo_speech_loop.py — Bonfyre live speech loop demo
+scripts/demo_speech_loop.py — Akai live speech loop demo
 
 The full multi-modal adaptive chain:
 
   audio (or text)
-    → bonfyre-transcribe (or whisper fallback)   [transcribe]
+    → akai-transcribe (or whisper fallback)   [transcribe]
     → per-segment ASR confidence gate            [fragment-like exit]
        → S01-frag BQFP check → exit if clear
        → S01 full ONNX head  → exit if clear
        → S02 ONNX head       → escalate          [escalation]
     → full transcript → MiniLM embed             [embed]
-    → corpus stats → bonfyre-model route         [route]
+    → corpus stats → akai-model route         [route]
     → SLI auto-run (fragment:auto chain)         [transform loop]
     → T32 ONNX head: intent + urgency tagging    [tag]
     → T40 ONNX head: TTS tier routing            [TTS select]
     → response text generation                   [respond]
-    → bonfyre-narrate (or piper fallback) TTS    [synthesize]
+    → akai-narrate (or piper fallback) TTS    [synthesize]
     → metrics log                                [metrics]
 
 Usage:
@@ -31,7 +31,7 @@ always runs to completion whether or not the heads have been trained yet.
 Env vars:
   WHISPER_MODEL     whisper model size (default: base)
   WHISPER_DEVICE    torch device for whisper (default: cpu)
-  BONFYRE_MODELS_DIR  path to .bqfp / frontier / ONNX (default: /tmp/bonfyre-families)
+  BONFYRE_MODELS_DIR  path to .bqfp / frontier / ONNX (default: /tmp/akai-families)
 """
 
 import argparse
@@ -49,24 +49,24 @@ warnings.filterwarnings("ignore")
 
 # ── Repo layout ───────────────────────────────────────────────────────────────
 REPO_ROOT      = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SLI_BIN        = os.path.join(REPO_ROOT, "cmd", "BonfyreSLI",        "bonfyre-sli")
-MODEL_BIN      = os.path.join(REPO_ROOT, "cmd", "BonfyreModel",      "bonfyre-model")
-FPQX_BIN       = os.path.join(REPO_ROOT, "cmd", "BonfyreFPQX",       "bonfyre-fpqx")
-NARRATE_BIN    = os.path.join(REPO_ROOT, "cmd", "BonfyreNarrate",    "bonfyre-narrate")
-TRANSCRIBE_BIN = os.path.join(REPO_ROOT, "cmd", "BonfyreTranscribe", "bonfyre-transcribe")
+SLI_BIN        = os.path.join(REPO_ROOT, "cmd", "AkaiSLI",        "akai-sli")
+MODEL_BIN      = os.path.join(REPO_ROOT, "cmd", "AkaiModel",      "akai-model")
+FPQX_BIN       = os.path.join(REPO_ROOT, "cmd", "AkaiFPQX",       "akai-fpqx")
+NARRATE_BIN    = os.path.join(REPO_ROOT, "cmd", "AkaiNarrate",    "akai-narrate")
+TRANSCRIBE_BIN = os.path.join(REPO_ROOT, "cmd", "AkaiTranscribe", "akai-transcribe")
 
-DEFAULT_MODELS = os.environ.get("BONFYRE_MODELS_DIR", "/tmp/bonfyre-families")
+DEFAULT_MODELS = os.environ.get("BONFYRE_MODELS_DIR", "/tmp/akai-families")
 
 # ── ASR family ONNX heads ─────────────────────────────────────────────────────
 ASR_HEADS = {
     "S01": {
-        "path":    "/tmp/bonfyre-speech/librispeech_clean-500/run/train/model.onnx",
+        "path":    "/tmp/akai-speech/librispeech_clean-500/run/train/model.onnx",
         "frag":    os.path.join(DEFAULT_MODELS, "S01-frag.bqfp"),
         "n_class": 3,
         "labels":  {0: "ambiguous", 1: "clear", 2: "noisy"},
     },
     "S02": {
-        "path":    "/tmp/bonfyre-speech/librispeech_other-500/run/train/model.onnx",
+        "path":    "/tmp/akai-speech/librispeech_other-500/run/train/model.onnx",
         "frag":    os.path.join(DEFAULT_MODELS, "S02-frag.bqfp"),
         "n_class": 3,
         "labels":  {0: "ambiguous", 1: "clear", 2: "noisy"},
@@ -75,8 +75,8 @@ ASR_HEADS = {
 ASR_CHAIN = ["S01", "S02"]
 
 # ── Tagging + TTS routing heads ───────────────────────────────────────────────
-INTENT_HEAD = "/tmp/bonfyre-speech/intent-500/run/train/model.onnx"
-TTS_HEAD    = "/tmp/bonfyre-speech/tts-tier-500/run/train/model.onnx"
+INTENT_HEAD = "/tmp/akai-speech/intent-500/run/train/model.onnx"
+TTS_HEAD    = "/tmp/akai-speech/tts-tier-500/run/train/model.onnx"
 
 INTENT_LABELS = {
     0: "command-high",
@@ -155,7 +155,7 @@ def onnx_classify(emb: list, onnx_path: str, label_map: dict):
 # ── Transcription ─────────────────────────────────────────────────────────────
 def transcribe(audio_path: str) -> dict:
     """
-    Transcribe audio. Primary: bonfyre-transcribe C binary.
+    Transcribe audio. Primary: akai-transcribe C binary.
     Fallback: openai-whisper Python.
     Returns dict with transcript, segments, avg_logprob, first_segment_ms.
     """
@@ -169,7 +169,7 @@ def transcribe(audio_path: str) -> dict:
         if r.returncode == 0 and os.path.exists(out_json):
             try:
                 data = json.load(open(out_json))
-                return _parse_whisper_result(data, elapsed, source="bonfyre-transcribe")
+                return _parse_whisper_result(data, elapsed, source="akai-transcribe")
             except Exception:
                 pass
 
@@ -177,8 +177,8 @@ def transcribe(audio_path: str) -> dict:
     try:
         import whisper as wh
     except ImportError:
-        sys.exit("[speech_loop] ERROR: openai-whisper not installed and bonfyre-transcribe not built\n"
-                 "  pip install openai-whisper  or  make -C /tmp/bonfyre-oss")
+        sys.exit("[speech_loop] ERROR: openai-whisper not installed and akai-transcribe not built\n"
+                 "  pip install openai-whisper  or  make -C /tmp/akai-oss")
 
     model_name = os.environ.get("WHISPER_MODEL", "base")
     device     = os.environ.get("WHISPER_DEVICE", "cpu")
@@ -267,7 +267,7 @@ def compute_wer(hyp: str, ref: str) -> float:
 # ── TTS synthesis ─────────────────────────────────────────────────────────────
 def synthesize(text: str, out_wav: str, tts_tier: str = "fast") -> dict:
     """
-    Synthesize text to speech via bonfyre-narrate or piper fallback.
+    Synthesize text to speech via akai-narrate or piper fallback.
     tts_tier: fast | standard | quality
     Returns {"success": bool, "wav_path": str, "synthesis_ms": int}
     """
@@ -285,7 +285,7 @@ def synthesize(text: str, out_wav: str, tts_tier: str = "fast") -> dict:
         elapsed = int((time.monotonic() - t0) * 1000)
         if r.returncode == 0:
             return {"success": True, "wav_path": out_wav, "synthesis_ms": elapsed}
-        print(f"  [tts] bonfyre-narrate exited {r.returncode}: {r.stderr[:120]}")
+        print(f"  [tts] akai-narrate exited {r.returncode}: {r.stderr[:120]}")
 
     # Fallback: piper TTS command-line (if on PATH)
     try:
@@ -304,7 +304,7 @@ def synthesize(text: str, out_wav: str, tts_tier: str = "fast") -> dict:
     return {"success": False, "wav_path": None, "synthesis_ms": elapsed}
 
 
-# ── Route transcript text via bonfyre-model ───────────────────────────────────
+# ── Route transcript text via akai-model ───────────────────────────────────
 def route_transcript(stats_path: str, frontier_path: str) -> str:
     if not os.path.exists(MODEL_BIN):
         return "T04"
@@ -342,15 +342,15 @@ def sli_auto_run(in_path, stats_path, out_dir, models_dir,
 
 def main():
     ap = argparse.ArgumentParser(
-        description="Bonfyre live speech loop demo — full multi-modal adaptive chain")
+        description="Akai live speech loop demo — full multi-modal adaptive chain")
     ap.add_argument("--audio-in",    default=None,
                     help="Path to audio file (.wav/.mp3/.flac)")
     ap.add_argument("--text",        default=None,
                     help="Text input (skips transcription step)")
     ap.add_argument("--speech-gt",   default=None,
                     help="Ground-truth transcript for WER (text or .txt file path)")
-    ap.add_argument("--out-dir",     default="/tmp/bonfyre-loop-out",
-                    help="Output directory for WAVs + artifacts (default: /tmp/bonfyre-loop-out)")
+    ap.add_argument("--out-dir",     default="/tmp/akai-loop-out",
+                    help="Output directory for WAVs + artifacts (default: /tmp/akai-loop-out)")
     ap.add_argument("--models-dir",  default=DEFAULT_MODELS,
                     help=f"Path to .bqfp + frontier + ONNX (default: {DEFAULT_MODELS})")
     ap.add_argument("--loop",        type=int, default=3,
@@ -373,7 +373,7 @@ def main():
 
     WALL_START = time.monotonic()
     metrics = {
-        "schema": "bonfyre-speech-loop-v1",
+        "schema": "akai-speech-loop-v1",
         # filled as we go
         "transcript":           None,
         "avg_logprob":          None,
@@ -600,7 +600,7 @@ def main():
             if synth_result["success"]:
                 print(f"  ✓ {synth_result['wav_path']}  ({synth_result['synthesis_ms']} ms)")
             else:
-                print(f"  (TTS not available — bonfyre-narrate + piper not found)")
+                print(f"  (TTS not available — akai-narrate + piper not found)")
         else:
             banner("8. TTS synthesis  (skipped: --no-tts)")
 
@@ -611,7 +611,7 @@ def main():
 
     print()
     print("=" * 72)
-    print(" BONFYRE SPEECH LOOP — SUMMARY")
+    print(" AKAI SPEECH LOOP — SUMMARY")
     print("=" * 72)
     print(f"  transcript       : {(metrics['transcript'] or '')[:70]}")
     if metrics["wer"] is not None:

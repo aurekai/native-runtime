@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# run_full_chain_proof.sh — ENHANCED Bonfyre pipeline using ALL working binaries
+# run_full_chain_proof.sh — ENHANCED Akai pipeline using ALL working binaries
 # 
 # Chain: yt-dlp → media-prep → transcribe → clean → paragraph → brief
 #      → tag → tone → embed → offer → pack → render → hash → proof
@@ -16,7 +16,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 URL="$1"
 TITLE="$2"
 APP="${3:-generic}"
-OUT_DIR="${4:-$(mktemp -d /tmp/bonfyre-full-chain.XXXXXX)}"
+OUT_DIR="${4:-$(mktemp -d /tmp/akai-full-chain.XXXXXX)}"
 
 # YouTube cookie file — export once, reuse across invocations
 YT_COOKIES="/tmp/yt-cookies.txt"
@@ -77,7 +77,7 @@ run_step() {
 PIPELINE_START=$(now_ms)
 SEED_ID=$(echo "$URL" | grep -o '[^=]*$')
 echo "================================================================"
-echo " Bonfyre Full-Chain Pipeline"
+echo " Akai Full-Chain Pipeline"
 echo " App:   $APP"
 echo " Seed:  $SEED_ID"
 echo " URL:   $URL"
@@ -103,38 +103,38 @@ if [ -n "${SOURCE_FILE:-}" ]; then
 fi
 
 NORMALIZED_WAV="$OUT_DIR/source.wav"
-run_step "media-prep" "$ROOT/cmd/BonfyreMediaPrep/bonfyre-media-prep" normalize "$SOURCE_FILE" "$NORMALIZED_WAV"
+run_step "media-prep" "$ROOT/cmd/AkaiMediaPrep/akai-media-prep" normalize "$SOURCE_FILE" "$NORMALIZED_WAV"
 
 # ── LAYER 2: TRANSFORM (transcribe + extract + enrich) ──────
 echo ""
 echo " [2/5] TRANSFORM — transcribe + extract + enrich"
 
-# Prefer hcp-whisper (HCP v3.2 spectral refinement) over plain bonfyre-transcribe
+# Prefer hcp-whisper (HCP v3.2 spectral refinement) over plain akai-transcribe
 HCP_BIN="$HOME/Projects/hcp-whisper/hcp-whisper"
 if [ -x "$HCP_BIN" ]; then
   run_step "transcribe" "$HCP_BIN" "$NORMALIZED_WAV" "$TRANS_DIR" --model-size base --json --threads 4
 else
-  run_step "transcribe" "$ROOT/cmd/BonfyreTranscribe/bonfyre-transcribe" "$NORMALIZED_WAV" "$TRANS_DIR"
+  run_step "transcribe" "$ROOT/cmd/AkaiTranscribe/akai-transcribe" "$NORMALIZED_WAV" "$TRANS_DIR"
 fi
 
-run_step "transcript-clean" "$ROOT/cmd/BonfyreTranscriptClean/bonfyre-transcript-clean" \
+run_step "transcript-clean" "$ROOT/cmd/AkaiTranscriptClean/akai-transcript-clean" \
   --transcript "$TRANS_DIR/transcript.json" --out "$CLEAN_DIR/clean.txt"
 
-run_step "paragraph" "$ROOT/cmd/BonfyreParagraph/bonfyre-paragraph" \
+run_step "paragraph" "$ROOT/cmd/AkaiParagraph/akai-paragraph" \
   --input "$CLEAN_DIR/clean.txt" --out "$PARA_DIR/paragraphs.txt"
 
-run_step "brief" "$ROOT/cmd/BonfyreBrief/bonfyre-brief" "$PARA_DIR/paragraphs.txt" "$BRIEF_DIR" --title "$TITLE"
+run_step "brief" "$ROOT/cmd/AkaiBrief/akai-brief" "$PARA_DIR/paragraphs.txt" "$BRIEF_DIR" --title "$TITLE"
 
 # Tag: topic extraction from cleaned text
-run_step "tag" "$ROOT/cmd/BonfyreTag/bonfyre-tag" detect-lang "$CLEAN_DIR/clean.txt" "$TAG_DIR"
+run_step "tag" "$ROOT/cmd/AkaiTag/akai-tag" detect-lang "$CLEAN_DIR/clean.txt" "$TAG_DIR"
 
 # Tone: speech rhythm/emotion from audio (cap at 60s sample to save time)
 TONE_SAMPLE="$OUT_DIR/tone-sample.wav"
 ffmpeg -y -i "$NORMALIZED_WAV" -t 60 -c copy "$TONE_SAMPLE" 2>/dev/null || cp "$NORMALIZED_WAV" "$TONE_SAMPLE"
-run_step "tone" "$ROOT/cmd/BonfyreTone/bonfyre-tone" extract "$TONE_SAMPLE" "$TONE_DIR"
+run_step "tone" "$ROOT/cmd/AkaiTone/akai-tone" extract "$TONE_SAMPLE" "$TONE_DIR"
 
 # Embed: vector embeddings of paragraphs
-run_step "embed" "$ROOT/cmd/BonfyreEmbed/bonfyre-embed" \
+run_step "embed" "$ROOT/cmd/AkaiEmbed/akai-embed" \
   --text "$PARA_DIR/paragraphs.txt" --out "$EMBED_DIR/embed.json" --backend hash
 
 # ── LAYER 3: SURFACE (render + package + prove) ─────────────
@@ -142,7 +142,7 @@ echo ""
 echo " [3/5] SURFACE — render + package + prove"
 
 # Render: build artifact.json DAG
-run_step "render" "$ROOT/cmd/BonfyreRender/bonfyre-render" artifact \
+run_step "render" "$ROOT/cmd/AkaiRender/akai-render" artifact \
   "$TRANS_DIR/transcript.json" "$RENDER_DIR" --title "$TITLE"
 
 # Locate the actual artifact.json (render puts it in subdirs like render/brief/)
@@ -155,9 +155,9 @@ ARTIFACT_JSON="${ARTIFACT_JSON:-$RENDER_DIR/artifact.json}"
 # Hash: content-address the artifact
 # merkle needs populated content_hash entries; fall back to file hash
 if [ -f "$ARTIFACT_JSON" ]; then
-  run_step "hash" "$ROOT/cmd/BonfyreHash/bonfyre-hash" file "$ARTIFACT_JSON"
+  run_step "hash" "$ROOT/cmd/AkaiHash/akai-hash" file "$ARTIFACT_JSON"
 else
-  run_step "hash" "$ROOT/cmd/BonfyreHash/bonfyre-hash" file "$TRANS_DIR/transcript.json"
+  run_step "hash" "$ROOT/cmd/AkaiHash/akai-hash" file "$TRANS_DIR/transcript.json"
 fi
 
 # Offer: generate offer from proof data
@@ -179,7 +179,7 @@ jq -n \
   '{title:$title, public_url:$url, source:{title:$src_title, channel:$channel, duration_seconds:$duration}, transcribe:{avg_confidence:$avg_conf, rtf:$rtf, segments_total:$segs_total, segments_hallucinated:$segs_halluc}, retained_media:false}' \
   > "$PROOF_JSON"
 
-run_step "offer" "$ROOT/cmd/BonfyreOffer/bonfyre-offer" generate "$PROOF_JSON" "$OFFER_DIR"
+run_step "offer" "$ROOT/cmd/AkaiOffer/akai-offer" generate "$PROOF_JSON" "$OFFER_DIR"
 
 # Pack: assemble deliverable bundle
 # Pack expects deliverable.md, transcript.txt, and proof-bundle.json in proof-dir
@@ -196,22 +196,22 @@ fi
 if [ -f "$PROOF_JSON" ] && [ ! -f "$OUT_DIR/proof-bundle.json" ]; then
   cp "$PROOF_JSON" "$OUT_DIR/proof-bundle.json"
 fi
-run_step "pack" "$ROOT/cmd/BonfyrePack/bonfyre-pack" assemble "$OUT_DIR" "$OFFER_DIR" "$PACK_DIR"
+run_step "pack" "$ROOT/cmd/AkaiPack/akai-pack" assemble "$OUT_DIR" "$OFFER_DIR" "$PACK_DIR"
 
 # ── LAYER 4: VALUE (repurpose + emit + account) ─────────────
 echo ""
 echo " [4/5] VALUE — repurpose + emit + account"
 
 # Repurpose: social media formats from brief
-run_step "repurpose-tweet" "$ROOT/cmd/BonfyreRepurpose/bonfyre-repurpose" tweet-thread "$BRIEF_DIR" "$REPURPOSE_DIR/tweet"
-run_step "repurpose-linkedin" "$ROOT/cmd/BonfyreRepurpose/bonfyre-repurpose" linkedin "$BRIEF_DIR" "$REPURPOSE_DIR/linkedin"
-run_step "repurpose-youtube" "$ROOT/cmd/BonfyreRepurpose/bonfyre-repurpose" youtube-desc "$BRIEF_DIR" "$REPURPOSE_DIR/youtube"
+run_step "repurpose-tweet" "$ROOT/cmd/AkaiRepurpose/akai-repurpose" tweet-thread "$BRIEF_DIR" "$REPURPOSE_DIR/tweet"
+run_step "repurpose-linkedin" "$ROOT/cmd/AkaiRepurpose/akai-repurpose" linkedin "$BRIEF_DIR" "$REPURPOSE_DIR/linkedin"
+run_step "repurpose-youtube" "$ROOT/cmd/AkaiRepurpose/akai-repurpose" youtube-desc "$BRIEF_DIR" "$REPURPOSE_DIR/youtube"
 
 # Emit: generate HTML output (emit scans for markdown — use brief dir which has brief.md)
-run_step "emit-html" "$ROOT/cmd/BonfyreEmit/bonfyre-emit" "$BRIEF_DIR" --format html --out "$EMIT_DIR/output.html"
+run_step "emit-html" "$ROOT/cmd/AkaiEmit/akai-emit" "$BRIEF_DIR" --format html --out "$EMIT_DIR/output.html"
 
 # Index: build searchable index of this artifact
-run_step "index" "$ROOT/cmd/BonfyreIndex/bonfyre-index" build "$RENDER_DIR" --db "$INDEX_DIR/index.db"
+run_step "index" "$ROOT/cmd/AkaiIndex/akai-index" build "$RENDER_DIR" --db "$INDEX_DIR/index.db"
 
 # Compress: compress the pack output (fallback to brief dir if pack is empty)
 COMPRESS_TARGET="$PACK_DIR"
@@ -219,7 +219,7 @@ if [ ! -d "$COMPRESS_TARGET" ] || [ -z "$(ls -A "$COMPRESS_TARGET" 2>/dev/null)"
   COMPRESS_TARGET="$BRIEF_DIR"
 fi
 if [ -d "$COMPRESS_TARGET" ] && [ "$(ls -A "$COMPRESS_TARGET" 2>/dev/null)" ]; then
-  run_step "compress" "$ROOT/cmd/BonfyreCompress/bonfyre-compress" savings "$COMPRESS_TARGET"
+  run_step "compress" "$ROOT/cmd/AkaiCompress/akai-compress" savings "$COMPRESS_TARGET"
 fi
 
 # ── LAYER 5: ACCOUNTING (stitch + ledger + meter) ───────────
@@ -230,24 +230,24 @@ echo " [5/5] ACCOUNTING — stitch + ledger + meter"
 if [ -f "$ARTIFACT_JSON" ]; then
   FIRST_TARGET=$(jq -r '.realization_targets[0].target_id // empty' "$ARTIFACT_JSON" 2>/dev/null || true)
   if [ -n "$FIRST_TARGET" ]; then
-    run_step "stitch" "$ROOT/cmd/BonfyreStitch/bonfyre-stitch" plan "$ARTIFACT_JSON" --target "$FIRST_TARGET"
+    run_step "stitch" "$ROOT/cmd/AkaiStitch/akai-stitch" plan "$ARTIFACT_JSON" --target "$FIRST_TARGET"
   else
     # No realization targets — stitch the first operator output instead
     FIRST_OP=$(jq -r '.operators[0].output // empty' "$ARTIFACT_JSON" 2>/dev/null || true)
     if [ -n "$FIRST_OP" ]; then
-      run_step "stitch" "$ROOT/cmd/BonfyreStitch/bonfyre-stitch" plan "$ARTIFACT_JSON" --target "$FIRST_OP"
+      run_step "stitch" "$ROOT/cmd/AkaiStitch/akai-stitch" plan "$ARTIFACT_JSON" --target "$FIRST_OP"
     fi
   fi
 fi
 
 # Ledger: value assessment
 if [ -f "$ARTIFACT_JSON" ]; then
-  run_step "ledger" "$ROOT/cmd/BonfyreLedger/bonfyre-ledger" assess-json "$ARTIFACT_JSON"
+  run_step "ledger" "$ROOT/cmd/AkaiLedger/akai-ledger" assess-json "$ARTIFACT_JSON"
   cp "$OUT_DIR/ledger.log" "$LEDGER_DIR/value.json" 2>/dev/null || true
 fi
 
 # Meter: record usage
-run_step "meter" "$ROOT/cmd/BonfyreMeter/bonfyre-meter" record \
+run_step "meter" "$ROOT/cmd/AkaiMeter/akai-meter" record \
   --key "$APP" --op "full-chain" --bytes "$SOURCE_SIZE" --duration "$(python3 -c "print(int(${DURATION_S:-0} * 1000))")"
 
 PIPELINE_END=$(now_ms)

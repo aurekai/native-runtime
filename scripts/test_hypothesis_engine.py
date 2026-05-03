@@ -157,7 +157,7 @@ if __name__ == "__main__":
         print("\n" + "🔥"*35)
         print("PHASE 16: HYPOTHESIS ENGINE COMPLETE")
         print("🔥"*35)
-        print("\nBonfyre now has PURPOSE:")
+        print("\nAkai now has PURPOSE:")
         print("  ✓ Define hypotheses (theories about reality)")
         print("  ✓ Orchestrate pipeline (swarm → pressure → intervention)")
         print("  ✓ Validate theories (confirmed/refuted/inconclusive)")

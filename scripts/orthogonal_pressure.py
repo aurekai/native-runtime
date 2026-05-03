@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/orthogonal_pressure.py — Bonfyre Orthogonal Pressure Engines
+scripts/orthogonal_pressure.py — Akai Orthogonal Pressure Engines
 
 Tests claims against INDEPENDENT reality constraints beyond semantic agreement.
 
@@ -428,8 +428,8 @@ def main():
     )
     parser.add_argument(
         "--memory-dir",
-        default="/tmp/bonfyre-memory",
-        help="Path to Bonfyre memory dir",
+        default="/tmp/akai-memory",
+        help="Path to Akai memory dir",
     )
     parser.add_argument(
         "--corpus-dir",

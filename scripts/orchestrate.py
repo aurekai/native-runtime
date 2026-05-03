@@ -282,7 +282,7 @@ def run_pipeline(name: str) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run Bonfyre product pipelines.")
+    parser = argparse.ArgumentParser(description="Run Akai product pipelines.")
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("list", help="List available product pipelines.")
     run_parser = subparsers.add_parser("run", help="Run a named product pipeline.")

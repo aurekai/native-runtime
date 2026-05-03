@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-scripts/claim_graph.py — Bonfyre persistent claim graph layer.
+scripts/claim_graph.py — Akai persistent claim graph layer.
 
-Extends memory.db (BonfyreMemory) with five new tables:
+Extends memory.db (AkaiMemory) with five new tables:
   claims            — structured assertions produced by lens families
   conflicts         — claim-pair disagreements with type and strength
   conflict_clusters — grouped conflict patterns with pressure scores
@@ -35,14 +35,14 @@ High-pressure clusters become hot zones for reprocessing.
 
 USAGE (library):
     from scripts.claim_graph import ClaimGraph
-    cg = ClaimGraph("/tmp/bonfyre-memory")
+    cg = ClaimGraph("/tmp/akai-memory")
     claim_id = cg.record_claim({...})
     conflicts = cg.detect_conflicts()
     clusters  = cg.cluster_conflicts(conflicts)
     hot_zones = cg.get_pressure_zones(top_n=10)
 
 USAGE (CLI):
-    python3 scripts/claim_graph.py summary --memory-dir /tmp/bonfyre-memory
+    python3 scripts/claim_graph.py summary --memory-dir /tmp/akai-memory
     python3 scripts/claim_graph.py conflicts [--min-strength 0.4]
     python3 scripts/claim_graph.py hot-zones [--top 20]
     python3 scripts/claim_graph.py export /tmp/claim_export.json
@@ -188,13 +188,13 @@ for a, b in ANTONYM_PAIRS:
 
 class ClaimGraph:
     """
-    Persistent claim graph on top of Bonfyre transform memory.
+    Persistent claim graph on top of Akai transform memory.
 
     Opens (or extends) memory.db by adding claim-specific tables.
-    Does not modify existing Bonfyre schema tables.
+    Does not modify existing Akai schema tables.
     """
 
-    def __init__(self, memory_dir: str = "/tmp/bonfyre-memory"):
+    def __init__(self, memory_dir: str = "/tmp/akai-memory"):
         self.memory_dir = memory_dir
         os.makedirs(memory_dir, exist_ok=True)
         db_path = os.path.join(memory_dir, "memory.db")
@@ -979,12 +979,12 @@ class ClaimGraph:
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="Bonfyre claim graph inspector")
+    ap = argparse.ArgumentParser(description="Akai claim graph inspector")
     sub = ap.add_subparsers(dest="cmd")
 
     for sc in ("summary", "conflicts", "hot-zones", "clusters"):
         p = sub.add_parser(sc)
-        p.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+        p.add_argument("--memory-dir", default="/tmp/akai-memory")
         if sc == "conflicts":
             p.add_argument("--min-strength", type=float, default=0.3)
         if sc == "hot-zones":
@@ -992,7 +992,7 @@ def main():
 
     p_exp = sub.add_parser("export")
     p_exp.add_argument("out", help="Output path for JSON export")
-    p_exp.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+    p_exp.add_argument("--memory-dir", default="/tmp/akai-memory")
 
     args = ap.parse_args()
     if not args.cmd:

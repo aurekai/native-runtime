@@ -2,7 +2,7 @@
 
 ## 🔥 What This Is
 
-The complete Bonfyre investigation stack now works on **speech/audio**:
+The complete Akai investigation stack now works on **speech/audio**:
 
 ```
 Audio → Transcription → Entity/Canon/Graph → Claims → Hypotheses → Insights
@@ -172,7 +172,7 @@ Lance Cottrell (35) → Speaker/expert
 - Contradictions preserved
 - ✅ **High signal for hypothesis discovery**
 
-### Bonfyre Stack Advantage:
+### Akai Stack Advantage:
 
 The investigation pipeline is **designed for messiness**:
 - ✓ Structural filtering handles "um", "uh", conversational patterns
@@ -260,7 +260,7 @@ sqlite3 results/graphs/memory.db \
 
 > Traditional transcription: "Here's what was said"
 > 
-> Bonfyre Investigation: **"Here's what survives scrutiny"**
+> Akai Investigation: **"Here's what survives scrutiny"**
 
 You're not just reading transcripts.
 
@@ -278,4 +278,4 @@ You're **interrogating conversations**.
 
 **Built**: April 2026  
 **Status**: Production-ready, tested on real conversational data  
-**Next**: Speaker diarization, temporal analysis, Bonfyre-native transcription tools
+**Next**: Speaker diarization, temporal analysis, Aurekai-native transcription tools

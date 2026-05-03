@@ -335,7 +335,7 @@ python3 scripts/hypothesis_engine.py \
 # Python API
 from hypothesis_engine import HypothesisEngine, COMPETING_HYPOTHESIS_SETS
 
-engine = HypothesisEngine("/tmp/bonfyre-memory", "/tmp/bonfyre-models")
+engine = HypothesisEngine("/tmp/akai-memory", "/tmp/akai-models")
 
 # Get competing set
 alias_test = COMPETING_HYPOTHESIS_SETS["alias_identity_test"]
@@ -400,7 +400,7 @@ python3 scripts/hypothesis_engine.py \
 # Python API
 from hypothesis_engine import HypothesisEngine, BUILTIN_HYPOTHESES
 
-engine = HypothesisEngine("/tmp/bonfyre-memory", "/tmp/bonfyre-models")
+engine = HypothesisEngine("/tmp/akai-memory", "/tmp/akai-models")
 hypothesis = BUILTIN_HYPOTHESES["timeline_reconstruction"]
 
 result = engine.evaluate_with_fragility(hypothesis, corpus, verbose=True)
@@ -437,7 +437,7 @@ python3 scripts/hypothesis_engine.py \
 # Python API
 from hypothesis_engine import HypothesisEngine, BUILTIN_HYPOTHESES
 
-engine = HypothesisEngine("/tmp/bonfyre-memory", "/tmp/bonfyre-models")
+engine = HypothesisEngine("/tmp/akai-memory", "/tmp/akai-models")
 
 # Build chain
 chain = [
@@ -488,7 +488,7 @@ CHAIN COMPLETED: 3/3 steps
 
 ### The Core Insight
 
-**Phase 16.5 transforms Bonfyre from:**
+**Phase 16.5 transforms Akai from:**
 
 ❌ "Test single hypothesis"
 
@@ -627,10 +627,10 @@ ALL TESTS PASSING ✓
 ## 🔥 THE ONE-LINE TAKEAWAY
 
 **Before Phase 16.5:**  
-Bonfyre tests single hypotheses in isolation
+Akai tests single hypotheses in isolation
 
 **After Phase 16.5:**  
-Bonfyre runs competing explanations through pressure and sees which survives
+Akai runs competing explanations through pressure and sees which survives
 
 ---
 

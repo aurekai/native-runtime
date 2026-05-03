@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/structural_intervention.py — Bonfyre Structural Intervention Engine
+scripts/structural_intervention.py — Akai Structural Intervention Engine
 
 When unresolved hot zones persist after orthogonal pressure, try STRUCTURAL
 PATCHES before spawning full new families.
@@ -44,13 +44,13 @@ auto_evolve.py evolution order becomes:
 
 USAGE (library):
     from scripts.structural_intervention import StructuralInterventionEngine
-    engine = StructuralInterventionEngine(memory_dir="/tmp/bonfyre-memory")
+    engine = StructuralInterventionEngine(memory_dir="/tmp/akai-memory")
     result = engine.try_intervention(hot_zone, corpus)
 
 USAGE (CLI):
     python3 scripts/structural_intervention.py \
         --hot-zone-id 42 \
-        --memory-dir /tmp/bonfyre-memory \
+        --memory-dir /tmp/akai-memory \
         --strategy fragment_specialization
 
 OUTPUT:
@@ -77,10 +77,10 @@ _SELF = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(_SELF))
 
 REPO_ROOT   = os.path.dirname(_SELF)
-RUN_BIN     = os.path.join(REPO_ROOT, "cmd", "BonfyreRun",   "bonfyre-run")
-QUANT_BIN   = os.path.join(REPO_ROOT, "cmd", "BonfyreQuant", "bonfyre-quant")
-LAYER_BIN   = os.path.join(REPO_ROOT, "cmd", "BonfyreLayer", "bonfyre-layer")
-FPQX_BIN    = os.path.join(REPO_ROOT, "cmd", "BonfyreFPQX",  "bonfyre-fpqx")
+RUN_BIN     = os.path.join(REPO_ROOT, "cmd", "AkaiRun",   "akai-run")
+QUANT_BIN   = os.path.join(REPO_ROOT, "cmd", "AkaiQuant", "akai-quant")
+LAYER_BIN   = os.path.join(REPO_ROOT, "cmd", "AkaiLayer", "akai-layer")
+FPQX_BIN    = os.path.join(REPO_ROOT, "cmd", "AkaiFPQX",  "akai-fpqx")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -141,7 +141,7 @@ class StructuralInterventionEngine:
     Manages structural interventions for unresolved hot zones.
     """
 
-    def __init__(self, memory_dir: str = "/tmp/bonfyre-memory",
+    def __init__(self, memory_dir: str = "/tmp/akai-memory",
                  models_dir: str = None):
         self.memory_dir = memory_dir
         self.models_dir = models_dir or os.path.join(REPO_ROOT, "models")
@@ -246,7 +246,7 @@ class StructuralInterventionEngine:
 
     def _extract_fragment(self, family: str, layer_range: str) -> Optional[str]:
         """
-        Extract fragment from family using bonfyre-layer.
+        Extract fragment from family using akai-layer.
 
         Returns path to fragment .bqfp file, or None if failed.
         """
@@ -267,7 +267,7 @@ class StructuralInterventionEngine:
             print(f"[intervention] Fragment already exists: {frag_path}")
             return frag_path
 
-        # Run bonfyre-layer to extract
+        # Run akai-layer to extract
         cmd = [
             LAYER_BIN,
             family_path,
@@ -278,7 +278,7 @@ class StructuralInterventionEngine:
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
             if result.returncode != 0:
-                print(f"[intervention] ERROR: bonfyre-layer failed:\n{result.stderr}")
+                print(f"[intervention] ERROR: akai-layer failed:\n{result.stderr}")
                 return None
             print(f"[intervention] Fragment extracted → {frag_path}")
             return frag_path
@@ -533,12 +533,12 @@ def main():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description="Bonfyre Structural Intervention Engine"
+        description="Akai Structural Intervention Engine"
     )
     parser.add_argument(
         "--memory-dir",
-        default="/tmp/bonfyre-memory",
-        help="Path to Bonfyre memory dir",
+        default="/tmp/akai-memory",
+        help="Path to Akai memory dir",
     )
     parser.add_argument(
         "--models-dir",

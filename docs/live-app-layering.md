@@ -1,11 +1,11 @@
 # Live App Layering
 
-Bonfyre should show both:
+Akai should show both:
 
 - the deterministic floor
 - the orchestrated layer
 
-without confusing people about what is core Bonfyre and what is the optional policy layer.
+without confusing people about what is core Akai and what is the optional policy layer.
 
 ## Default Pattern
 

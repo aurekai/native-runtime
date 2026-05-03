@@ -517,7 +517,7 @@ void fpqx_linear_layer_optimized(const FPQTensor* W, const float* x, float* y, i
 ### Build System
 
 ```makefile
-# Makefile for BonfyreFPQx
+# Makefile for AkaiFPQx
 CC = cc
 CFLAGS = -O3 -march=native -flto -Wall -Wextra -std=c11
 LDFLAGS = -lm
@@ -838,7 +838,7 @@ fpqx_save_encrypted("W_updated_encrypted.fpq", &W_updated);
 **Deployment**:
 ```bash
 # Compress model
-bonfyre-fpq encode \
+akai-fpq encode \
   --model qwen-0.5b.safetensors \
   --output qwen-0.5b.fpq \
   --version 12
@@ -848,7 +848,7 @@ scp qwen-0.5b.fpq pi@raspberrypi:/home/pi/models/
 
 # Run inference
 ssh pi@raspberrypi
-./bonfyre-fpqx inference \
+./akai-fpqx inference \
   --model /home/pi/models/qwen-0.5b.fpq \
   --prompt "The capital of France is"
 ```

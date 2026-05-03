@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# bonfyre-selfloop.sh
+# akai-selfloop.sh
 #
 # End-to-end self-optimization loop.
-# Bonfyre uses itself: artifacts feed the feedback brain, which routes
+# Akai uses itself: artifacts feed the feedback brain, which routes
 # and tunes the next iteration.
 #
 # Architecture exercised:
@@ -12,8 +12,8 @@
 #   → fragment create → space put  →  [repeat N times]
 #
 # Usage:
-#   bash scripts/bonfyre-selfloop.sh [--iters N] [--dir WORKDIR]
-#   bash scripts/bonfyre-selfloop.sh           # 3 iters, /tmp/bonfyre-selfloop
+#   bash scripts/akai-selfloop.sh [--iters N] [--dir WORKDIR]
+#   bash scripts/akai-selfloop.sh           # 3 iters, /tmp/akai-selfloop
 #
 # Every iteration:
 #   1. Ingest a synthetic artifact (or real doc)
@@ -43,7 +43,7 @@ set -euo pipefail
 
 # ── CLI args ──────────────────────────────────────────────────────────────
 ITERS=3
-WORKDIR="/tmp/bonfyre-selfloop"
+WORKDIR="/tmp/akai-selfloop"
 while [[ $# -gt 0 ]]; do
   case $1 in
     --iters) ITERS=$2; shift 2;;
@@ -56,7 +56,7 @@ mkdir -p "$WORKDIR"
 LOG="$WORKDIR/selfloop.log"
 exec > >(tee -a "$LOG") 2>&1
 
-BF="bonfyre"
+BF="akai"
 
 banner() { echo; echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; echo "  $*"; echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"; }
 step()   { echo; echo "  ▶ $*"; }
@@ -70,10 +70,10 @@ make_input_artifact() {
   mkdir -p "$outdir"
   local text="$outdir/doc.txt"
   cat > "$text" <<EOF
-Bonfyre self-optimization loop — iteration ${iter}
+Akai self-optimization loop — iteration ${iter}
 Date: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-This document is a synthetic behavioral artifact created by the Bonfyre
+This document is a synthetic behavioral artifact created by the Aurekai
 self-loop. It represents a pattern of activity over time.
 
 Pattern signals:
@@ -99,7 +99,7 @@ EOF
   "hash": "${HASH}",
   "created": $(date +%s),
   "iteration": ${iter},
-  "source": "bonfyre-selfloop",
+  "source": "akai-selfloop",
   "inputs": [{"path": "doc.txt", "type": "text"}]
 }
 JEOF
@@ -112,7 +112,7 @@ snapshot_learn() {
 }
 
 # ── Main loop ─────────────────────────────────────────────────────────────
-banner "bonfyre-selfloop: ${ITERS} iterations"
+banner "akai-selfloop: ${ITERS} iterations"
 echo "  workdir: $WORKDIR"
 echo "  log:     $LOG"
 echo ""
@@ -195,7 +195,7 @@ print(max(1, ms))
 import json, sys
 d = json.load(open('$ITER_DIR/embedding.json'))
 vec = d.get('vector', d.get('embedding', d.get('vec', [0.0]*384)))
-# Pad/trim to 384 dims to match VEC_DIMS in bonfyre-vec
+# Pad/trim to 384 dims to match VEC_DIMS in akai-vec
 if len(vec) < 384: vec = vec + [0.0] * (384 - len(vec))
 else: vec = vec[:384]
 wrapped = {'embeddings': [{'id': '$ARTIFACT_ID', 'source': 'selfloop', 'type': 'text', 'embedding': vec}]}
@@ -210,7 +210,7 @@ json.dump(wrapped, open('$ITER_DIR/vec_insert.json', 'w'))
 
   # ── 5. SLI chain (GDN T04→T16) ─────────────────────────────────────────
   step "5. sli chain: T04:gdn:T16 pattern inference"
-  MODELS_DIR="$HOME/.local/share/bonfyre/models"
+  MODELS_DIR="$HOME/.local/share/akai/models"
   if $BF model list 2>/dev/null | grep -q "T04\|T16" && [ -f "$ITER_DIR/embedding.json" ]; then
     python3 -c "
 import json, struct, os
@@ -311,7 +311,7 @@ with open('$ITER_DIR/vecs.bin','wb') as f:
 
   # ── 14. Space: store iteration summary ───────────────────────────────
   step "14. space: store iteration summary"
-  SPACE_NAME="bonfyre-selfloop"
+  SPACE_NAME="akai-selfloop"
   $BF space open "$SPACE_NAME" 2>/dev/null || true
   SUMMARY="{\"iter\":$iter,\"composite\":$COMPOSITE,\"winner\":\"$WINNER\",\"embed_ms\":$EMBED_MS,\"cost\":$COST}"
   $BF space put "$SPACE_NAME" "iter-${iter}" "$SUMMARY" 2>/dev/null \
@@ -392,4 +392,4 @@ $BF vec count "$WORKDIR/selfloop.vecdb" 2>/dev/null || true
 step "fragment: behavioral record count"
 $BF fragment stats --store "$WORKDIR/fragments.db" 2>/dev/null | head -6 || true
 
-banner "bonfyre-selfloop complete — log: $LOG"
+banner "akai-selfloop complete — log: $LOG"

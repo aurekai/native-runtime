@@ -1,27 +1,27 @@
 #!/usr/bin/env python3
 """
-finalize_artifact.py — unified compress + hash stage for bonfyre pipelines.
+finalize_artifact.py — unified compress + hash stage for akai pipelines.
 
-Replaces the brittle split between bonfyre-quant compress (broken) and
-bonfyre-hash merkle (no write-back) that caused friction in calibration runs.
+Replaces the brittle split between akai-quant compress (broken) and
+akai-hash merkle (no write-back) that caused friction in calibration runs.
 
 What it does:
-  1. Packs model.onnx with bonfyre-compress (zstd) → model.fpq
-  2. Computes sha256 of both model.onnx and model.fpq via bonfyre-hash file
+  1. Packs model.onnx with akai-compress (zstd) → model.fpq
+  2. Computes sha256 of both model.onnx and model.fpq via akai-hash file
   3. Writes content_hash + fpq_sha256 + root_hash back into artifact.json
-  4. Runs bonfyre-hash verify to confirm integrity
+  4. Runs akai-hash verify to confirm integrity
 
 On success:
   - artifact.json has: sha256, content_hash, fpq_sha256, root_hash
   - model.fpq exists alongside model.onnx in the train output dir
-  - bonfyre-model add <artifact.json> will work
-  - bonfyre-model push will have fpq_sha256 populated
+  - akai-model add <artifact.json> will work
+  - akai-model push will have fpq_sha256 populated
 
 Usage (standalone):
   python3 finalize_artifact.py <train_out_dir>
   python3 finalize_artifact.py /tmp/run/train
 
-As a bonfyre-run stage in a recipe:
+As a akai-run stage in a recipe:
   {
     "id":  "finalize",
     "bin": "python3",
@@ -60,14 +60,14 @@ def run_tool(cmd, label):
 def compress_model(onnx_path, fpq_path):
     """
     Compress model.onnx → model.fpq.
-    Tries bonfyre-compress pack first; falls back to python zstd if unavailable.
+    Tries akai-compress pack first; falls back to python zstd if unavailable.
     """
     stdout, rc = run_tool(
-        ["bonfyre-compress", "pack", onnx_path, fpq_path],
-        "bonfyre-compress"
+        ["akai-compress", "pack", onnx_path, fpq_path],
+        "akai-compress"
     )
     if rc == 0 and os.path.exists(fpq_path):
-        print(f"[finalize] bonfyre-compress pack → {fpq_path}")
+        print(f"[finalize] akai-compress pack → {fpq_path}")
         return True
 
     # Fallback: zstd via Python stdlib (lzma as proxy if zstd unavailable)
@@ -114,7 +114,7 @@ def main():
     # 2. Compute ONNX sha256
     onnx_sha = sha256_file(onnx_path)
     artifact["sha256"]       = onnx_sha
-    artifact["content_hash"] = onnx_sha   # flat scalar for bonfyre-hash merkle
+    artifact["content_hash"] = onnx_sha   # flat scalar for akai-hash merkle
 
     # 3. Compress model.onnx → model.fpq
     fpq_sha = None
@@ -127,10 +127,10 @@ def main():
             artifact["fpq_size_mb"] = size_mb_fpq
             print(f"[finalize] fpq_sha256={fpq_sha[:16]}…  size={size_mb_fpq} MB")
 
-    # 4. Compute root_hash via bonfyre-hash merkle (or pure-Python)
+    # 4. Compute root_hash via akai-hash merkle (or pure-Python)
     stdout, rc = run_tool(
-        ["bonfyre-hash", "merkle", artifact_path],
-        "bonfyre-hash merkle (pre-write)"
+        ["akai-hash", "merkle", artifact_path],
+        "akai-hash merkle (pre-write)"
     )
     if rc == 0 and stdout and len(stdout) == 64:
         root_hash = stdout
@@ -144,15 +144,15 @@ def main():
         json.dump(artifact, f, indent=2)
     print(f"[finalize] artifact.json updated  root_hash={root_hash[:16]}…")
 
-    # 6. Verify via bonfyre-hash verify (non-fatal)
+    # 6. Verify via akai-hash verify (non-fatal)
     verify_out, verify_rc = run_tool(
-        ["bonfyre-hash", "verify", artifact_path],
-        "bonfyre-hash verify"
+        ["akai-hash", "verify", artifact_path],
+        "akai-hash verify"
     )
     if verify_rc == 0:
         print(f"[finalize] {verify_out}")
     else:
-        print(f"[finalize] WARNING: bonfyre-hash verify skipped (rc={verify_rc})")
+        print(f"[finalize] WARNING: akai-hash verify skipped (rc={verify_rc})")
 
     print(f"[finalize] done — {artifact_path}")
 

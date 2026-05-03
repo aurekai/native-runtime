@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # scripts/stability_test.sh
 #
-# Long-loop stability test for bonfyre-sli auto-run.
+# Long-loop stability test for akai-sli auto-run.
 # Runs 50-iteration convergence loops under two geometry regimes:
 #   A — short-doc  (avg_doc_len=150 → routes to T04)
 #   B — long-doc   (avg_doc_len=650 → routes to T16)
@@ -14,23 +14,23 @@
 #   bash scripts/stability_test.sh [models_dir] [n_iters]
 #
 # Defaults:
-#   models_dir : /tmp/bonfyre-families
+#   models_dir : /tmp/akai-families
 #   n_iters    : 50
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MODELS_DIR="${1:-/tmp/bonfyre-families}"
+MODELS_DIR="${1:-/tmp/akai-families}"
 N_ITERS="${2:-50}"
 
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
-OUT_ROOT="/tmp/bonfyre-stability-$$"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
+OUT_ROOT="/tmp/akai-stability-$$"
 CSV="$OUT_ROOT/convergence.csv"
 
 mkdir -p "$OUT_ROOT"
 
 echo "==================================================================="
-echo " bonfyre-sli long-loop stability test"
+echo " akai-sli long-loop stability test"
 echo " models_dir : $MODELS_DIR"
 echo " n_iters    : $N_ITERS"
 echo " out_root   : $OUT_ROOT"

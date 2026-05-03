@@ -1,32 +1,32 @@
-# Bonfyre Speech Investigation — System Integration Map
+# Akai Speech Investigation — System Integration Map
 
-## Updated Bonfyre Command Tree (Speech Investigation Core)
+## Updated Akai Command Tree (Speech Investigation Core)
 
 ```
-Bonfyre Ecosystem (70+ binaries)
+Akai Ecosystem (70+ binaries)
 │
 ├── SPEECH INVESTIGATION STACK ★ ← NEW CORE CAPABILITY
 │   │
 │   ├── Layer 0: Audio Intake
-│   │   └── BonfyreSpeechLoop — VAD, segmentation, normalization
+│   │   └── AkaiSpeechLoop — VAD, segmentation, normalization
 │   │
 │   ├── Layer 1: Transcription
-│   │   ├── BonfyreTranscribe — Whisper-based, vocab engine, confidence scoring
-│   │   ├── BonfyreTranscriptClean — Filler removal, disfluency repair
-│   │   └── BonfyreTranscriptFamily — Group related transcripts
+│   │   ├── AkaiTranscribe — Whisper-based, vocab engine, confidence scoring
+│   │   ├── AkaiTranscriptClean — Filler removal, disfluency repair
+│   │   └── AkaiTranscriptFamily — Group related transcripts
 │   │
 │   ├── Layer 2-4: Symbolic Front-End
-│   │   ├── BonfyreEntity — Extract entities from unstructured text
-│   │   ├── BonfyreCanon — Canonicalize variants (tree-sitter)
-│   │   └── BonfyreGraph — Build entity relationship graph
+│   │   ├── AkaiEntity — Extract entities from unstructured text
+│   │   ├── AkaiCanon — Canonicalize variants (tree-sitter)
+│   │   └── AkaiGraph — Build entity relationship graph
 │   │
 │   ├── Layer 5: Claims Extraction
 │   │   └── graph_to_claims.py — Bridge graph → relational claims
 │   │
 │   ├── Layer 6: Semantic Infrastructure
-│   │   ├── BonfyreEmbed — Generate embeddings (ONNX Runtime)
-│   │   ├── BonfyreVec — Vector index (SQLite-vec, HNSW)
-│   │   └── BonfyreSLI — Spectral Lattice Inference (4.4× BW reduction)
+│   │   ├── AkaiEmbed — Generate embeddings (ONNX Runtime)
+│   │   ├── AkaiVec — Vector index (SQLite-vec, HNSW)
+│   │   └── AkaiSLI — Spectral Lattice Inference (4.4× BW reduction)
 │   │
 │   ├── Layer 7-9: Investigation Engine
 │   │   ├── hypothesis_discovery.py — Autonomous signal detection
@@ -34,36 +34,36 @@ Bonfyre Ecosystem (70+ binaries)
 │   │   └── convergence_engine.py — Stable/fragile/conflict classification
 │   │
 │   ├── Layer 10: Fragment + Layer System
-│   │   └── BonfyreCMS — Multi-dimensional representation
+│   │   └── AkaiCMS — Multi-dimensional representation
 │   │       ├── Fragments (competing interpretations)
 │   │       └── Layers (substrate/transform/surface/value)
 │   │
 │   └── Layer 11-15: Production Infrastructure
-│       ├── BonfyreMeter — Usage metering, quality scoring
-│       ├── BonfyreLedger — Value accounting, portfolio assessment
-│       ├── BonfyreCompress — Family-aware compression (zstd)
-│       ├── BonfyreIndex — FTS5 indexing
-│       ├── BonfyreAPI — HTTP gateway (SSE, webhooks)
-│       └── BonfyreQueue — Async job management
+│       ├── AkaiMeter — Usage metering, quality scoring
+│       ├── AkaiLedger — Value accounting, portfolio assessment
+│       ├── AkaiCompress — Family-aware compression (zstd)
+│       ├── AkaiIndex — FTS5 indexing
+│       ├── AkaiAPI — HTTP gateway (SSE, webhooks)
+│       └── AkaiQueue — Async job management
 │
 ├── FOUNDATION BINARIES (Used by Speech Investigation)
-│   ├── BonfyrePipeline — Unified fast path (5-8ms)
-│   ├── BonfyreIngest — Universal intake
-│   ├── BonfyreHash — Content addressing (SHA-256)
-│   ├── BonfyreStitch — DAG materializer
-│   └── BonfyreEmit — Multi-format output (pandoc)
+│   ├── AkaiPipeline — Unified fast path (5-8ms)
+│   ├── AkaiIngest — Universal intake
+│   ├── AkaiHash — Content addressing (SHA-256)
+│   ├── AkaiStitch — DAG materializer
+│   └── AkaiEmit — Multi-format output (pandoc)
 │
 ├── MODEL COMPRESSION (Enables On-Device Inference)
-│   ├── BonfyreFPQ — Functional Polar Quantization
+│   ├── AkaiFPQ — Functional Polar Quantization
 │   │   ├── v12: E8 + rANS entropy (0.819 B/param)
 │   │   ├── v9: E8 + 16D RVQ (cosine 0.99997)
 │   │   └── PPL: 12.07 vs 11.95 baseline (+0.9% on Qwen 0.5B)
 │   │
-│   └── BonfyreFPQx — Extended codec
+│   └── AkaiFPQx — Extended codec
 │       └── SLI: Inference in compressed domain (no dequant)
 │
 ├── LAMBDA TENSOR COMPRESSION (Archive Storage)
-│   └── BonfyreCMS — Component system
+│   └── AkaiCMS — Component system
 │       ├── V2 Huffman: 15% of raw at 10K members, 2.8× gzip
 │       ├── String interning (CB_FAMSTR)
 │       └── Per-position canonical Huffman from family PMF
@@ -84,8 +84,8 @@ Bonfyre Ecosystem (70+ binaries)
 
 ```bash
 # Backend: Collect customer interview audio
-BonfyreSpeechLoop --input interviews/*.mp3 --output segments/
-BonfyreTranscribe --input segments/*.wav --output transcripts/
+AkaiSpeechLoop --input interviews/*.mp3 --output segments/
+AkaiTranscribe --input segments/*.wav --output transcripts/
 bash scripts/speech_investigation_production.sh "transcripts/*.txt" customer_voice/
 
 # Frontend: WASM brief generator
@@ -98,13 +98,13 @@ bash scripts/speech_investigation_production.sh "transcripts/*.txt" customer_voi
 
 ---
 
-### 2. With BonfyreFPQ (On-Device Summarization)
+### 2. With AkaiFPQ (On-Device Summarization)
 
 **Example: Claim Summarization**
 
 ```bash
 # Compress Qwen 0.5B for claim summarization
-BonfyreFPQ encode \
+AkaiFPQ encode \
   --model ~/.local/share/models/qwen-0.5b.safetensors \
   --output models/qwen-0.5b.fpq \
   --version 12 \
@@ -116,7 +116,7 @@ BonfyreFPQ encode \
 
 **Python inference**:
 ```python
-from bonfyre import FPQModel
+from akai import FPQModel
 
 model = FPQModel.load("models/qwen-0.5b.fpq")
 
@@ -147,13 +147,13 @@ Query → Embed (10ms) → SLI lookup (10ms) → Top-K (5ms) = 25ms
 **Integration**:
 ```bash
 # Prepare SLI index
-BonfyreSLI prepare \
+AkaiSLI prepare \
   --embeddings customer_voice/embeddings/claims.fpq \
   --output customer_voice/embeddings_sli/ \
   --fwht-on-z
 
 # Query
-BonfyreSLI query \
+AkaiSLI query \
   --index customer_voice/embeddings_sli/ \
   --query "pricing concerns" \
   --top-k 20
@@ -174,8 +174,8 @@ BonfyreSLI query \
 ```bash
 # 1000 podcast episodes = ~1000 hours = ~1 GB transcripts (raw JSON)
 
-# Compress with BonfyreCMS V2 Huffman
-BonfyreCMS compress \
+# Compress with AkaiCMS V2 Huffman
+AkaiCMS compress \
   --family podcast_en_tech \
   --members transcripts/*.json \
   --v2-huffman \
@@ -190,7 +190,7 @@ BonfyreCMS compress \
 
 ---
 
-### 5. With BonfyreAPI + BonfyreQueue (Production Deployment)
+### 5. With AkaiAPI + AkaiQueue (Production Deployment)
 
 **Example: Continuous Organizational Knowledge Capture**
 
@@ -198,17 +198,17 @@ BonfyreCMS compress \
 # docker-compose.yml
 services:
   api:
-    image: bonfyre:latest
-    command: ["bonfyre-api", "start", "--port", "9999"]
+    image: akai:latest
+    command: ["akai-api", "start", "--port", "9999"]
     ports: ["9999:9999"]
-    volumes: ["bonfyre-data:/data"]
+    volumes: ["akai-data:/data"]
     environment:
       WEBHOOK_URL: "https://company.com/api/knowledge_update"
   
   worker:
-    image: bonfyre:latest
-    command: ["bonfyre-queue", "work", "--threads", "4"]
-    volumes: ["bonfyre-data:/data"]
+    image: akai:latest
+    command: ["akai-queue", "work", "--threads", "4"]
+    volumes: ["akai-data:/data"]
     environment:
       ENABLE_SLI: "true"
       ENABLE_EMBEDDINGS: "true"
@@ -216,8 +216,8 @@ services:
 
 **Workflow**:
 1. Meeting ends → audio uploaded to S3
-2. S3 webhook → POST /jobs/submit to BonfyreAPI
-3. BonfyreQueue picks up job → runs investigation pipeline
+2. S3 webhook → POST /jobs/submit to AkaiAPI
+3. AkaiQueue picks up job → runs investigation pipeline
 4. Webhook notification when complete
 5. SSE stream for real-time progress
 
@@ -225,13 +225,13 @@ services:
 
 ---
 
-### 6. With BonfyreMeter + BonfyreLedger (Value Tracking)
+### 6. With AkaiMeter + AkaiLedger (Value Tracking)
 
 **Example: Cost/Value Analysis**
 
 ```bash
 # Record per-operation costs
-BonfyreMeter record \
+AkaiMeter record \
   --operation transcribe \
   --input-size 3600 \  # 1 hour = 3600 seconds
   --cost 21.60 \       # $0.006/second
@@ -239,7 +239,7 @@ BonfyreMeter record \
   --ledger metrics/ledger.db
 
 # Assess portfolio value
-BonfyreLedger assess \
+AkaiLedger assess \
   --artifacts customer_voice/ \
   --meter metrics/ledger.db \
   --output portfolio.json
@@ -298,17 +298,17 @@ typedef struct {
 
 ### 2. Shared Metering Infrastructure
 
-BonfyreMeter tracks ALL operations:
+AkaiMeter tracks ALL operations:
 
 ```bash
 # Transcription
-BonfyreMeter record --operation transcribe --input-size 3600 --cost 21.60
+AkaiMeter record --operation transcribe --input-size 3600 --cost 21.60
 
 # Entity extraction
-BonfyreMeter record --operation entity_extract --input-size 100000 --cost 0.50
+AkaiMeter record --operation entity_extract --input-size 100000 --cost 0.50
 
 # Embedding generation
-BonfyreMeter record --operation embed --input-size 5000 --cost 2.00
+AkaiMeter record --operation embed --input-size 5000 --cost 2.00
 
 # Query all costs
 sqlite3 ledger.db "SELECT operation, SUM(cost) FROM metrics GROUP BY operation"
@@ -375,14 +375,14 @@ bash scripts/speech_investigation_production.sh \
   --embeddings --sli
 
 # Compress for archival
-BonfyreCMS compress \
+AkaiCMS compress \
   --family speech_investigation_2026_q2 \
   --members investigation/reports/*.json investigation/graphs/*.json \
   --v2-huffman \
   --output archives/2026_q2.bflam
 
 # Index for search
-BonfyreIndex \
+AkaiIndex \
   --artifacts archives/2026_q2.bflam \
   --fts5 \
   --output search/index.db
@@ -396,13 +396,13 @@ BonfyreIndex \
 
 ```bash
 # Compress investigation model for on-device summarization
-BonfyreFPQ encode \
+AkaiFPQ encode \
   --model models/qwen-0.5b.safetensors \
   --output models/qwen-0.5b.fpq \
   --version 12
 
 # Prepare SLI index for fast search
-BonfyreSLI prepare \
+AkaiSLI prepare \
   --embeddings investigation/embeddings/claims.fpq \
   --output investigation/embeddings_sli/
 
@@ -444,13 +444,13 @@ git push
 ### Stack 1: CPU-Only (No GPU)
 
 ```
-BonfyreTranscribe (CPU Whisper, RTF 0.5) → 30 min for 1 hr audio
+AkaiTranscribe (CPU Whisper, RTF 0.5) → 30 min for 1 hr audio
   ↓
-BonfyreEntity/Canon/Graph (C binaries) → 1 min
+AkaiEntity/Canon/Graph (C binaries) → 1 min
   ↓
 graph_to_claims.py → 10 sec
   ↓
-BonfyreEmbed (ONNX CPU) → 5 min
+AkaiEmbed (ONNX CPU) → 5 min
   ↓
 hypothesis_discovery.py → 1 min
   ↓
@@ -464,13 +464,13 @@ Total: ~37 min for 1 hr audio (RTF 0.62)
 ### Stack 2: GPU-Accelerated
 
 ```
-BonfyreTranscribe (GPU Whisper, RTF 0.1) → 6 min for 1 hr audio
+AkaiTranscribe (GPU Whisper, RTF 0.1) → 6 min for 1 hr audio
   ↓
-BonfyreEntity/Canon/Graph (C binaries) → 1 min
+AkaiEntity/Canon/Graph (C binaries) → 1 min
   ↓
 graph_to_claims.py → 10 sec
   ↓
-BonfyreEmbed (ONNX GPU) → 2 min
+AkaiEmbed (ONNX GPU) → 2 min
   ↓
 hypothesis_discovery.py → 1 min
   ↓
@@ -486,7 +486,7 @@ Total: ~11 min for 1 hr audio (RTF 0.18)
 ```
 [Same as Stack 2, plus:]
   ↓
-BonfyreSLI prepare → 30 sec (one-time cost)
+AkaiSLI prepare → 30 sec (one-time cost)
   ↓
 Queries: 25ms each (vs 65ms dense)
   ↓
@@ -505,7 +505,7 @@ Result: 4.4× lower RAM usage, 2.5× faster queries
 
 ```bash
 # WebSocket API for live transcription
-BonfyreAPI stream \
+AkaiAPI stream \
   --port 9999 \
   --stream-endpoint /investigate/stream
 
@@ -525,9 +525,9 @@ BonfyreAPI stream \
 
 ```bash
 # Video + slides + transcripts
-BonfyreIngest --input presentation.mp4 --extract slides,audio
-BonfyreTranscribe --input audio.wav
-BonfyreEntity --input transcript.txt + slide_ocr.txt
+AkaiIngest --input presentation.mp4 --extract slides,audio
+AkaiTranscribe --input audio.wav
+AkaiEntity --input transcript.txt + slide_ocr.txt
 
 # Result: Entities from both speech AND slides
 # Detect: What speaker said vs. what slides showed (contradictions?)
@@ -541,11 +541,11 @@ BonfyreEntity --input transcript.txt + slide_ocr.txt
 
 ```bash
 # Translate-then-investigate
-BonfyreTranscribe --input audio.wav --language fr --translate-to en
+AkaiTranscribe --input audio.wav --language fr --translate-to en
 bash scripts/speech_investigation_production.sh ...
 
 # Or: Multilingual embeddings
-BonfyreEmbed --model sentence-transformers/paraphrase-multilingual-mpnet-base-v2
+AkaiEmbed --model sentence-transformers/paraphrase-multilingual-mpnet-base-v2
 ```
 
 **Benefit**: Investigate conversations across languages
@@ -562,7 +562,7 @@ bash scripts/speech_investigation_production.sh "internal/*.mp3" local_a/
 bash scripts/speech_investigation_production.sh "internal/*.mp3" local_b/
 
 # Federated aggregation (no raw data shared)
-BonfyreGraph merge \
+AkaiGraph merge \
   --graphs local_a/graphs/graph.json local_b/graphs/graph.json \
   --privacy-mode differential \
   --output federated/graph.json
@@ -583,13 +583,13 @@ BonfyreGraph merge \
 4. **[SPEECH_DEMO.md](../test-speech/SPEECH_DEMO.md)** — Real test results
 
 ### Integration Points
-5. **[/memories/repo/bonfyre-binaries.md](/memories/repo/bonfyre-binaries.md)** — Complete command tree (70+ binaries)
+5. **[/memories/repo/akai-binaries.md](/memories/repo/akai-binaries.md)** — Complete command tree (70+ binaries)
 6. **[/memories/repo/spectral-lattice-inference.md](/memories/repo/spectral-lattice-inference.md)** — SLI theory + implementation
 7. **[PHASE_17_DISCOVERY.md](PHASE_17_DISCOVERY.md)** — Hypothesis discovery engine
 8. **[PHASE_16_HYPOTHESIS_ENGINE.md](PHASE_16_HYPOTHESIS_ENGINE.md)** — Adversarial testing
 
-### Bonfyre Foundation
-9. **[architecture.md](architecture.md)** — Overall Bonfyre architecture
+### Akai Foundation
+9. **[architecture.md](architecture.md)** — Overall Akai architecture
 10. **[pipeline.md](pipeline.md)** — Pipeline construction patterns
 11. **[lambda-tensors.md](lambda-tensors.md)** — CMS compression theory
 12. **[benchmarks.md](benchmarks.md)** — Performance characteristics
@@ -599,10 +599,10 @@ BonfyreGraph merge \
 ## System Integration Status
 
 ✅ **Core Pipeline**: Production-ready, tested on real data  
-✅ **C Binary Integration**: BonfyreEntity/Canon/Graph ready  
+✅ **C Binary Integration**: AkaiEntity/Canon/Graph ready  
 ✅ **Python Prototype**: Validated, documented  
-✅ **Embedding Layer**: BonfyreEmbed integration-ready  
-✅ **SLI Acceleration**: BonfyreSLI integration-ready  
+✅ **Embedding Layer**: AkaiEmbed integration-ready  
+✅ **SLI Acceleration**: AkaiSLI integration-ready  
 ✅ **FPQ Compression**: On-device inference ready  
 ✅ **CMS Archival**: Lambda tensor compression ready  
 ✅ **API/Queue**: Production deployment ready  
@@ -618,7 +618,7 @@ BonfyreGraph merge \
 ```
 Audio → Investigation → Insights → Actions
   ↓         ↓             ↓          ↓
-Bonfyre   Entity/       Hypothesis  Fragments
+Akai   Entity/       Hypothesis  Fragments
 Speech    Canon/        Discovery   + Layers
 Loop      Graph         Engine      Multi-dim
   ↓         ↓             ↓          ↓
@@ -635,7 +635,7 @@ Jobs      WASM          Tracking    Assessment
 
 Every other system: Audio → Text → Summary → Done
 
-Bonfyre: Audio → Structure → Hypotheses → Pressure → Ranked Interpretations → Actions
+Aurekai: Audio → Structure → Hypotheses → Pressure → Ranked Interpretations → Actions
 
 **That's the asymmetric advantage.**
 

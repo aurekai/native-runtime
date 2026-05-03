@@ -18,7 +18,7 @@ Metrics per run:
 
 Usage:
     python3 scripts/bench_fragment.py
-    python3 scripts/bench_fragment.py --loop 8 --runs 3 --models-dir /tmp/bonfyre-families
+    python3 scripts/bench_fragment.py --loop 8 --runs 3 --models-dir /tmp/akai-families
     python3 scripts/bench_fragment.py --text-file docs/sample.txt --loop 6
 """
 
@@ -36,8 +36,8 @@ import warnings
 warnings.filterwarnings("ignore")
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SLI_BIN   = os.path.join(REPO_ROOT, "cmd", "BonfyreSLI", "bonfyre-sli")
-MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "BonfyreModel", "bonfyre-model")
+SLI_BIN   = os.path.join(REPO_ROOT, "cmd", "AkaiSLI", "akai-sli")
+MODEL_BIN = os.path.join(REPO_ROOT, "cmd", "AkaiModel", "akai-model")
 
 DEMO_TEXTS = [
     "Apple reports record quarterly revenue driven by iPhone and services.",
@@ -93,7 +93,7 @@ def compute_stats(texts):
     return {"n_docs": n_docs, "avg_doc_len": round(avg_len, 1), "vocab_size": len(vocab)}
 
 
-# ── Parse bonfyre-sli auto-run log ──────────────────────────────────────────
+# ── Parse akai-sli auto-run log ──────────────────────────────────────────
 
 def parse_log(log):
     """Return list of (iter_num, delta) tuples from auto-run log."""
@@ -156,7 +156,7 @@ def main():
     ap.add_argument("--text-file",  help="File with one text per line")
     ap.add_argument("--loop",       type=int, default=6)
     ap.add_argument("--runs",       type=int, default=3, help="Repeat each condition N times")
-    ap.add_argument("--models-dir", default="/tmp/bonfyre-families")
+    ap.add_argument("--models-dir", default="/tmp/akai-families")
     ap.add_argument("--stable-thresh", type=float, default=0.95,
                     help="Delta threshold for 'stable' labeling")
     args = ap.parse_args()
@@ -173,7 +173,7 @@ def main():
     has_frag   = os.path.exists(frag_bqfp)
 
     print("=" * 72)
-    print(" BONFYRE  fragment:auto  benchmark")
+    print(" AKAI  fragment:auto  benchmark")
     print(f"  texts      : {len(texts)}")
     print(f"  loop       : {args.loop} iters each run")
     print(f"  runs       : {args.runs} × per condition")

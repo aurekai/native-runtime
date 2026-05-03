@@ -15,10 +15,10 @@
 # Scales:  250, 500, 1000, 2000
 #
 # Usage:
-#   bash scripts/run_diversity.sh [--out-root /tmp/bonfyre-diversity] [--bonfyre-run PATH]
+#   bash scripts/run_diversity.sh [--out-root /tmp/akai-diversity] [--akai-run PATH]
 #
 # Requirements:
-#   bonfyre-run on PATH (cmd/BonfyreRun/bonfyre-run)
+#   akai-run on PATH (cmd/AkaiRun/akai-run)
 #   python3 + datasets + sentence-transformers + torch + scikit-learn + transformers
 #
 # Results:
@@ -35,14 +35,14 @@ set -euo pipefail
 export TOKENIZERS_PARALLELISM=false
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OUT_ROOT="/tmp/bonfyre-diversity"
-BF_RUN="bonfyre-run"
-BF_PARAGRAPH="/tmp/bonfyre-oss/cmd/BonfyreParagraph/bonfyre-paragraph"
+OUT_ROOT="/tmp/akai-diversity"
+BF_RUN="akai-run"
+BF_PARAGRAPH="/tmp/akai-oss/cmd/AkaiParagraph/akai-paragraph"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
         --out-root)     OUT_ROOT="$2";   shift 2 ;;
-        --bonfyre-run)  BF_RUN="$2";     shift 2 ;;
+        --akai-run)  BF_RUN="$2";     shift 2 ;;
         *)              echo "Unknown arg: $1"; exit 1 ;;
     esac
 done
@@ -109,7 +109,7 @@ run_experiment() {
         echo "[diversity] already ran — skipping (delete $run_out to rerun)"
     else
         mkdir -p "$run_out"
-        # Inject bonfyre-paragraph path for T16-C via env
+        # Inject akai-paragraph path for T16-C via env
         local bf_para_arg=""
         if [[ "$task" == "T16-C" ]] && [[ -x "$BF_PARAGRAPH" ]]; then
             export BONFYRE_PARAGRAPH="$BF_PARAGRAPH"

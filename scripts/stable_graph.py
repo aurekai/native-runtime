@@ -34,7 +34,7 @@ USAGE (library):
 
 USAGE (CLI):
     python3 scripts/stable_graph.py \
-        --memory-dir /tmp/bonfyre-memory \
+        --memory-dir /tmp/akai-memory \
         --out-stable /tmp/stable_graph.json \
         --out-fragile /tmp/fragile_graph.json \
         --out-conflict /tmp/conflict_graph.json
@@ -287,8 +287,8 @@ def main():
     import argparse
 
     ap = argparse.ArgumentParser(description="Extract stable/fragile/conflict graph layers")
-    ap.add_argument("--memory-dir", default="/tmp/bonfyre-memory",
-                    help="Bonfyre memory directory")
+    ap.add_argument("--memory-dir", default="/tmp/akai-memory",
+                    help="Akai memory directory")
     ap.add_argument("--min-strength", type=float, default=0.5,
                     help="Min claim_strength for stable edges")
     ap.add_argument("--max-conflict-density", type=float, default=0.3,

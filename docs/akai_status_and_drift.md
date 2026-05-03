@@ -1,6 +1,6 @@
-# Bonfyre Status And Drift
+# Akai Status And Drift
 
-Bonfyre now distinguishes between command dispatch availability, command health, and registry density.
+Akai now distinguishes between command dispatch availability, command health, and registry density.
 
 ## Meanings
 
@@ -21,7 +21,7 @@ Bonfyre now distinguishes between command dispatch availability, command health,
 
 ## Registry Layers
 
-Bonfyre currently has two different state surfaces that matter day to day:
+Akai currently has two different state surfaces that matter day to day:
 
 `layeros/state`
 - Large LayerArtifact and DisCIPL operating state.
@@ -38,56 +38,56 @@ Populate the command and registry surfaces after pulling new runtime code:
 
 ```bash
 make
-bonfyre doctor sync-subcommands
-bonfyre-index layers --root layeros/state
-bonfyre list --health
-bonfyre workflow list
-bonfyre recipe list
-bonfyre layer registry --root layeros/state
+akai doctor sync-subcommands
+akai-index layers --root layeros/state
+akai list --health
+akai workflow list
+akai recipe list
+akai layer registry --root layeros/state
 ```
 
-Use the direct binary paths instead of `bonfyre ...` if you are validating a fresh build before install.
+Use the direct binary paths instead of `akai ...` if you are validating a fresh build before install.
 
 Inspect registry density:
 
 ```bash
-bonfyre status registries --root layeros/state
-bonfyre status registries --root layeros/state --json
+akai status registries --root layeros/state
+akai status registries --root layeros/state --json
 ```
 
 Inspect command drift:
 
 ```bash
-bonfyre status commands
-bonfyre status commands --json
+akai status commands
+akai status commands --json
 ```
 
 Write a deep operational snapshot:
 
 ```bash
-bonfyre status snapshot --root layeros/state --out /tmp/bonfyre_ops_deep
+akai status snapshot --root layeros/state --out /tmp/bonfyre_ops_deep
 ```
 
 Preview repo-to-install sync without changing anything:
 
 ```bash
-bonfyre doctor sync-subcommands --dry-run
+akai doctor sync-subcommands --dry-run
 ```
 
 Synchronize matching repo-built subcommands into `~/.local/bin`:
 
 ```bash
-bonfyre doctor sync-subcommands
+akai doctor sync-subcommands
 ```
 
 Show health labels in the command surface:
 
 ```bash
-bonfyre list --health
-bonfyre list --compact --health
-bonfyre list --json --health
+akai list --health
+akai list --compact --health
+akai list --json --health
 ```
 
 ## Notes
 
-When you run `bonfyre` from inside the Bonfyre repo, the dispatcher prefers repo-built binaries where possible. This reduces command drift during development and makes the command surface reflect the current working tree more accurately than the installed fleet alone.
+When you run `akai` from inside the Akai repo, the dispatcher prefers repo-built binaries where possible. This reduces command drift during development and makes the command surface reflect the current working tree more accurately than the installed fleet alone.

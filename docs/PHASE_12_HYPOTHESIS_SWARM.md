@@ -2,14 +2,14 @@
 
 **Commit:** d67b1a2 + a1eba9b  
 **Status:** ✅ COMPLETE + TESTED  
-**Dependencies:** ZERO (stdlib + existing Bonfyre stack)  
+**Dependencies:** ZERO (stdlib + existing Akai stack)  
 **Database:** Extends `memory.db` with claim/conflict/cluster tables  
 
 ---
 
 ## 🎯 WHAT IS THIS?
 
-Phase 12 turns Bonfyre from a **self-evolving adaptive transform runtime** into a **self-evolving hypothesis swarm** that attacks hard corpora from many incompatible angles until a stronger graph emerges.
+Phase 12 turns Akai from a **self-evolving adaptive transform runtime** into a **self-evolving hypothesis swarm** that attacks hard corpora from many incompatible angles until a stronger graph emerges.
 
 Instead of one family producing one set of labels at each iteration, the swarm runs **10-50 narrow, intentionally-biased micro-models** (lenses) over the same input simultaneously. Each lens:
 - Produces **claims** (structured assertions) from its narrow perspective
@@ -41,7 +41,7 @@ support_links      (claim_a, claim_b, strength)
 
 **CLI:**
 ```bash
-python3 scripts/claim_graph.py summary --memory-dir /tmp/bonfyre-memory
+python3 scripts/claim_graph.py summary --memory-dir /tmp/akai-memory
 python3 scripts/claim_graph.py conflicts --min-strength 0.4
 python3 scripts/claim_graph.py hot-zones --top 20
 python3 scripts/claim_graph.py export /tmp/claim_export.json
@@ -103,10 +103,10 @@ Swarm orchestrator — runs N lenses over M docs, detects conflicts, clusters th
 **CLI:**
 ```bash
 python3 scripts/hypothesis_swarm.py --docs /tmp/corpus/*.txt \
-    --lenses all --memory-dir /tmp/bonfyre-memory --out /tmp/swarm_result.json
+    --lenses all --memory-dir /tmp/akai-memory --out /tmp/swarm_result.json
 
 python3 scripts/hypothesis_swarm.py --text "doc text" --doc-id 123 \
-    --lenses L01,L03,L06 --memory-dir /tmp/bonfyre-memory
+    --lenses L01,L03,L06 --memory-dir /tmp/akai-memory
 ```
 
 **Output:**
@@ -141,10 +141,10 @@ pressure = (conflict_count × avg_strength) / (support_count + 1)
 
 **CLI:**
 ```bash
-python3 scripts/conflict_cluster.py cluster-advanced --memory-dir /tmp/bonfyre-memory \
+python3 scripts/conflict_cluster.py cluster-advanced --memory-dir /tmp/akai-memory \
     --min-conflicts 3 --out /tmp/clusters_advanced.json
 
-python3 scripts/conflict_cluster.py hot-zones --memory-dir /tmp/bonfyre-memory \
+python3 scripts/conflict_cluster.py hot-zones --memory-dir /tmp/akai-memory \
     --pressure-threshold 2.0
 ```
 
@@ -210,7 +210,7 @@ ls /tmp/epstein-corpus/*.txt
 python3 scripts/hypothesis_swarm.py \
     --docs '/tmp/epstein-corpus/*.txt' \
     --lenses all \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --out /tmp/epstein_swarm_result.json
 
 # Output:
@@ -231,7 +231,7 @@ python3 scripts/hypothesis_swarm.py \
 ```bash
 # After swarm run, inspect hot zones
 python3 scripts/conflict_cluster.py hot-zones \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --pressure-threshold 3.0
 
 # Output lists high-pressure clusters:
@@ -242,7 +242,7 @@ python3 scripts/conflict_cluster.py hot-zones \
 python3 scripts/hypothesis_swarm.py \
     --docs epstein-deposition-2016.txt \
     --lenses L04,L02 \
-    --memory-dir /tmp/bonfyre-memory
+    --memory-dir /tmp/akai-memory
 ```
 
 ### Example 3: Auto-evolve with lens generation
@@ -250,8 +250,8 @@ python3 scripts/hypothesis_swarm.py \
 # Run evolution cycle after swarm passes
 python3 scripts/auto_evolve.py \
     --evolve \
-    --memory-dir /tmp/bonfyre-memory \
-    --models-dir /tmp/bonfyre-families
+    --memory-dir /tmp/akai-memory \
+    --models-dir /tmp/akai-families
 
 # Output:
 # [auto_evolve] Hot zones: 2 conflict cluster(s) flagged
@@ -259,7 +259,7 @@ python3 scripts/auto_evolve.py \
 # [auto_evolve]   wrote 1 new lens(es) → auto_lenses.json
 # [auto_evolve] Evolution complete: 3 patterns, 0 new families, 1 discoveries
 
-cat /tmp/bonfyre-memory/auto_lenses.json
+cat /tmp/akai-memory/auto_lenses.json
 # {
 #   "L11_timeline_anomaly_auto": {
 #     "lens_id": "L11_timeline_anomaly_auto",
@@ -316,30 +316,30 @@ ALL TESTS PASSED ✓
 
 ---
 
-## 🔗 INTEGRATION WITH BONFYRE RUNTIME
+## 🔗 INTEGRATION WITH AKAI RUNTIME
 
-### Pre-swarm: Bonfyre transform run
+### Pre-swarm: Akai transform run
 ```bash
-# Normal Bonfyre run (Phase 11)
+# Normal Akai run (Phase 11)
 python3 scripts/demo.py \
     --texts "Sample legal deposition text..." \
-    --memory-dir /tmp/bonfyre-memory \
+    --memory-dir /tmp/akai-memory \
     --auto-evolve
 ```
 
 ### Post-swarm: Hypothesis swarm enrichment
 ```bash
-# After Bonfyre transform completes, run swarm on same input
+# After Akai transform completes, run swarm on same input
 python3 scripts/hypothesis_swarm.py \
     --text "Sample legal deposition text..." \
     --doc-id "demo_run_1234" \
     --lenses all \
-    --memory-dir /tmp/bonfyre-memory \
-    --run-id 1234  # Links claims to specific Bonfyre run
+    --memory-dir /tmp/akai-memory \
+    --run-id 1234  # Links claims to specific Akai run
 ```
 
 **Result:**
-- Bonfyre run produces: labels, confidence scores, escalation chains
+- Akai run produces: labels, confidence scores, escalation chains
 - Swarm run produces: claims, conflicts, pressure zones
 - Both stored in `memory.db`
 - `auto_evolve.py` can now mint **both** new transform families (from failures) AND new lenses (from conflicts)
@@ -473,7 +473,7 @@ a1eba9b  Add Phase 12 smoke tests
 
 ## 🚨 DESIGN CONSTRAINTS (PRESERVED)
 
-✅ **NO new dependencies** — stdlib + sentence-transformers + onnxruntime (already in Bonfyre)  
+✅ **NO new dependencies** — stdlib + sentence-transformers + onnxruntime (already in Aurekai)  
 ✅ **NO redesign of runtime** — claim graph sits *on top* of existing transform memory  
 ✅ **NO neural training loops** — all lenses are rule-based (regex, heuristics, lookups)  
 ✅ **SQLite-backed** — extends `memory.db` with WAL mode  

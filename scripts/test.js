@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// Bonfyre npm test — checks that key binaries built and respond to 'status'
+// Akai npm test — checks that key binaries built and respond to 'status'
 const { execSync } = require('child_process');
 const path = require('path');
 
 const binDir = path.join(__dirname, '..', 'bin');
-const bins = ['bonfyre-cms', 'bonfyre-api', 'bonfyre-pipeline', 'bonfyre-ingest', 'bonfyre-brief'];
+const bins = ['akai-cms', 'akai-api', 'akai-pipeline', 'akai-ingest', 'akai-brief'];
 
 let pass = 0, fail = 0;
 for (const bin of bins) {

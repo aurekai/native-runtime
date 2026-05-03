@@ -3,7 +3,7 @@
 #
 # Usage: ./seed_app_from_youtube.sh <youtube_url> <app_slug> <item_id> [proof_dir]
 #
-# Downloads public audio transiently, runs the full Bonfyre pipeline,
+# Downloads public audio transiently, runs the full Akai pipeline,
 # deletes the source media, keeps only derived artifacts.
 #
 # Example:
@@ -11,7 +11,7 @@
 #
 set -euo pipefail
 
-BBIN="${BONFYRE_BIN:-$HOME/Projects/bonfyre-oss/cmd}"
+BBIN="${BONFYRE_BIN:-$HOME/Projects/akai-oss/cmd}"
 MODEL="${WHISPER_MODEL:-$HOME/.local/share/whisper/ggml-base.en-q4_0.bin}"
 HCP="${HCP_WHISPER:-$HOME/Projects/hcp-whisper/hcp-whisper}"
 WORKDIR=$(mktemp -d)
@@ -22,7 +22,7 @@ APP_SLUG="$2"
 ITEM_ID="$3"
 PROOF_DIR="${4:-$HOME/Projects/pages-${APP_SLUG}/site/demos/${APP_SLUG}/proofs/${ITEM_ID}}"
 
-echo "=== Bonfyre Pipeline: $URL → $ITEM_ID ==="
+echo "=== Akai Pipeline: $URL → $ITEM_ID ==="
 echo "  workdir: $WORKDIR"
 echo "  output:  $PROOF_DIR"
 
@@ -65,7 +65,7 @@ echo "  downloaded: $(basename "$SRCAUDIO") ($(du -h "$SRCAUDIO" | cut -f1))"
 # ── Step 3: Media prep ──────────────────────────────────────
 echo "[3/9] media-prep"
 STEP3_START=$(python3 -c "import time; print(time.time())")
-"$BBIN/BonfyreMediaPrep/bonfyre-media-prep" run "$SRCAUDIO" --out "$WORKDIR/prepped.wav" 2>/dev/null || \
+"$BBIN/AkaiMediaPrep/akai-media-prep" run "$SRCAUDIO" --out "$WORKDIR/prepped.wav" 2>/dev/null || \
   ffmpeg -y -i "$SRCAUDIO" -ar 16000 -ac 1 -c:a pcm_s16le "$WORKDIR/prepped.wav" 2>/dev/null
 STEP3_END=$(python3 -c "import time; print(time.time())")
 STEP3_WALL=$(python3 -c "print(round($STEP3_END - $STEP3_START, 3))")
@@ -78,9 +78,9 @@ if [ -x "$HCP" ]; then
   "$HCP" "$WORKDIR/prepped.wav" "$WORKDIR/hcp_out" --model "$MODEL" --json 2>/dev/null || true
   [ -f "$WORKDIR/hcp_out/transcript.json" ] && cp "$WORKDIR/hcp_out/transcript.json" "$WORKDIR/transcript_raw.json"
 fi
-# Fallback to bonfyre-transcribe if hcp-whisper fails or isn't available
+# Fallback to akai-transcribe if hcp-whisper fails or isn't available
 if [ ! -s "$WORKDIR/transcript_raw.json" ]; then
-  "$BBIN/BonfyreTranscribe/bonfyre-transcribe" run "$WORKDIR/prepped.wav" \
+  "$BBIN/AkaiTranscribe/akai-transcribe" run "$WORKDIR/prepped.wav" \
     --model "$MODEL" --out "$WORKDIR/transcribe_out" 2>/dev/null
   cp "$WORKDIR/transcribe_out/transcript.json" "$WORKDIR/transcript_raw.json" 2>/dev/null || true
 fi
@@ -95,7 +95,7 @@ python3 -c "
 import json, sys
 try:
     d = json.load(open('$WORKDIR/transcript_raw.json'))
-    # Handle both whisper.cpp and bonfyre-transcribe output formats
+    # Handle both whisper.cpp and akai-transcribe output formats
     if 'result' in d:
         segs = d['result'].get('segments', d.get('segments', []))
     else:
@@ -123,7 +123,7 @@ echo "  segments: $(python3 -c "import json; d=json.load(open('$WORKDIR/transcri
 # ── Step 5: Transcript clean ────────────────────────────────
 echo "[5/9] transcript-clean"
 STEP5_START=$(python3 -c "import time; print(time.time())")
-"$BBIN/BonfyreTranscriptClean/bonfyre-transcript-clean" run "$PROOF_DIR/transcript.json" \
+"$BBIN/AkaiTranscriptClean/akai-transcript-clean" run "$PROOF_DIR/transcript.json" \
   --out "$PROOF_DIR/clean.txt" 2>/dev/null || \
 python3 -c "
 import json
@@ -138,7 +138,7 @@ STEP5_WALL=$(python3 -c "print(round($STEP5_END - $STEP5_START, 3))")
 # ── Step 6: Paragraph ───────────────────────────────────────
 echo "[6/9] paragraph"
 STEP6_START=$(python3 -c "import time; print(time.time())")
-"$BBIN/BonfyreParagraph/bonfyre-paragraph" run "$PROOF_DIR/clean.txt" \
+"$BBIN/AkaiParagraph/akai-paragraph" run "$PROOF_DIR/clean.txt" \
   --out "$PROOF_DIR/paragraphs.txt" 2>/dev/null || \
   cp "$PROOF_DIR/clean.txt" "$PROOF_DIR/paragraphs.txt"
 STEP6_END=$(python3 -c "import time; print(time.time())")
@@ -148,7 +148,7 @@ STEP6_WALL=$(python3 -c "print(round($STEP6_END - $STEP6_START, 3))")
 echo "[7/9] brief"
 STEP7_START=$(python3 -c "import time; print(time.time())")
 mkdir -p "$PROOF_DIR/brief"
-"$BBIN/BonfyreBrief/bonfyre-brief" "$PROOF_DIR/transcript.json" "$PROOF_DIR/brief" \
+"$BBIN/AkaiBrief/akai-brief" "$PROOF_DIR/transcript.json" "$PROOF_DIR/brief" \
   --source-meta "$PROOF_DIR/source-meta.json" 2>/dev/null || true
 # Move brief dir output to expected location
 if [ -f "$PROOF_DIR/brief/brief.md" ]; then
@@ -174,7 +174,7 @@ STEP7_WALL=$(python3 -c "print(round($STEP7_END - $STEP7_START, 3))")
 # ── Step 8: Proof ────────────────────────────────────────────
 echo "[8/9] proof"
 STEP8_START=$(python3 -c "import time; print(time.time())")
-"$BBIN/BonfyreProof/bonfyre-proof" run "$PROOF_DIR/transcript.json" \
+"$BBIN/AkaiProof/akai-proof" run "$PROOF_DIR/transcript.json" \
   --brief "$PROOF_DIR/brief.md" \
   --out "$PROOF_DIR/proof.json" 2>/dev/null || \
 python3 -c "

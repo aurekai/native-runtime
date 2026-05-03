@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Patch all Bonfyre binaries: replace bf_ensure_dir(p) / bf_ensure_dir(path)
+Patch all Aurekai binaries: replace bf_ensure_dir(p) / bf_ensure_dir(path)
 with bf_ensure_parent_dir in the local ensure_dir wrapper.
 Fixes the bug where SQLite DB paths were created as directories.
 """
@@ -13,7 +13,7 @@ PATTERNS = [
      "static void ensure_dir(const char *p) { bf_ensure_parent_dir(p); }"),
 ]
 
-files = glob.glob("/Users/nickgonzales/Documents/Bonfyre/cmd/*/src/main.c")
+files = glob.glob("/Users/nickgonzales/Documents/Aurekai/cmd/*/src/main.c")
 patched = 0
 for f in sorted(files):
     data = open(f).read()

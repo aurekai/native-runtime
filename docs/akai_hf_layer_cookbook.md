@@ -1,4 +1,4 @@
-# Bonfyre HF Layer Cookbook
+# Akai HF Layer Cookbook
 
 This cookbook is the structured companion to the generated extraction artifacts under:
 
@@ -25,7 +25,7 @@ It is intentionally downstream of those files. The repo artifacts are the source
   - GGUF / Unsloth runtime pack
 
 `recipes/cross_fusion`
-- Derived Bonfyre recipes that combine Google family structure with collection-mined topology structure.
+- Derived Akai recipes that combine Google family structure with collection-mined topology structure.
 
 `recipes/families/family_index.json`
 - Expanded `T_*` taxonomy with tensor patterns, source repo patterns, capabilities, workflow steps, and subfamily decomposition.
@@ -45,7 +45,7 @@ It is intentionally downstream of those files. The repo artifacts are the source
 Purpose:
 - scan HF repo metadata
 - inspect available tensor/config/tokenizer surfaces
-- classify them into Bonfyre `T_*` families using `family_index.json`
+- classify them into Akai `T_*` families using `family_index.json`
 - emit a candidate recipe YAML
 
 Example:
@@ -66,7 +66,7 @@ Notes:
 ### `tools/hf_layer_pull.py`
 
 Purpose:
-- resolve a Bonfyre `T_*` family to tensor patterns from `family_index.json`
+- resolve a Akai `T_*` family to tensor patterns from `family_index.json`
 - emit a recipe artifact focused on that family
 
 Example:
@@ -133,7 +133,7 @@ Every recipe in this cookbook keeps:
 - `missing_behavior`
 - gap flags when tensor names are inferred, repo-dependent, or conversion-dependent
 
-This is deliberate. Bonfyre should preserve implementation uncertainty as structured metadata rather than drop entire families.
+This is deliberate. Akai should preserve implementation uncertainty as structured metadata rather than drop entire families.
 
 ## Gap Classes
 
@@ -144,7 +144,7 @@ Common gap classes represented in the generated files:
 - downstream quant/GGUF metadata that may not live in original source repos
 - cross-fusion recipes that combine verified Google families with topology families not co-located in the same upstream repo
 
-## Practical Bonfyre Flow
+## Practical Akai Flow
 
 1. Choose a family recipe from `recipes/google`
 2. Choose a topology recipe from `recipes/topology`
@@ -168,4 +168,4 @@ This cookbook keeps the following explicitly represented:
 - embedding heads
 - speculative cross-fusion recipes
 
-The goal is not to reduce these into a few “best model” suggestions. The goal is to keep Bonfyre’s tensor extraction surface broad enough that no high-value architectural seam gets dropped on the floor.
+The goal is not to reduce these into a few “best model” suggestions. The goal is to keep Aurekai’s tensor extraction surface broad enough that no high-value architectural seam gets dropped on the floor.

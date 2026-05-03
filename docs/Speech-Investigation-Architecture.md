@@ -1,8 +1,8 @@
-# Bonfyre Speech Investigation — Complete Architecture
+# Akai Speech Investigation — Complete Architecture
 
 ## Overview
 
-**Speech Investigation** is a core Bonfyre capability that transforms conversations into interrogatable knowledge structures through multi-layer analysis and hypothesis testing.
+**Speech Investigation** is a core Akai capability that transforms conversations into interrogatable knowledge structures through multi-layer analysis and hypothesis testing.
 
 ```
 Audio/Speech → Structured Knowledge → Autonomous Discovery → Pressure-Tested Insights
@@ -13,14 +13,14 @@ Audio/Speech → Structured Knowledge → Autonomous Discovery → Pressure-Test
 ## Core Thesis
 
 Most speech systems output text.  
-Bonfyre outputs **competing interpretations ranked by evidentiary pressure**.
+Akai outputs **competing interpretations ranked by evidentiary pressure**.
 
 **Traditional approach**:
 ```
 audio → transcript → summary → done
 ```
 
-**Bonfyre approach**:
+**Akai approach**:
 ```
 audio → entities → graph → claims → hypotheses → pressure → convergence → insights
       ↓          ↓       ↓       ↓           ↓          ↓              ↓
@@ -46,7 +46,7 @@ audio → entities → graph → claims → hypotheses → pressure → converge
 - Contradictions remain
 - ✅ **High hypothesis discovery potential**
 
-### 2. Bonfyre Stack Is Optimized For Mess
+### 2. Akai Stack Is Optimized For Mess
 
 The system **thrives on**:
 - Contradictions → Convergence engine classifies stable/fragile/conflict
@@ -78,10 +78,10 @@ The system **thrives on**:
 ### Layer 0: Audio Intake
 
 ```bash
-# Binary: BonfyreSpeechLoop
+# Binary: AkaiSpeechLoop
 # Purpose: Audio segmentation, VAD, normalization
 
-BonfyreSpeechLoop \
+AkaiSpeechLoop \
   --input raw_audio.wav \
   --vad-threshold 0.3 \
   --segment-max 30 \
@@ -95,10 +95,10 @@ BonfyreSpeechLoop \
 ### Layer 1: Transcription
 
 ```bash
-# Binary: BonfyreTranscribe  
+# Binary: AkaiTranscribe  
 # Purpose: Speech → text with confidence scoring
 
-BonfyreTranscribe \
+AkaiTranscribe \
   --input segments/*.wav \
   --model whisper-large-v3 \
   --vocab custom.bfvocab \
@@ -109,21 +109,21 @@ BonfyreTranscribe \
 **Output**: 
 - `transcript.txt` — Clean text
 - `transcript.json` — Detailed (timestamps, confidence, speakers, alternatives)
-- `artifact.json` — Bonfyre canonical artifact manifest
+- `artifact.json` — Akai canonical artifact manifest
 
 **Extensions**:
-- `BonfyreTranscriptClean` — Post-process for filler removal, disfluency repair
-- `BonfyreTranscriptFamily` — Group related transcripts into families
+- `AkaiTranscriptClean` — Post-process for filler removal, disfluency repair
+- `AkaiTranscriptFamily` — Group related transcripts into families
 
 ---
 
 ### Layer 2: Entity Extraction (Symbolic Front-End)
 
 ```bash
-# Binary: BonfyreEntity
+# Binary: AkaiEntity
 # Purpose: Extract entities from unstructured text
 
-BonfyreEntity \
+AkaiEntity \
   --input transcripts/*.txt \
   --type conversational \
   --structural-filter \
@@ -143,10 +143,10 @@ BonfyreEntity \
 ### Layer 3: Canonicalization
 
 ```bash
-# Binary: BonfyreCanon
+# Binary: AkaiCanon
 # Purpose: Group variant forms → canonical representations
 
-BonfyreCanon \
+AkaiCanon \
   --input entities/entities.json \
   --fuzzy-threshold 0.85 \
   --output canon/canon.json
@@ -168,10 +168,10 @@ BonfyreCanon \
 ### Layer 4: Graph Construction
 
 ```bash
-# Binary: BonfyreGraph
+# Binary: AkaiGraph
 # Purpose: Build entity relationship graph
 
-BonfyreGraph \
+AkaiGraph \
   --entities canon/canonical_entities.json \
   --cooccurrence-window 5 \
   --temporal-edges \
@@ -217,10 +217,10 @@ python3 scripts/graph_to_claims.py \
 ### Layer 6: Embedding Layer (Semantic Infrastructure)
 
 ```bash
-# Binary: BonfyreEmbed
+# Binary: AkaiEmbed
 # Purpose: Generate embeddings for semantic search
 
-BonfyreEmbed \
+AkaiEmbed \
   --input claims/claims.json \
   --model all-MiniLM-L6-v2 \
   --fpq-compress \
@@ -230,11 +230,11 @@ BonfyreEmbed \
 **What it does**:
 - Generate 384-dim embeddings for each claim
 - FPQ compression (0.45 B/param, cosine 0.9999+)
-- Store in vector index (BonfyreVec)
+- Store in vector index (AkaiVec)
 
 **Extensions**:
-- `BonfyreVec` — Vector index with SQLite-vec
-- `BonfyreSLI` — Spectral Lattice Inference (4.4× bandwidth reduction)
+- `AkaiVec` — Vector index with SQLite-vec
+- `AkaiSLI` — Spectral Lattice Inference (4.4× bandwidth reduction)
 
 **Use cases**:
 - Semantic search across claims ("find claims about distribution strategy")
@@ -365,14 +365,14 @@ For each conflict cluster, recommend:
 **Purpose**: Represent competing interpretations simultaneously
 
 ```bash
-# Binary: BonfyreCMS (Component: fragments)
+# Binary: AkaiCMS (Component: fragments)
 
-BonfyreCMS fragment-create \
+AkaiCMS fragment-create \
   --parent main_graph \
   --type speaker_perspective \
   --data speaker_a_claims.json
 
-BonfyreCMS fragment-create \
+AkaiCMS fragment-create \
   --parent main_graph \
   --type speaker_perspective \
   --data speaker_b_claims.json
@@ -405,12 +405,12 @@ BonfyreCMS fragment-create \
 **Temporal Layers**: Track evolution
 
 ```bash
-BonfyreCMS layer-create \
+AkaiCMS layer-create \
   --type temporal \
   --dimension timeline \
   --data conversation_t0.json
 
-BonfyreCMS layer-create \
+AkaiCMS layer-create \
   --type temporal \
   --dimension timeline \
   --data conversation_t60.json
@@ -434,10 +434,10 @@ ORDER BY timestamp
 ### Layer 12: Quality Scoring + Metering
 
 ```bash
-# Binary: BonfyreMeter
+# Binary: AkaiMeter
 # Purpose: Track usage and quality metrics
 
-BonfyreMeter record \
+AkaiMeter record \
   --operation transcribe \
   --input-size 180 \  # seconds
   --output artifacts/transcripts/artifact.json \
@@ -452,9 +452,9 @@ BonfyreMeter record \
 - Artifact sizes (compressed vs. uncompressed)
 - Value creation (hypothesis quality, convergence rate)
 
-**Integration with BonfyreLedger**:
+**Integration with AkaiLedger**:
 ```bash
-BonfyreLedger assess \
+AkaiLedger assess \
   --artifacts artifacts/ \
   --output portfolio.json
 ```
@@ -469,22 +469,22 @@ BonfyreLedger assess \
 ### Layer 13: Compression + Storage
 
 ```bash
-# Binary: BonfyreCompress
+# Binary: AkaiCompress
 # Purpose: Family-aware compression
 
-BonfyreCompress \
+AkaiCompress \
   --family speech_investigation \
   --inputs convergence/*.json \
   --codec zstd \
   --output archive/
 ```
 
-**Lambda Tensor Compression** (BonfyreCMS):
+**Lambda Tensor Compression** (AkaiCMS):
 
 For large-scale transcript archives:
 
 ```bash
-BonfyreCMS compress \
+AkaiCMS compress \
   --family transcript_en_podcast \
   --members transcripts/*.json \
   --v2-huffman \  # 15% of raw at N=10K
@@ -502,10 +502,10 @@ BonfyreCMS compress \
 ### Layer 14: Query + API Layer
 
 ```bash
-# Binary: BonfyreAPI
+# Binary: AkaiAPI
 # Purpose: HTTP gateway to investigation system
 
-BonfyreAPI start \
+AkaiAPI start \
   --port 9999 \
   --db ~/.local/share/bonfyre/queue.db \
   --static site/ \
@@ -559,15 +559,15 @@ docker-compose up -d
 ```yaml
 services:
   api:
-    image: bonfyre:latest
-    command: ["/usr/local/bin/bonfyre-api", "start", "--port", "9999"]
+    image: akai:latest
+    command: ["/usr/local/bin/akai-api", "start", "--port", "9999"]
     ports: ["9999:9999"]
-    volumes: ["bonfyre-data:/data"]
+    volumes: ["akai-data:/data"]
     
   worker:
-    image: bonfyre:latest
-    command: ["/usr/local/bin/bonfyre-queue", "work", "--threads", "4"]
-    volumes: ["bonfyre-data:/data"]
+    image: akai:latest
+    command: ["/usr/local/bin/akai-queue", "work", "--threads", "4"]
+    volumes: ["akai-data:/data"]
     environment:
       WHISPER_MODEL: "large-v3"
 ```
@@ -575,16 +575,16 @@ services:
 #### Queue-Based Processing
 
 ```bash
-# Binary: BonfyreQueue
+# Binary: AkaiQueue
 # Purpose: Async job management
 
 # Enqueue job
-BonfyreQueue enqueue \
+AkaiQueue enqueue \
   --cmd "bash scripts/run_investigation.sh audio.mp3 output/" \
   --priority 5
 
 # Worker daemon
-BonfyreQueue work --threads 4
+AkaiQueue work --threads 4
 ```
 
 **Features**:
@@ -610,12 +610,12 @@ set -e
 ffmpeg -i deposition.mp4 -vn -ar 16000 audio.wav
 
 # Segment + transcribe
-BonfyreSpeechLoop --input audio.wav --vad --output segments/
-BonfyreTranscribe --input segments/*.wav --speakers --output transcripts/
+AkaiSpeechLoop --input audio.wav --vad --output segments/
+AkaiTranscribe --input segments/*.wav --speakers --output transcripts/
 
 # Clean + family
-BonfyreTranscriptClean --input transcripts/*.txt --legal-mode --output clean/
-BonfyreTranscriptFamily --input clean/*.txt --group-by witness --output families/
+AkaiTranscriptClean --input transcripts/*.txt --legal-mode --output clean/
+AkaiTranscriptFamily --input clean/*.txt --group-by witness --output families/
 
 # Run investigation
 bash scripts/run_investigation.sh "families/*/*.txt" investigation/
@@ -645,7 +645,7 @@ python3 scripts/analyze_contradictions.py \
 ```bash
 # Batch transcribe
 for f in interviews/*.mp3; do
-  BonfyreTranscribe --input "$f" --output transcripts/
+  AkaiTranscribe --input "$f" --output transcripts/
 done
 
 # Run full investigation
@@ -714,7 +714,7 @@ while true; do
   
   for f in $new_files; do
     # Queue processing
-    BonfyreQueue enqueue \
+    AkaiQueue enqueue \
       --cmd "bash scripts/speech_to_investigation.sh '$f' /data/org_knowledge/" \
       --webhook "https://company.com/api/knowledge_update"
   done
@@ -740,7 +740,7 @@ done
 
 ```bash
 # Generate embeddings for all claims
-BonfyreEmbed \
+AkaiEmbed \
   --input claims/claims.json \
   --model all-MiniLM-L6-v2 \
   --batch-size 256 \
@@ -748,7 +748,7 @@ BonfyreEmbed \
   --output embeddings/
 
 # Build vector index
-BonfyreVec create \
+AkaiVec create \
   --embeddings embeddings/*.fpq \
   --index-type hnsw \
   --m 16 \
@@ -794,12 +794,12 @@ Query → Embed (10ms) → SLI lookup (10ms) → Top-K (5ms) = 25ms
 **Integration**:
 ```bash
 # Prepare index for SLI
-BonfyreSLI prepare \
+AkaiSLI prepare \
   --embeddings embeddings/*.fpq \
   --output embeddings_sli/
 
 # Query via SLI
-BonfyreSLI query \
+AkaiSLI query \
   --index embeddings_sli/ \
   --query "distribution strategy" \
   --top-k 20
@@ -815,7 +815,7 @@ For running lightweight models **on the investigation results**:
 
 ```bash
 # Compress Qwen 0.5B for summarization
-BonfyreFPQ encode \
+AkaiFPQ encode \
   --model ~/.local/share/models/qwen-0.5b.safetensors \
   --output models/qwen-0.5b.fpq \
   --version 12 \  # E8 + rANS entropy
@@ -828,7 +828,7 @@ BonfyreFPQ encode \
 ### Inference on Claims
 
 ```python
-from bonfyre import FPQModel
+from akai import FPQModel
 
 # Load compressed model
 model = FPQModel.load("models/qwen-0.5b.fpq")
@@ -875,7 +875,7 @@ summary = model.generate(prompt, max_tokens=100)
 # Run full benchmark
 bash scripts/batch_all_apps.sh
 
-# Output: /tmp/bonfyre-bench-full/
+# Output: /tmp/akai-bench-full/
 #   - Per-operation timing
 #   - Quality scores
 #   - Compression ratios
@@ -942,7 +942,7 @@ bash scripts/batch_all_apps.sh
 - Option 3: On-premise only (no cloud)
 
 **Transcript storage**:
-- PII detection + redaction (BonfyreEntity with PII mode)
+- PII detection + redaction (AkaiEntity with PII mode)
 - Speaker pseudonymization (Speaker A, B, C vs. real names)
 - Selective disclosure (different fragments for different access levels)
 
@@ -962,7 +962,7 @@ bash scripts/batch_all_apps.sh
 
 **Audit trail**:
 ```bash
-BonfyreAPI audit \
+AkaiAPI audit \
   --resource graphs/conflict_graph.json \
   --since 2026-04-01
 ```
@@ -973,15 +973,15 @@ BonfyreAPI audit \
 
 ### Immediate (Week 1)
 
-1. ✅ Replace Python entity stubs with BonfyreEntity binary
-2. ✅ Replace Python canon stubs with BonfyreCanon binary  
-3. ✅ Replace Python graph stubs with BonfyreGraph binary
-4. ⏳ Add BonfyreEmbed integration for semantic search
-5. ⏳ Add BonfyreMeter/BonfyreLedger for value tracking
+1. ✅ Replace Python entity stubs with AkaiEntity binary
+2. ✅ Replace Python canon stubs with AkaiCanon binary  
+3. ✅ Replace Python graph stubs with AkaiGraph binary
+4. ⏳ Add AkaiEmbed integration for semantic search
+5. ⏳ Add AkaiMeter/AkaiLedger for value tracking
 
 ### Short-term (Month 1)
 
-1. Speaker diarization integration (BonfyreSpeechLoop)
+1. Speaker diarization integration (AkaiSpeechLoop)
 2. Fragment-based speaker perspective separation
 3. Temporal layer for conversation evolution tracking
 4. Quality benchmark suite
@@ -1010,7 +1010,7 @@ BonfyreAPI audit \
 ### 1. Speech Is Superior Input
 
 Traditional systems treat speech as degraded text.  
-Bonfyre treats speech as **richer signal** with preserved contradictions, redundancy, and multi-perspective structure.
+Akai treats speech as **richer signal** with preserved contradictions, redundancy, and multi-perspective structure.
 
 ### 2. Hypothesis Discovery Is The Core Capability
 
@@ -1037,7 +1037,7 @@ Instead of creating fragments for every dimension (speaker × time × topic = ex
 
 **Text systems**: More data = more noise, harder to navigate
 
-**Bonfyre speech investigation**: More conversations = 
+**Akai speech investigation**: More conversations = 
 - Better entity canonicalization (more variants seen)
 - Stronger hypothesis testing (more evidence)
 - Richer temporal patterns (longer timelines)
@@ -1048,10 +1048,10 @@ Instead of creating fragments for every dimension (speaker × time × topic = ex
 ## Conclusion
 
 Speech investigation is not a feature.  
-It's **Bonfyre's asymmetric advantage**.
+It's **Aurekai's asymmetric advantage**.
 
 Every other system outputs summaries.  
-Bonfyre outputs **interrogatable knowledge structures** with:
+Akai outputs **interrogatable knowledge structures** with:
 
 - Competing hypotheses ranked by evidence
 - Convergence metrics (stable vs fragile vs conflict)
@@ -1064,7 +1064,7 @@ Bonfyre outputs **interrogatable knowledge structures** with:
 
 > Conversations contain competing interpretations.
 > Most systems pick one and discard the rest.
-> Bonfyre preserves all, tests all, and ranks all by evidentiary pressure.
+> Akai preserves all, tests all, and ranks all by evidentiary pressure.
 
 That's not text processing.  
 That's **conversation interrogation**.

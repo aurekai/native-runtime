@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# bonfyre-selfloop-v3.sh — Maximum depth self-utilization loop
+# akai-selfloop-v3.sh — Maximum depth self-utilization loop
 #
 # Every active subsystem feeds every other. Outputs from one layer become
 # inputs to the next. The system watches its own behavior and uses that
@@ -63,12 +63,12 @@
 # Meter:   all ops recorded → invoice at end
 #
 # Usage:
-#   bash scripts/bonfyre-selfloop-v3.sh [--iters N] [--dir WORKDIR]
+#   bash scripts/akai-selfloop-v3.sh [--iters N] [--dir WORKDIR]
 
 set -euo pipefail
 
 ITERS=10
-WORKDIR="/tmp/bonfyre-selfloop-v3"
+WORKDIR="/tmp/akai-selfloop-v3"
 PROMOTE_AFTER=5
 
 while [[ $# -gt 0 ]]; do
@@ -84,11 +84,11 @@ mkdir -p "$WORKDIR"
 LOG="$WORKDIR/selfloop.log"
 exec > >(tee -a "$LOG") 2>&1
 
-BF="bonfyre"
+BF="akai"
 VEC_DB="$WORKDIR/selfloop.vecdb"
 FRAG_DB="$WORKDIR/fragments.db"
 GRAPH_DB="$WORKDIR/selfloop.graphdb"
-SPACE_NAME="bonfyre-selfloop-v3"
+SPACE_NAME="akai-selfloop-v3"
 
 banner()  { echo; printf '%.0s━' {1..64}; echo; echo "  $*"; printf '%.0s━' {1..64}; echo; }
 step()    { echo; echo "  ▶ $*"; }
@@ -108,7 +108,7 @@ make_artifact() {
   local anomaly; anomaly=$([ $((iter % 4)) -eq 0 ] && echo "true" || echo "false")
   local trend; trend=$([ $((iter % 2)) -eq 0 ] && echo "rising" || echo "stable")
   cat > "$txt" <<EOF
-Bonfyre self-optimization v3 — iteration ${iter}
+Akai self-optimization v3 — iteration ${iter}
 Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
 Category: ${cat}
 Confidence: ${conf}
@@ -143,7 +143,7 @@ json.dump({
   'confidence': float('${conf}'),
   'anomaly': '${anomaly}' == 'true',
   'trend': '${trend}',
-  'source': 'bonfyre-selfloop-v3',
+  'source': 'akai-selfloop-v3',
   'inputs': [{'path': 'doc.txt', 'type': 'text'}]
 }, open('$outdir/artifact.json', 'w'), indent=2)
 " 2>/dev/null
@@ -155,7 +155,7 @@ snapshot_learn() { $BF learn export 2>/dev/null || echo "{}"; }
 # ═══════════════════════════════════════════════════════════════════════
 # BOOT
 # ═══════════════════════════════════════════════════════════════════════
-banner "bonfyre-selfloop-v3: ${ITERS} iterations — maximum depth"
+banner "akai-selfloop-v3: ${ITERS} iterations — maximum depth"
 echo "  workdir:        $WORKDIR"
 echo "  log:            $LOG"
 echo "  promote after:  ${PROMOTE_AFTER} iterations"
@@ -171,7 +171,7 @@ $BF discipl contracts import 2>/dev/null | python3 -c "import json,sys; d=json.l
 # ── Gate: issue license key
 step "BOOT: gate — issue pro license"
 GATE_KEY_FILE="$WORKDIR/gate.json"
-GATE_KEY=$($BF gate issue --tier pro --org bonfyre-selfloop-v3 --out "$GATE_KEY_FILE" 2>/dev/null | grep "bfk_" | head -1 || echo "")
+GATE_KEY=$($BF gate issue --tier pro --org akai-selfloop-v3 --out "$GATE_KEY_FILE" 2>/dev/null | grep "bfk_" | head -1 || echo "")
 ok "gate key: ${GATE_KEY:-already issued}"
 
 # ── Economy: seed local cost records
@@ -401,7 +401,7 @@ with open('$ITER_DIR/vecs.bin','wb') as f:
     for v in vec: f.write(struct.pack('<f', float(v)))
 " 2>/dev/null
     $BF sli chain --in "$ITER_DIR/vecs.bin" --chain T04:gdn:T16 \
-        --models-dir "$HOME/.local/share/bonfyre/models" --out "$ITER_DIR/sli_out.bin" 2>/dev/null \
+        --models-dir "$HOME/.local/share/akai/models" --out "$ITER_DIR/sli_out.bin" 2>/dev/null \
       && ok "sli chain: wrote sli_out.bin" \
       || warn "sli chain: T04/T16 models not on disk (expected — graceful skip)"
   fi
@@ -660,6 +660,6 @@ c.close()
 print(f'  atoms: {atoms}  operators: {ops}')
 " 2>/dev/null || true
 
-banner "bonfyre-selfloop-v3 complete — log: $LOG"
-echo "  Run 'bonfyre status' for system-wide snapshot"
+banner "akai-selfloop-v3 complete — log: $LOG"
+echo "  Run 'akai status' for system-wide snapshot"
 echo "  Run 'bash $0 --iters $ITERS' to continue accumulating"

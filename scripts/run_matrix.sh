@@ -13,27 +13,27 @@
 #  Add it manually once you have model paths to inject via --stage-opts.)
 #
 # Usage
-#   ./scripts/run_matrix.sh [--out-root /tmp/matrix] [--bonfyre-run bonfyre-run]
+#   ./scripts/run_matrix.sh [--out-root /tmp/matrix] [--akai-run akai-run]
 #
 # Output
 #   <out-root>/<task>/<dataset>-<n>/   — full pipeline output
 #   <out-root>/results.tsv             — ranked summary table
 #   <out-root>/results.txt             — human-readable ranked report
 #
-# Requirements: bonfyre-run on PATH, python3, pip install datasets sentence-transformers torch onnx onnxruntime
+# Requirements: akai-run on PATH, python3, pip install datasets sentence-transformers torch onnx onnxruntime
 
 set -euo pipefail
 
 # ── args ───────────────────────────────────────────────────────────────────────
-OUT_ROOT="/tmp/bonfyre-matrix"
-BF_RUN="bonfyre-run"
+OUT_ROOT="/tmp/akai-matrix"
+BF_RUN="akai-run"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
         --out-root)    OUT_ROOT="$2";  shift 2 ;;
-        --bonfyre-run) BF_RUN="$2";   shift 2 ;;
+        --akai-run) BF_RUN="$2";   shift 2 ;;
         *) echo "unknown arg: $1"; exit 1 ;;
     esac
 done
@@ -45,7 +45,7 @@ echo -e "experiment\ttask\tdataset\tn_docs\tf1_vs_consensus\tlatency_ratio\tn_pa
 
 # ── matrix definition ──────────────────────────────────────────────────────────
 # T04-C / T07-C: calibration variants — use Python synth teachers,
-# no fastText model or bonfyre-embed ONNX install required.
+# no fastText model or akai-embed ONNX install required.
 TASKS=("T04-C" "T07-C")
 DATASETS=("ag_news" "cnn_dm")
 # Per-task sizes: T07 is the structural candidate — run all 4 scales.
@@ -102,7 +102,7 @@ run_experiment() {
         echo "[matrix] already ran — skipping (delete $run_out to rerun)"
     else
         mkdir -p "$run_out"
-        # Run from REPO_ROOT so scripts/ relative paths resolve inside bonfyre-run stages
+        # Run from REPO_ROOT so scripts/ relative paths resolve inside akai-run stages
         (cd "$REPO_ROOT" && "$BF_RUN" "$task" "$corpus_dir" --out "$run_out") \
             || echo "[matrix] WARNING: $exp_id exited non-zero (calibration mode — continuing)"
     fi

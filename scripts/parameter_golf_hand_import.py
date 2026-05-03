@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate minimal Bonfyre recipes from hand-curated Parameter Golf leaderboard."""
+"""Generate minimal Akai recipes from hand-curated Parameter Golf leaderboard."""
 
 from __future__ import annotations
 

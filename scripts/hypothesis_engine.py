@@ -153,7 +153,7 @@ class Hypothesis:
     A testable theory about the corpus.
     
     Each hypothesis is a claim about reality that can be validated
-    by running the full Bonfyre pipeline (swarm → pressure → intervention).
+    by running the full Akai pipeline (swarm → pressure → intervention).
     
     PHASE 16.5 ADDITIONS:
     - assumption:            Core assumption (e.g., "A == B")
@@ -547,7 +547,7 @@ class HypothesisEngine:
         verbose: bool = True
     ) -> Dict[str, Any]:
         """
-        Test a hypothesis using the full Bonfyre pipeline.
+        Test a hypothesis using the full Akai pipeline.
         
         Pipeline:
         1. Run hypothesis swarm      (Phase 12)
@@ -1123,9 +1123,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Hypothesis-driven investigation engine (Phase 16)"
     )
-    parser.add_argument("--memory-dir", default="/tmp/bonfyre-memory",
+    parser.add_argument("--memory-dir", default="/tmp/akai-memory",
                         help="Memory directory for claim graph")
-    parser.add_argument("--models-dir", default="/tmp/bonfyre-models",
+    parser.add_argument("--models-dir", default="/tmp/akai-models",
                         help="Models directory for transforms")
     parser.add_argument("--register", choices=list(BUILTIN_HYPOTHESES.keys()),
                         help="Register a built-in hypothesis")

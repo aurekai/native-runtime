@@ -42,7 +42,7 @@ if [[ -d "$DEST/.git" ]]; then
   exit 1
 fi
 
-# 1. Clone bonfyre monorepo
+# 1. Clone akai monorepo
 git clone "$REPO_ROOT" "$DEST" --no-local
 
 # 2. Filter to Aurekai/ subtree only, move root to top-level

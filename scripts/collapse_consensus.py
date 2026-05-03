@@ -14,7 +14,7 @@ Modes
           Writes <out>/labels.jsonl consumed by collapse_train.py.
 
 Usage
-  # inside bonfyre-run stage:
+  # inside akai-run stage:
   python3 scripts/collapse_consensus.py teach \\
       --model /models/dslim-bert-base-NER.onnx \\
       --corpus /data/corpus \\

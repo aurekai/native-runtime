@@ -55,13 +55,13 @@ WORKFLOW:
 
 NEW CAPABILITY:
 ---------------
-Bonfyre becomes an AUTONOMOUS INVESTIGATOR that:
+Akai becomes an AUTONOMOUS INVESTIGATOR that:
   - Notices anomalies
   - Generates explanations
   - Tests competing theories
   - Reports findings
 
-This is where Bonfyre stops being a tool and starts acting like an agent.
+This is where Akai stops being a tool and starts acting like an agent.
 """
 
 import json
@@ -1074,9 +1074,9 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Autonomous hypothesis discovery (Phase 17)"
     )
-    parser.add_argument("--memory-dir", default="/tmp/bonfyre-memory",
+    parser.add_argument("--memory-dir", default="/tmp/akai-memory",
                         help="Memory directory")
-    parser.add_argument("--models-dir", default="/tmp/bonfyre-models",
+    parser.add_argument("--models-dir", default="/tmp/akai-models",
                         help="Models directory")
     parser.add_argument("--corpus", nargs="+",
                         help="Document paths for discovery")

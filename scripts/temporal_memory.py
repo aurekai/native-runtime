@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-scripts/temporal_memory.py — Bonfyre speech temporal memory.
+scripts/temporal_memory.py — Akai speech temporal memory.
 
-Speech-specific wrapper around BonfyreMemory that provides:
+Speech-specific wrapper around AkaiMemory that provides:
 
   1. Audio session tracking  — per audio_id escalation profile
   2. Speaker-adaptive routing — pre-select ASR family based on history
@@ -10,9 +10,9 @@ Speech-specific wrapper around BonfyreMemory that provides:
   4. Cross-session persistence — same audio source recognized across runs
 
 This module is deliberately thin: it delegates all storage to
-BonfyreMemory.speech_segments and adds domain-specific query methods.
+AkaiMemory.speech_segments and adds domain-specific query methods.
 
-HOW IT CHANGES BONFYRE BEHAVIOR
+HOW IT CHANGES AKAI BEHAVIOR
 ================================
 Without temporal memory:
   Every audio file starts at S01, escalates to S02 if a segment is unclear.
@@ -25,7 +25,7 @@ With temporal memory:
 USAGE
 =====
     from scripts.temporal_memory import TemporalMemory
-    tm = TemporalMemory("/tmp/bonfyre-memory")
+    tm = TemporalMemory("/tmp/akai-memory")
 
     # Before processing an audio file:
     profile = tm.get_routing_hint(audio_id)
@@ -39,7 +39,7 @@ USAGE
     tm.flush_session(audio_id)
 
 Standalone (inspect speech memory):
-    python3 scripts/temporal_memory.py [--memory-dir /tmp/bonfyre-memory]
+    python3 scripts/temporal_memory.py [--memory-dir /tmp/akai-memory]
                                         [--audio-id <id>]
                                         [--list]
 """
@@ -52,7 +52,7 @@ import time
 _SELF = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(_SELF))
 
-from scripts.bonfyre_memory import BonfyreMemory  # noqa: E402
+from scripts.akai_memory import AkaiMemory  # noqa: E402
 
 # ── Thresholds ────────────────────────────────────────────────────────────
 
@@ -74,8 +74,8 @@ class TemporalMemory:
     Speech temporal memory providing adaptive routing hints.
     """
 
-    def __init__(self, memory_dir: str = "/tmp/bonfyre-memory"):
-        self.mem = BonfyreMemory(memory_dir)
+    def __init__(self, memory_dir: str = "/tmp/akai-memory"):
+        self.mem = AkaiMemory(memory_dir)
         self.memory_dir = memory_dir
         self._session_buffer: dict = {}   # audio_id → list of segment dicts (pending flush)
 
@@ -291,8 +291,8 @@ class TemporalMemory:
 def main():
     import argparse
     ap = argparse.ArgumentParser(
-        description="Bonfyre speech temporal memory inspector")
-    ap.add_argument("--memory-dir", default="/tmp/bonfyre-memory")
+        description="Akai speech temporal memory inspector")
+    ap.add_argument("--memory-dir", default="/tmp/akai-memory")
     ap.add_argument("--audio-id",   default=None,
                     help="Show profile for a specific audio_id")
     ap.add_argument("--list",       action="store_true",

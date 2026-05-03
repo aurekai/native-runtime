@@ -1,6 +1,6 @@
-# Bonfyre Wire
+# Akai Wire
 
-`bonfyre wire` is a consent-based network event layer.
+`akai wire` is a consent-based network event layer.
 
 It is designed for owned or explicitly authorized networks only. Its default mode
 is metadata-only capture and flow classification. It can turn authorized flow
@@ -28,32 +28,32 @@ metadata into:
 ## Commands
 
 ```bash
-bonfyre wire doctor
-bonfyre wire listen --interface en0 --authorized --metadata-only
-bonfyre wire ingest-pcap capture.pcap --authorized
-bonfyre wire flows <capture_id>
-bonfyre wire media-detect <capture_id>
-bonfyre wire meter <capture_id>
-bonfyre wire scale <capture_id>
-bonfyre wire route <capture_id>
-bonfyre wire report <capture_id>
+akai wire doctor
+akai wire listen --interface en0 --authorized --metadata-only
+akai wire ingest-pcap capture.pcap --authorized
+akai wire flows <capture_id>
+akai wire media-detect <capture_id>
+akai wire meter <capture_id>
+akai wire scale <capture_id>
+akai wire route <capture_id>
+akai wire report <capture_id>
 ```
 
 ## Offline-first workflow
 
 ```bash
-bonfyre wire ingest-pcap cmd/BonfyreWire/fixtures/media_fixture.jsonl --authorized --root layeros/state
-bonfyre wire flows <capture_id> --root layeros/state
-bonfyre wire media-detect <capture_id> --root layeros/state
-bonfyre wire meter <capture_id> --root layeros/state
-bonfyre wire scale <capture_id> --root layeros/state
-bonfyre wire route <capture_id> --root layeros/state
-bonfyre wire report <capture_id> --root layeros/state
+akai wire ingest-pcap cmd/AkaiWire/fixtures/media_fixture.jsonl --authorized --root layeros/state
+akai wire flows <capture_id> --root layeros/state
+akai wire media-detect <capture_id> --root layeros/state
+akai wire meter <capture_id> --root layeros/state
+akai wire scale <capture_id> --root layeros/state
+akai wire route <capture_id> --root layeros/state
+akai wire report <capture_id> --root layeros/state
 ```
 
 ## Report outputs
 
-`bonfyre wire report` writes:
+`akai wire report` writes:
 
 - `wire_flows.jsonl`
 - `media_candidates.json`

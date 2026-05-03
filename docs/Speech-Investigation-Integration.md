@@ -17,9 +17,9 @@
 ```
 Audio → Transcription → Entity/Canon/Graph → Claims → Hypotheses → Convergence
   ↓         ↓              ↓                   ↓          ↓             ↓
-BonfyreSpeechLoop  BonfyreEntity    graph_to_claims.py   hypothesis_   stable/
-BonfyreTranscribe  BonfyreCanon                          discovery.py  fragile/ 
-                   BonfyreGraph                                        conflict/
+AkaiSpeechLoop  AkaiEntity    graph_to_claims.py   hypothesis_   stable/
+AkaiTranscribe  AkaiCanon                          discovery.py  fragile/ 
+                   AkaiGraph                                        conflict/
 ```
 
 **Status**: Fully functional, tested on real data, documented
@@ -28,19 +28,19 @@ BonfyreTranscribe  BonfyreCanon                          discovery.py  fragile/
 
 ### Extensions (Available, Integration Ready)
 
-#### 1. Embedding Layer (BonfyreEmbed + BonfyreVec)
+#### 1. Embedding Layer (AkaiEmbed + AkaiVec)
 
 **What it adds**: Semantic search across claims
 
 ```bash
 # Generate embeddings
-BonfyreEmbed --input claims.json --model all-MiniLM-L6-v2 --fpq-compress --output embeddings/
+AkaiEmbed --input claims.json --model all-MiniLM-L6-v2 --fpq-compress --output embeddings/
 
 # Build vector index
-BonfyreVec create --embeddings embeddings/*.fpq --index-type hnsw --output vector.db
+AkaiVec create --embeddings embeddings/*.fpq --index-type hnsw --output vector.db
 
 # Query
-BonfyreVec query --index vector.db --query "distribution strategy" --top-k 20
+AkaiVec query --index vector.db --query "distribution strategy" --top-k 20
 ```
 
 **Value**: 
@@ -52,16 +52,16 @@ BonfyreVec query --index vector.db --query "distribution strategy" --top-k 20
 
 ---
 
-#### 2. SLI Acceleration (BonfyreSLI)
+#### 2. SLI Acceleration (AkaiSLI)
 
 **What it adds**: 4.4× bandwidth reduction, 2.5× faster queries
 
 ```bash
 # Prepare SLI index from embeddings
-BonfyreSLI prepare --embeddings embeddings/*.fpq --output embeddings_sli/ --fwht-on-z
+AkaiSLI prepare --embeddings embeddings/*.fpq --output embeddings_sli/ --fwht-on-z
 
 # Query via SLI (25ms vs 65ms dense)
-BonfyreSLI query --index embeddings_sli/ --query "distribution strategy" --top-k 20
+AkaiSLI query --index embeddings_sli/ --query "distribution strategy" --top-k 20
 ```
 
 **Value**:
@@ -73,16 +73,16 @@ BonfyreSLI query --index embeddings_sli/ --query "distribution strategy" --top-k
 
 ---
 
-#### 3. Quality Scoring + Metering (BonfyreMeter + BonfyreLedger)
+#### 3. Quality Scoring + Metering (AkaiMeter + AkaiLedger)
 
 **What it adds**: Cost tracking, value assessment
 
 ```bash
 # Record per-operation metrics
-BonfyreMeter record --operation transcribe --input-size 180 --cost 1.08 --quality-score 0.87
+AkaiMeter record --operation transcribe --input-size 180 --cost 1.08 --quality-score 0.87
 
 # Assess portfolio value
-BonfyreLedger assess --artifacts artifacts/ --output portfolio.json
+AkaiLedger assess --artifacts artifacts/ --output portfolio.json
 ```
 
 **Value**:
@@ -95,16 +95,16 @@ BonfyreLedger assess --artifacts artifacts/ --output portfolio.json
 
 ---
 
-#### 4. Compression + Archival (BonfyreCompress + BonfyreCMS)
+#### 4. Compression + Archival (AkaiCompress + AkaiCMS)
 
 **What it adds**: 15× compression for large transcript archives
 
 ```bash
 # Family-aware compression
-BonfyreCompress --family speech_investigation --inputs reports/*.json --codec zstd
+AkaiCompress --family speech_investigation --inputs reports/*.json --codec zstd
 
 # Lambda tensor compression (for massive scale)
-BonfyreCMS compress --family transcript_en_podcast --members transcripts/*.json --v2-huffman
+AkaiCMS compress --family transcript_en_podcast --members transcripts/*.json --v2-huffman
 ```
 
 **Value**:
@@ -116,20 +116,20 @@ BonfyreCMS compress --family transcript_en_podcast --members transcripts/*.json 
 
 ---
 
-#### 5. Fragment + Layer System (BonfyreCMS)
+#### 5. Fragment + Layer System (AkaiCMS)
 
 **What it adds**: Multi-dimensional representation
 
 **Fragments**: Competing interpretations
 ```bash
-BonfyreCMS fragment-create --parent main_graph --type speaker_perspective --data speaker_a_claims.json
-BonfyreCMS fragment-create --parent main_graph --type speaker_perspective --data speaker_b_claims.json
+AkaiCMS fragment-create --parent main_graph --type speaker_perspective --data speaker_a_claims.json
+AkaiCMS fragment-create --parent main_graph --type speaker_perspective --data speaker_b_claims.json
 ```
 
 **Layers**: Orthogonal dimensions
 ```bash
-BonfyreCMS layer-create --type temporal --dimension timeline --data conversation_t0.json
-BonfyreCMS layer-create --type temporal --dimension timeline --data conversation_t60.json 
+AkaiCMS layer-create --type temporal --dimension timeline --data conversation_t0.json
+AkaiCMS layer-create --type temporal --dimension timeline --data conversation_t60.json 
 ```
 
 **Value**:
@@ -140,16 +140,16 @@ BonfyreCMS layer-create --type temporal --dimension timeline --data conversation
 
 ---
 
-#### 6. API + Queue System (BonfyreAPI + BonfyreQueue)
+#### 6. API + Queue System (AkaiAPI + AkaiQueue)
 
 **What it adds**: Async job management, HTTP gateway
 
 ```bash
 # Start API
-BonfyreAPI start --port 9999 --db ~/.local/share/bonfyre/queue.db
+AkaiAPI start --port 9999 --db ~/.local/share/bonfyre/queue.db
 
 # Worker daemon
-BonfyreQueue work --threads 4
+AkaiQueue work --threads 4
 ```
 
 **Endpoints**:
@@ -250,12 +250,12 @@ bash scripts/speech_investigation_production.sh \
 
 **Requirements**:
 - 1× machine (4 cores, 8 GB RAM)
-- Bonfyre binaries built locally
+- Akai binaries built locally
 
 ```bash
-cd /tmp/bonfyre-oss
+cd /tmp/akai-oss
 make
-export BONFYRE_BIN_PATH=/tmp/bonfyre-oss/build
+export BONFYRE_BIN_PATH=/tmp/akai-oss/build
 
 bash scripts/speech_investigation_production.sh "test/*.mp3" output/
 ```
@@ -272,7 +272,7 @@ bash scripts/speech_investigation_production.sh "test/*.mp3" output/
 
 ```bash
 # Build
-cd /tmp/bonfyre-oss
+cd /tmp/akai-oss
 make docker
 
 # Start
@@ -296,8 +296,8 @@ curl -X POST http://localhost:9999/jobs/submit \
 - S3-compatible storage
 
 **Components**:
-- **API pods**: BonfyreAPI (load balanced, stateless)
-- **Worker pods**: BonfyreQueue workers (scaled by queue depth)
+- **API pods**: AkaiAPI (load balanced, stateless)
+- **Worker pods**: AkaiQueue workers (scaled by queue depth)
 - **Transcription pods**: GPU-accelerated Whisper
 - **Storage**: Distributed SQLite (Turso/LiteFS) or PostgreSQL
 - **Cache**: Redis for hot artifacts
@@ -313,11 +313,11 @@ curl -X POST http://localhost:9999/jobs/submit \
 | Phase | Time | Notes |
 |---|---|---|
 | Transcription | 6 min | RTF 0.1 on A40 GPU |
-| Entity extraction | 30 sec | BonfyreEntity (C) |
-| Canonicalization | 15 sec | BonfyreCanon |
-| Graph construction | 15 sec | BonfyreGraph |
+| Entity extraction | 30 sec | AkaiEntity (C) |
+| Canonicalization | 15 sec | AkaiCanon |
+| Graph construction | 15 sec | AkaiGraph |
 | Claims extraction | 10 sec | Python bridge |
-| Embeddings | 2 min | BonfyreEmbed + FPQ |
+| Embeddings | 2 min | AkaiEmbed + FPQ |
 | Hypothesis discovery | 1 min | Python |
 | Convergence | 30 sec | Python |
 | **Total** | **~11 min** | **RTF 0.18** |
@@ -399,7 +399,7 @@ Audio → Transcript → Summary → Done
 
 ---
 
-### Bonfyre Speech Investigation
+### Akai Speech Investigation
 
 ```
 Audio → Entities → Graph → Claims → Hypotheses → Pressure → Convergence
@@ -427,7 +427,7 @@ Audio → Entities → Graph → Claims → Hypotheses → Pressure → Converge
 
 > Most systems treat speech as **degraded text** (noise to remove).
 > 
-> Bonfyre treats speech as **richer signal** (contradictions, redundancy, multi-perspective structure to exploit).
+> Akai treats speech as **richer signal** (contradictions, redundancy, multi-perspective structure to exploit).
 
 **Why this matters**:
 
@@ -442,11 +442,11 @@ Audio → Entities → Graph → Claims → Hypotheses → Pressure → Converge
 
 ### Before Production Deployment
 
-- [ ] Build all Bonfyre binaries (`cd /tmp/bonfyre-oss && make`)
+- [ ] Build all Akai binaries (`cd /tmp/akai-oss && make`)
 - [ ] Test production pipeline on sample audio
 - [ ] Verify all binary paths in `BONFYRE_BIN_PATH`
-- [ ] Set up queue database (`BonfyreQueue init`)
-- [ ] Configure webhooks (if using BonfyreAPI)
+- [ ] Set up queue database (`AkaiQueue init`)
+- [ ] Configure webhooks (if using AkaiAPI)
 - [ ] Set quality thresholds
 - [ ] Enable metering + ledger tracking
 - [ ] Test embeddings + vector index
@@ -470,7 +470,7 @@ Audio → Entities → Graph → Claims → Hypotheses → Pressure → Converge
 - Worker utilization
 - GPU utilization (if applicable)
 - Cost per hour processed
-- Value created (via BonfyreLedger)
+- Value created (via AkaiLedger)
 
 **Quality Gates**:
 - Reject transcripts with confidence < threshold

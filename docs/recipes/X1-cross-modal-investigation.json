@@ -35,7 +35,7 @@
     {
       "id": "s01",
       "name": "Video Investigation",
-      "operator": "BonfyreRun",
+      "operator": "AkaiRun",
       "args": [
         "V1",
         "--input", "{input}",
@@ -47,7 +47,7 @@
     {
       "id": "s02",
       "name": "Extract Key Frames",
-      "operator": "BonfyreExtractKeyFrames",
+      "operator": "AkaiExtractKeyFrames",
       "args": [
         "--input", "{out}/video-analysis/frames",
         "--out", "{out}/keyframes",
@@ -60,7 +60,7 @@
     {
       "id": "s03",
       "name": "Analyze Key Frames",
-      "operator": "BonfyreRun",
+      "operator": "AkaiRun",
       "args": [
         "I1",
         "--input", "{out}/keyframes/*.jpg",
@@ -74,7 +74,7 @@
     {
       "id": "s04",
       "name": "Code Repository Analysis",
-      "operator": "BonfyreRun",
+      "operator": "AkaiRun",
       "args": [
         "C1",
         "--input", "{input_repo}",
@@ -88,7 +88,7 @@
     {
       "id": "s05",
       "name": "Cross-Reference Video + Code",
-      "operator": "BonfyreCrossReference",
+      "operator": "AkaiCrossReference",
       "args": [
         "--video-transcript", "{out}/video-analysis/transcripts",
         "--code-symbols", "{out}/code-analysis/symbols.json",
@@ -101,7 +101,7 @@
     {
       "id": "s06",
       "name": "Temporal Code Walkthrough",
-      "operator": "BonfyreCodeWalkthrough",
+      "operator": "AkaiCodeWalkthrough",
       "args": [
         "--video-timeline", "{out}/video-analysis/timeline/events.json",
         "--cross-refs", "{out}/cross-references.json",
@@ -115,7 +115,7 @@
     {
       "id": "s07",
       "name": "Visual-Textual Entity Fusion",
-      "operator": "BonfyreEntityFusion",
+      "operator": "AkaiEntityFusion",
       "args": [
         "--video-entities", "{out}/video-analysis/entities/merged.json",
         "--image-analyses", "{out}/image-analyses",
@@ -127,7 +127,7 @@
     {
       "id": "s08",
       "name": "Unified Knowledge Graph",
-      "operator": "BonfyreGraphFusion",
+      "operator": "AkaiGraphFusion",
       "args": [
         "--video-graph", "{out}/video-analysis/graph.json",
         "--code-graph", "{out}/code-analysis/dependency-graph.json",
@@ -142,7 +142,7 @@
     {
       "id": "s09",
       "name": "Investigation Report",
-      "operator": "BonfyreCrossModalBrief",
+      "operator": "AkaiCrossModalBrief",
       "args": [
         "--graph", "{out}/unified-graph.json",
         "--video-brief", "{out}/video-analysis/brief.md",
@@ -158,7 +158,7 @@
   "metadata": {
     "estimated_time": "30-45 minutes",
     "tags": ["cross-modal", "video", "code", "images", "investigation"],
-    "author": "bonfyre-core",
+    "author": "akai-core",
     "license": "MIT",
     "notes": "Demonstrates recipe composition (V1 ⊕ I1 ⊕ C1) with cross-modal entity fusion"
   }

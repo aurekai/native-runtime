@@ -23,7 +23,7 @@
     {
       "id": "s01",
       "name": "Image Normalization",
-      "operator": "BonfyreImageNormalize",
+      "operator": "AkaiImageNormalize",
       "args": [
         "--input", "{input}",
         "--out", "{out}/normalized.jpg",
@@ -35,7 +35,7 @@
     {
       "id": "s02",
       "name": "Object Detection",
-      "operator": "BonfyreDetectObjects",
+      "operator": "AkaiDetectObjects",
       "args": [
         "--input", "{out}/normalized.jpg",
         "--out", "{out}/objects.json",
@@ -48,7 +48,7 @@
     {
       "id": "s03",
       "name": "OCR Extraction",
-      "operator": "BonfyreOCR",
+      "operator": "AkaiOCR",
       "args": [
         "--input", "{out}/normalized.jpg",
         "--out", "{out}/text.json",
@@ -60,7 +60,7 @@
     {
       "id": "s04",
       "name": "Face Detection",
-      "operator": "BonfyreFaceDetect",
+      "operator": "AkaiFaceDetect",
       "args": [
         "--input", "{out}/normalized.jpg",
         "--out", "{out}/faces.json",
@@ -72,7 +72,7 @@
     {
       "id": "s05",
       "name": "Scene Classification",
-      "operator": "BonfyreSceneClassify",
+      "operator": "AkaiSceneClassify",
       "args": [
         "--input", "{out}/normalized.jpg",
         "--out", "{out}/scene.json",
@@ -85,7 +85,7 @@
     {
       "id": "s06",
       "name": "Caption Generation",
-      "operator": "BonfyreImageCaption",
+      "operator": "AkaiImageCaption",
       "args": [
         "--input", "{out}/normalized.jpg",
         "--out", "{out}/caption.json",
@@ -98,7 +98,7 @@
     {
       "id": "s07",
       "name": "Metadata Extraction",
-      "operator": "BonfyreImageMeta",
+      "operator": "AkaiImageMeta",
       "args": [
         "--input", "{input}",
         "--out", "{out}/metadata.json"
@@ -109,7 +109,7 @@
     {
       "id": "s08",
       "name": "Analysis Fusion",
-      "operator": "BonfyreFuseAnalysis",
+      "operator": "AkaiFuseAnalysis",
       "args": [
         "--objects", "{out}/objects.json",
         "--text", "{out}/text.json",
@@ -149,7 +149,7 @@
   "metadata": {
     "estimated_time": "8 seconds",
     "tags": ["image", "vision", "ocr", "detection"],
-    "author": "bonfyre-core",
+    "author": "akai-core",
     "license": "MIT"
   }
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Convert openai/parameter-golf records into minimal Bonfyre-native recipes."""
+"""Convert openai/parameter-golf records into minimal Aurekai-native recipes."""
 
 from __future__ import annotations
 

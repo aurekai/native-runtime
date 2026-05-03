@@ -229,7 +229,7 @@ if __name__ == "__main__":
         print("\n" + "="*70)
         print("ALL PHASE 16.5 TESTS PASSED ✓")
         print("="*70)
-        print("\nBonfyre now supports INTELLECTUAL COMPETITION:")
+        print("\nAkai now supports INTELLECTUAL COMPETITION:")
         print("  ✓ Run competing explanations through pressure")
         print("  ✓ Compare relative strength (not just pass/fail)")
         print("  ✓ Track fragility across pressure types")

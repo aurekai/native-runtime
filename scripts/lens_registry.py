@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/lens_registry.py — Bonfyre Hypothesis Swarm: 10 First-Wave Lens Families
+scripts/lens_registry.py — Akai Hypothesis Swarm: 10 First-Wave Lens Families
 
 A *lens* is a narrow, intentionally-biased, single-purpose reader.
 NOT a general classifier.  Each lens produces *claims* from a unique angle.
@@ -658,7 +658,7 @@ def run_all_lenses(doc_text: str, doc_id: str = "") -> List[Dict]:
 
 def main():
     import argparse
-    ap = argparse.ArgumentParser(description="Bonfyre Lens Registry")
+    ap = argparse.ArgumentParser(description="Akai Lens Registry")
     ap.add_argument("lens", choices=["all"] + list(LENS_FUNCTIONS.keys()),
                     help="Lens ID or 'all'")
     ap.add_argument("--doc", required=True, help="Path to document text file")

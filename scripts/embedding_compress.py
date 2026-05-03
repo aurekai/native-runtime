@@ -12,7 +12,7 @@ Rank by composite score, select top-K dims, write:
   - <out>/projection.npy     K×D float32 projection matrix (rows = selected dims)
   - <out>/bench.json         recall@10 before/after + cosine preservation
 
-Works directly on VECF files (bonfyre-embed output) or on .jsonl
+Works directly on VECF files (akai-embed output) or on .jsonl
 embedding records {id, embedding: [...]}.
 
 Usage:
@@ -33,7 +33,7 @@ from pathlib import Path
 import numpy as np
 
 
-# ── VECF v1 reader (bonfyre-embed output format) ─────────────────────────────
+# ── VECF v1 reader (akai-embed output format) ─────────────────────────────
 # Header: magic(4) version(4) dims(4) count(4)
 # Records: id_len(2) id(bytes) vector(dims × float32)
 

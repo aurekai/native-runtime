@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/hypothesis_swarm.py — Bonfyre Hypothesis Swarm Runner
+scripts/hypothesis_swarm.py — Akai Hypothesis Swarm Runner
 
 Orchestrates running 10-50 lenses over the same corpus slice in parallel
 (or serial iteration).  Each lens produces independent claims from its narrow
@@ -27,15 +27,15 @@ USAGE (library):
     result = run_swarm(
         corpus={"doc1": "text...", "doc2": "text..."},
         lens_ids=["L01_deposition_parser", "L03_euphemism_detector"],
-        memory_dir="/tmp/bonfyre-memory",
+        memory_dir="/tmp/akai-memory",
     )
 
 USAGE (CLI):
     python3 scripts/hypothesis_swarm.py --docs /tmp/corpus/*.txt \
-        --lenses all --memory-dir /tmp/bonfyre-memory --out /tmp/swarm_result.json
+        --lenses all --memory-dir /tmp/akai-memory --out /tmp/swarm_result.json
 
     python3 scripts/hypothesis_swarm.py --text "doc text" --doc-id 123 \
-        --lenses L01,L03,L06 --memory-dir /tmp/bonfyre-memory
+        --lenses L01,L03,L06 --memory-dir /tmp/akai-memory
 
 OUTPUT:
     {
@@ -47,7 +47,7 @@ OUTPUT:
       "elapsed_sec": 2.3,
       "pressure_zones": [...top 10 hot zones...],
       "cluster_summary": {...},
-      "conflict_report_path": "/tmp/bonfyre-memory/swarm_conflicts.json",
+      "conflict_report_path": "/tmp/akai-memory/swarm_conflicts.json",
     }
 """
 
@@ -65,7 +65,7 @@ sys.path.insert(0, os.path.dirname(_SELF))
 def run_swarm(
     corpus: Dict[str, str],
     lens_ids: List[str] = None,
-    memory_dir: str = "/tmp/bonfyre-memory",
+    memory_dir: str = "/tmp/akai-memory",
     run_id: int = None,
     min_confidence: float = 0.25,
     output_dir: str = None,
@@ -76,8 +76,8 @@ def run_swarm(
     Args:
         corpus: dict of {doc_id: doc_text}
         lens_ids: list of lens IDs to run (default: all 10)
-        memory_dir: path to Bonfyre memory dir (for claim_graph persistence)
-        run_id: optional Bonfyre run_id to link claims to specific transform run
+        memory_dir: path to Akai memory dir (for claim_graph persistence)
+        run_id: optional Akai run_id to link claims to specific transform run
         min_confidence: minimum confidence threshold for conflict detection
         output_dir: where to write swarm outputs (default: memory_dir)
 
@@ -217,7 +217,7 @@ def main():
     import argparse
     import glob
 
-    ap = argparse.ArgumentParser(description="Bonfyre Hypothesis Swarm Runner")
+    ap = argparse.ArgumentParser(description="Akai Hypothesis Swarm Runner")
 
     # Input: corpus from files or stdin
     inp_group = ap.add_mutually_exclusive_group(required=True)
@@ -227,9 +227,9 @@ def main():
     ap.add_argument("--doc-id", help="Document ID for --text mode")
     ap.add_argument("--lenses", default="all",
                     help="Comma-separated lens IDs or 'all' (default: all)")
-    ap.add_argument("--memory-dir", default="/tmp/bonfyre-memory",
-                    help="Bonfyre memory directory")
-    ap.add_argument("--run-id", type=int, help="Optional Bonfyre run_id to link claims")
+    ap.add_argument("--memory-dir", default="/tmp/akai-memory",
+                    help="Akai memory directory")
+    ap.add_argument("--run-id", type=int, help="Optional Akai run_id to link claims")
     ap.add_argument("--min-confidence", type=float, default=0.25,
                     help="Min confidence for conflict detection")
     ap.add_argument("--out", help="Output directory for swarm results")

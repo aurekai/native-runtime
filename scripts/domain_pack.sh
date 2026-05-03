@@ -13,12 +13,12 @@
 #
 # Optional:
 #   --n N               corpus size (default: 1000)
-#   --out-root DIR      root output directory (default: /tmp/bonfyre-domain)
-#   --models-dir DIR    BQFP/align output (default: /tmp/bonfyre-families)
+#   --out-root DIR      root output directory (default: /tmp/akai-domain)
+#   --models-dir DIR    BQFP/align output (default: /tmp/akai-families)
 #   --anchor-family ID  family to align against in frontier (default: T04)
-#   --recipe CODE       bonfyre-run recipe code (default: T04-C)
+#   --recipe CODE       akai-run recipe code (default: T04-C)
 #   --skip-corpus       skip corpus prep if dir already exists
-#   --skip-collapse     skip bonfyre-run collapse if model.onnx already exists
+#   --skip-collapse     skip akai-run collapse if model.onnx already exists
 #   --skip-quant        skip BQFP quantization if .bqfp already exists
 #   --skip-fragment     skip fragment extraction
 #   --skip-align        skip FPQx alignment
@@ -27,7 +27,7 @@
 # Output layout:
 #   <out-root>/<domain>-<n>/
 #     corpus/               .txt + .label files
-#     run/                  bonfyre-run output (model.onnx, metrics.json)
+#     run/                  akai-run output (model.onnx, metrics.json)
 #     model.onnx            symlink → run/train/model.onnx
 #   <models-dir>/
 #     <FAMILY_ID>.bqfp
@@ -35,7 +35,7 @@
 #     align-<FAMILY_ID>-<anchor>/
 #
 # Requirements:
-#   On PATH: bonfyre-run, bonfyre-quant, bonfyre-layer, bonfyre-fpqx, bonfyre-sli
+#   On PATH: akai-run, akai-quant, akai-layer, akai-fpqx, akai-sli
 #   Python: pip install datasets sentence-transformers torch onnx onnxruntime scikit-learn
 #
 # macOS bash 3.2 compatible.
@@ -50,8 +50,8 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DOMAIN=""
 FAMILY=""
 N=1000
-OUT_ROOT="/tmp/bonfyre-domain"
-MODELS_DIR="/tmp/bonfyre-families"
+OUT_ROOT="/tmp/akai-domain"
+MODELS_DIR="/tmp/akai-families"
 ANCHOR_FAMILY="T04"
 RECIPE="T04-C"
 SKIP_CORPUS=0
@@ -88,11 +88,11 @@ if [[ -z "$DOMAIN" || -z "$FAMILY" ]]; then
 fi
 
 # ── tool paths ────────────────────────────────────────────────────────────────
-BF_RUN="bonfyre-run"
-QUANT_BIN="$REPO_ROOT/cmd/BonfyreQuant/bonfyre-quant"
-LAYER_BIN="$REPO_ROOT/cmd/BonfyreLayer/bonfyre-layer"
-FPQX_BIN="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
+BF_RUN="akai-run"
+QUANT_BIN="$REPO_ROOT/cmd/AkaiQuant/akai-quant"
+LAYER_BIN="$REPO_ROOT/cmd/AkaiLayer/akai-layer"
+FPQX_BIN="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
 
 for tool in "$QUANT_BIN" "$LAYER_BIN" "$FPQX_BIN" "$SLI_BIN"; do
     if [[ ! -x "$tool" ]]; then
@@ -103,7 +103,7 @@ for tool in "$QUANT_BIN" "$LAYER_BIN" "$FPQX_BIN" "$SLI_BIN"; do
 done
 
 if ! command -v "$BF_RUN" &>/dev/null; then
-    echo "[domain_pack] ERROR: bonfyre-run not on PATH"
+    echo "[domain_pack] ERROR: akai-run not on PATH"
     exit 1
 fi
 
@@ -123,7 +123,7 @@ METRICS_OUT="$PACK_DIR/domain_pack_metrics.json"
 mkdir -p "$PACK_DIR" "$CORPUS_DIR" "$MODELS_DIR"
 
 echo "==================================================================="
-echo " Bonfyre domain_pack.sh"
+echo " Akai domain_pack.sh"
 echo "  domain     : $DOMAIN"
 echo "  family     : $FAMILY  (anchor: $ANCHOR_FAMILY)"
 echo "  corpus n   : $N"
@@ -156,13 +156,13 @@ echo "  $N_DOCS docs, $N_LABELS labels → $CORPUS_DIR"
 echo ""
 
 # ── Step 2: Collapse + student training ───────────────────────────────────────
-echo "── Step 2: Collapse (bonfyre-run $RECIPE) ─────────────────────────────"
+echo "── Step 2: Collapse (akai-run $RECIPE) ─────────────────────────────"
 if [[ $SKIP_COLLAPSE -eq 1 ]] && [[ -f "$ONNX_PATH" ]]; then
     echo "  (skip) model.onnx already exists: $ONNX_PATH"
 else
     mkdir -p "$RUN_DIR"
     (cd "$REPO_ROOT" && "$BF_RUN" "$RECIPE" "$CORPUS_DIR" --out "$RUN_DIR") \
-        || { echo "  WARNING: bonfyre-run exited non-zero (checking for model.onnx)"; }
+        || { echo "  WARNING: akai-run exited non-zero (checking for model.onnx)"; }
 fi
 if [[ -f "$ONNX_PATH" ]]; then
     SZ_KB=$(du -k "$ONNX_PATH" | cut -f1)
@@ -202,7 +202,7 @@ else
         SZ_FRAG_BQFP=$(du -k "$FRAG_BQFP" 2>/dev/null | cut -f1 || echo "?")
         echo "  ${FAMILY}-frag.bqfp: ${SZ_FRAG_BQFP}KB"
     else
-        echo "  WARNING: bonfyre-layer pull-layer failed (fragment skipped)"
+        echo "  WARNING: akai-layer pull-layer failed (fragment skipped)"
     fi
 fi
 if [[ -f "$FRAG_BQFP" ]]; then
@@ -298,7 +298,7 @@ python3 - <<PYEOF
 import json, os, time
 
 metrics = {
-    "schema":         "bonfyre-domain-pack-v1",
+    "schema":         "akai-domain-pack-v1",
     "domain":         "$DOMAIN",
     "family":         "$FAMILY",
     "n_corpus":       $N_DOCS,

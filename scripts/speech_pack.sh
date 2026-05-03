@@ -16,14 +16,14 @@
 #
 # Optional:
 #   --n N               corpus size in utterances (default: 500)
-#   --recipe CODE       bonfyre-run recipe (default: T30-C)
+#   --recipe CODE       akai-run recipe (default: T30-C)
 #   --whisper-model M   Whisper model for synth_teacher_asr (default: base)
 #   --whisper-device D  Torch device for Whisper (default: cpu)
-#   --out-root DIR      root output directory (default: /tmp/bonfyre-speech)
-#   --models-dir DIR    BQFP/align output (default: /tmp/bonfyre-families)
+#   --out-root DIR      root output directory (default: /tmp/akai-speech)
+#   --models-dir DIR    BQFP/align output (default: /tmp/akai-families)
 #   --anchor-family ID  family to align against in frontier (default: T04)
 #   --skip-corpus       skip audio corpus prep if dir already has .wav files
-#   --skip-collapse     skip bonfyre-run collapse if model.onnx already exists
+#   --skip-collapse     skip akai-run collapse if model.onnx already exists
 #   --skip-quant        skip BQFP quantization if .bqfp already exists
 #   --skip-fragment     skip fragment extraction
 #   --skip-align        skip FPQx alignment
@@ -32,7 +32,7 @@
 # Output layout:
 #   <out-root>/<domain>-<n>/
 #     corpus/               .wav + .txt + .label utterances
-#     run/                  bonfyre-run output (model.onnx, metrics.json)
+#     run/                  akai-run output (model.onnx, metrics.json)
 #   <models-dir>/
 #     <FAMILY_ID>.bqfp
 #     <FAMILY_ID>-frag.bqfp
@@ -44,7 +44,7 @@
 #   HF_TOKEN          HuggingFace token for gated datasets (gigaspeech_s)
 #
 # Requirements:
-#   On PATH: bonfyre-run, bonfyre-quant, bonfyre-layer, bonfyre-fpqx, bonfyre-sli
+#   On PATH: akai-run, akai-quant, akai-layer, akai-fpqx, akai-sli
 #   Python: pip install datasets soundfile numpy openai-whisper \
 #               sentence-transformers torch onnx onnxruntime scikit-learn
 #
@@ -63,8 +63,8 @@ N=500
 RECIPE="T30-C"
 WHISPER_MODEL="${WHISPER_MODEL:-base}"
 WHISPER_DEVICE="${WHISPER_DEVICE:-cpu}"
-OUT_ROOT="/tmp/bonfyre-speech"
-MODELS_DIR="/tmp/bonfyre-families"
+OUT_ROOT="/tmp/akai-speech"
+MODELS_DIR="/tmp/akai-families"
 ANCHOR_FAMILY="T04"
 SKIP_CORPUS=0
 SKIP_COLLAPSE=0
@@ -104,11 +104,11 @@ fi
 export WHISPER_MODEL WHISPER_DEVICE
 
 # ── tool paths ────────────────────────────────────────────────────────────────
-BF_RUN="bonfyre-run"
-QUANT_BIN="$REPO_ROOT/cmd/BonfyreQuant/bonfyre-quant"
-LAYER_BIN="$REPO_ROOT/cmd/BonfyreLayer/bonfyre-layer"
-FPQX_BIN="$REPO_ROOT/cmd/BonfyreFPQX/bonfyre-fpqx"
-SLI_BIN="$REPO_ROOT/cmd/BonfyreSLI/bonfyre-sli"
+BF_RUN="akai-run"
+QUANT_BIN="$REPO_ROOT/cmd/AkaiQuant/akai-quant"
+LAYER_BIN="$REPO_ROOT/cmd/AkaiLayer/akai-layer"
+FPQX_BIN="$REPO_ROOT/cmd/AkaiFPQX/akai-fpqx"
+SLI_BIN="$REPO_ROOT/cmd/AkaiSLI/akai-sli"
 
 for tool in "$QUANT_BIN" "$LAYER_BIN" "$FPQX_BIN" "$SLI_BIN"; do
     if [[ ! -x "$tool" ]]; then
@@ -119,7 +119,7 @@ for tool in "$QUANT_BIN" "$LAYER_BIN" "$FPQX_BIN" "$SLI_BIN"; do
 done
 
 if ! command -v "$BF_RUN" &>/dev/null; then
-    echo "[speech_pack] ERROR: bonfyre-run not on PATH"
+    echo "[speech_pack] ERROR: akai-run not on PATH"
     exit 1
 fi
 
@@ -139,7 +139,7 @@ METRICS_OUT="$PACK_DIR/speech_pack_metrics.json"
 mkdir -p "$PACK_DIR" "$CORPUS_DIR" "$MODELS_DIR"
 
 echo "==================================================================="
-echo " Bonfyre speech_pack.sh"
+echo " Akai speech_pack.sh"
 echo "  domain         : $DOMAIN"
 echo "  family         : $FAMILY  (anchor: $ANCHOR_FAMILY)"
 echo "  corpus n       : $N utterances"
@@ -181,13 +181,13 @@ echo "  $N_WAV .wav files, $N_TXT .txt files → $CORPUS_DIR"
 echo ""
 
 # ── Step 2: Collapse + student training ───────────────────────────────────────
-echo "── Step 2: Collapse (bonfyre-run $RECIPE) ─────────────────────────────"
+echo "── Step 2: Collapse (akai-run $RECIPE) ─────────────────────────────"
 if [[ $SKIP_COLLAPSE -eq 1 ]] && [[ -f "$ONNX_PATH" ]]; then
     echo "  (skip) model.onnx already exists: $ONNX_PATH"
 else
     mkdir -p "$RUN_DIR"
     (cd "$REPO_ROOT" && "$BF_RUN" "$RECIPE" "$CORPUS_DIR" --out "$RUN_DIR") \
-        || { echo "  WARNING: bonfyre-run exited non-zero (checking for model.onnx)"; }
+        || { echo "  WARNING: akai-run exited non-zero (checking for model.onnx)"; }
 fi
 
 if [[ -f "$ONNX_PATH" ]]; then
@@ -231,7 +231,7 @@ else
             PASS=$((PASS+1))
         fi
     else
-        echo "  WARNING: bonfyre-layer pull-layer failed (fragment skipped — non-fatal)"
+        echo "  WARNING: akai-layer pull-layer failed (fragment skipped — non-fatal)"
     fi
 fi
 if [[ -f "$FRAG_BQFP" ]]; then
@@ -377,7 +377,7 @@ python3 - <<PYEOF
 import json, os, time
 
 metrics = {
-    "schema":        "bonfyre-speech-pack-v1",
+    "schema":        "akai-speech-pack-v1",
     "domain":        "$DOMAIN",
     "family":        "$FAMILY",
     "recipe":        "$RECIPE",

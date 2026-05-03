@@ -1,11 +1,11 @@
-# CMS Guide — bonfyre-cms
+# CMS Guide — akai-cms
 
-`bonfyre-cms` is a 299 KB content management system that replaces Strapi. It provides a REST API, dynamic schemas, token authentication, and Lambda Tensors compression — all in a single static binary.
+`akai-cms` is a 299 KB content management system that replaces Strapi. It provides a REST API, dynamic schemas, token authentication, and Lambda Tensors compression — all in a single static binary.
 
 ## Quick start
 
 ```bash
-bonfyre-cms serve --port 8800
+akai-cms serve --port 8800
 ```
 
 That's it. The CMS is running on port 8800 with a SQLite database.
@@ -51,7 +51,7 @@ curl http://localhost:8800/api/posts/1
 
 ## Lambda Tensors integration
 
-When a content type accumulates multiple records, BonfyreCMS automatically groups them into families and applies Lambda Tensors compression.
+When a content type accumulates multiple records, AkaiCMS automatically groups them into families and applies Lambda Tensors compression.
 
 This means:
 - Storage shrinks as similar records accumulate
@@ -60,11 +60,11 @@ This means:
 
 ## Authentication
 
-BonfyreCMS integrates with `bonfyre-gate` for API key validation:
+AkaiCMS integrates with `akai-gate` for API key validation:
 
 ```bash
 # Start with gate integration
-bonfyre-cms serve --port 8800 --gate-key YOUR_KEY
+akai-cms serve --port 8800 --gate-key YOUR_KEY
 ```
 
 API requests must include:
@@ -75,8 +75,8 @@ Authorization: Bearer YOUR_KEY
 ## Migration from Strapi
 
 1. Export your Strapi schemas as JSON
-2. Create the same schemas via the BonfyreCMS API
+2. Create the same schemas via the AkaiCMS API
 3. Export content from Strapi's REST API
-4. Import into BonfyreCMS
+4. Import into AkaiCMS
 
 The REST API surface is intentionally similar to Strapi's `/api/:collection` pattern.

@@ -1,7 +1,7 @@
 #!/bin/bash
-# Bonfyre — Unified Build & Install
+# Akai — Unified Build & Install
 #
-# Builds all Bonfyre binaries from source. Single machine, zero cloud.
+# Builds all Akai binaries from source. Single machine, zero cloud.
 #
 # Usage:
 #   ./install.sh              # Build all, install to ~/.local/bin
@@ -45,48 +45,48 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
     fi
 fi
 
-# ---- All Bonfyre binary projects (build order matters for deps) ----
+# ---- All Akai binary projects (build order matters for deps) ----
 # Library first, then CMS (depends on library), then everything else
 PROJECTS=(
     "liblambda-tensors|liblambda-tensors.a|library"
-    "BonfyreCMS|bonfyre-cms|infrastructure"
-    "BonfyreCLI|bonfyre|orchestration"
-    "BonfyrePipeline|bonfyre-pipeline|orchestration"
-    "BonfyreOrchestrate|bonfyre-orchestrate|orchestration"
-    "BonfyreQueue|bonfyre-queue|orchestration"
-    "BonfyreStitch|bonfyre-stitch|orchestration"
-    "BonfyreSync|bonfyre-sync|orchestration"
-    "BonfyreIngest|bonfyre-ingest|pipeline"
-    "BonfyreHash|bonfyre-hash|pipeline"
-    "BonfyreMediaPrep|bonfyre-media-prep|pipeline"
-    "BonfyreTranscribe|bonfyre-transcribe|pipeline"
-    "BonfyreTranscriptClean|bonfyre-transcript-clean|pipeline"
-    "BonfyreTranscriptFamily|bonfyre-transcript-family|pipeline"
-    "BonfyreParagraph|bonfyre-paragraph|pipeline"
-    "BonfyreNarrate|bonfyre-narrate|pipeline"
-    "BonfyreBrief|bonfyre-brief|pipeline"
-    "BonfyreProof|bonfyre-proof|pipeline"
-    "BonfyreOffer|bonfyre-offer|value"
-    "BonfyrePack|bonfyre-pack|pipeline"
-    "BonfyreDistribute|bonfyre-distribute|pipeline"
-    "BonfyreCompress|bonfyre-compress|pipeline"
-    "BonfyreEmbed|bonfyre-embed|pipeline"
-    "BonfyreEmit|bonfyre-emit|pipeline"
-    "BonfyreRender|bonfyre-render|pipeline"
-    "BonfyreProject|bonfyre-project|pipeline"
-    "BonfyreIndex|bonfyre-index|infrastructure"
-    "BonfyreGate|bonfyre-gate|value"
-    "BonfyreMeter|bonfyre-meter|value"
-    "BonfyreLedger|bonfyre-ledger|value"
-    "BonfyreRuntime|bonfyre-runtime|infrastructure"
-    "BonfyreMFADict|bonfyre-mfa-dict|pipeline"
-    "BonfyreWeaviateIndex|bonfyre-weaviate-index|pipeline"
-    "BonfyreGraph|bonfyre-graph|infrastructure"
-    "BonfyreFinance|bonfyre-finance|value"
-    "BonfyreOutreach|bonfyre-outreach|value"
-    "BonfyreAPI|bonfyre-api|infrastructure"
-    "BonfyreAuth|bonfyre-auth|infrastructure"
-    "BonfyrePay|bonfyre-pay|value"
+    "AkaiCMS|akai-cms|infrastructure"
+    "AkaiCLI|akai|orchestration"
+    "AkaiPipeline|akai-pipeline|orchestration"
+    "AkaiOrchestrate|akai-orchestrate|orchestration"
+    "AkaiQueue|akai-queue|orchestration"
+    "AkaiStitch|akai-stitch|orchestration"
+    "AkaiSync|akai-sync|orchestration"
+    "AkaiIngest|akai-ingest|pipeline"
+    "AkaiHash|akai-hash|pipeline"
+    "AkaiMediaPrep|akai-media-prep|pipeline"
+    "AkaiTranscribe|akai-transcribe|pipeline"
+    "AkaiTranscriptClean|akai-transcript-clean|pipeline"
+    "AkaiTranscriptFamily|akai-transcript-family|pipeline"
+    "AkaiParagraph|akai-paragraph|pipeline"
+    "AkaiNarrate|akai-narrate|pipeline"
+    "AkaiBrief|akai-brief|pipeline"
+    "AkaiProof|akai-proof|pipeline"
+    "AkaiOffer|akai-offer|value"
+    "AkaiPack|akai-pack|pipeline"
+    "AkaiDistribute|akai-distribute|pipeline"
+    "AkaiCompress|akai-compress|pipeline"
+    "AkaiEmbed|akai-embed|pipeline"
+    "AkaiEmit|akai-emit|pipeline"
+    "AkaiRender|akai-render|pipeline"
+    "AkaiProject|akai-project|pipeline"
+    "AkaiIndex|akai-index|infrastructure"
+    "AkaiGate|akai-gate|value"
+    "AkaiMeter|akai-meter|value"
+    "AkaiLedger|akai-ledger|value"
+    "AkaiRuntime|akai-runtime|infrastructure"
+    "AkaiMFADict|akai-mfa-dict|pipeline"
+    "AkaiWeaviateIndex|akai-weaviate-index|pipeline"
+    "AkaiGraph|akai-graph|infrastructure"
+    "AkaiFinance|akai-finance|value"
+    "AkaiOutreach|akai-outreach|value"
+    "AkaiAPI|akai-api|infrastructure"
+    "AkaiAuth|akai-auth|infrastructure"
+    "AkaiPay|akai-pay|value"
 )
 
 RED='\033[0;31m'
@@ -96,7 +96,7 @@ CYAN='\033[0;36m'
 BOLD='\033[1m'
 NC='\033[0m'
 
-log()  { echo -e "${CYAN}[bonfyre]${NC} $*"; }
+log()  { echo -e "${CYAN}[akai]${NC} $*"; }
 ok()   { echo -e "${GREEN}  ✓${NC} $*"; }
 warn() { echo -e "${YELLOW}  ⚠${NC} $*"; }
 fail() { echo -e "${RED}  ✗${NC} $*"; }
@@ -124,7 +124,7 @@ done
 
 # ---- List mode ----
 if [[ $LIST_ONLY -eq 1 ]]; then
-    echo -e "${BOLD}Bonfyre Binary Family — 39+ binaries${NC}"
+    echo -e "${BOLD}Akai Binary Family — 39+ binaries${NC}"
     echo ""
     printf "  %-28s %-24s %s\n" "PROJECT" "BINARY" "LAYER"
     printf "  %-28s %-24s %s\n" "-------" "------" "-----"
@@ -167,14 +167,14 @@ check_cmd make
 check_lib sqlite3 sqlite3.h "brew install sqlite3 / apt install libsqlite3-dev"
 check_lib zlib zlib.h "brew install zlib / apt install zlib1g-dev"
 
-# OpenBLAS — required for full BonfyreFPQ BLAS-accelerated paths on Linux
+# OpenBLAS — required for full AkaiFPQ BLAS-accelerated paths on Linux
 # (macOS uses Apple Accelerate, so this check is Linux-only)
 if [[ "$OS_TYPE" == "Linux" ]]; then
     if pkg-config --exists openblas 2>/dev/null || \
        echo "#include <cblas.h>" | ${CC:-cc} -x c -fsyntax-only - 2>/dev/null; then
-        ok "openblas (found — BonfyreFPQ BLAS paths enabled)"
+        ok "openblas (found — AkaiFPQ BLAS paths enabled)"
     else
-        warn "openblas not found — BonfyreFPQ will build with scalar BLAS fallback"
+        warn "openblas not found — AkaiFPQ will build with scalar BLAS fallback"
         warn "  For full performance: sudo apt-get install libopenblas-dev"
         warn "  All other modules unaffected."
     fi
@@ -202,7 +202,7 @@ if [[ $CHECK_ONLY -eq 1 ]]; then
 fi
 
 # ---- Build ----
-log "Building Bonfyre binary family..."
+log "Building Akai binary family..."
 echo ""
 
 BUILT=0
@@ -322,15 +322,15 @@ if [[ ":$PATH:" != *":${BIN_DIR}:"* ]]; then
 fi
 
 echo ""
-echo -e "${BOLD}Bonfyre is ready.${NC}"
-echo "  Run: bonfyre --help"
-echo "  CMS: bonfyre-cms serve"
-echo "  Full pipeline: bonfyre-pipeline --help"
+echo -e "${BOLD}Akai is ready.${NC}"
+echo "  Run: akai --help"
+echo "  CMS: akai-cms serve"
+echo "  Full pipeline: akai-pipeline --help"
 
 # ---- Models (optional) ----
 echo ""
 log "Checking models..."
-MODDIR="$HOME/.bonfyre/models"
+MODDIR="$HOME/.akai/models"
 WHISPER_DIR="$HOME/.local/share/whisper"
 mkdir -p "$MODDIR" "$WHISPER_DIR"
 

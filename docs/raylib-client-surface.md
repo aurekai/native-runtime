@@ -1,22 +1,22 @@
 # Raylib Client Surface
 
-`clients/raylib` implements a cozy 2D client surface adapter for Bonfyre.
+`clients/raylib` implements a cozy 2D client surface adapter for Aurekai.
 
 This is an optional client.
-It is not the canonical Bonfyre UI.
+It is not the canonical Akai UI.
 It is not required for CLI, API, headless, or server use.
 
 ## Purpose
 
-The Raylib adapter consumes Bonfyre events and local sync patches, renders a 2D world view, and emits lightweight player input actions back to Bonfyre.
+The Raylib adapter consumes Akai events and local sync patches, renders a 2D world view, and emits lightweight player input actions back to Aurekai.
 
 ## Event Flow
 
 ```text
-Bonfyre recipe emits domain event
+Akai recipe emits domain event
   -> sync/MoQ/API delivers event
   -> Raylib adapter updates local render state
-  -> player action emits T_PLAYER_ACTION back to Bonfyre
+  -> player action emits T_PLAYER_ACTION back to Aurekai
 ```
 
 ## Reads

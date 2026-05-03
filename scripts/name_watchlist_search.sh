@@ -7,14 +7,14 @@
 # Input: names.txt — one name per line (e.g. "John Doe", "Jane Smith")
 # Output: Markdown hit report, one section per name, with doc/page/context
 #
-# The Bonfyre FTS5 index schema assumed:
+# The Akai FTS5 index schema assumed:
 #   CREATE VIRTUAL TABLE docs_fts USING fts5(
 #       doc_id, source_file, page_num, text,
 #       tokenize='porter unicode61'
 #   );
 #
 # If you haven't indexed yet, run:
-#   bonfyre-index --corpus /path/to/corpus --db /path/to/bonfyre.db
+#   akai-index --corpus /path/to/corpus --db /path/to/bonfyre.db
 
 set -euo pipefail
 

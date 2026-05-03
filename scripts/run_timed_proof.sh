@@ -2,14 +2,14 @@
 set -euo pipefail
 
 # Usage: ./scripts/run_timed_proof.sh <public-url> <title> [out-dir]
-# Full Bonfyre pipeline with per-step timing and metrics capture.
+# Full Akai pipeline with per-step timing and metrics capture.
 # Produces: <out-dir>/recipe.json and recipe.md
 # Compatible with bash 3.2+ (macOS default).
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 URL="$1"
 TITLE="$2"
-OUT_DIR="${3:-$(mktemp -d /tmp/bonfyre-timed-proof.XXXXXX)}"
+OUT_DIR="${3:-$(mktemp -d /tmp/akai-timed-proof.XXXXXX)}"
 
 DOWNLOAD_DIR="$OUT_DIR/download"
 TRANS_DIR="$OUT_DIR/transcribe"
@@ -44,7 +44,7 @@ run_step() {
 }
 
 PIPELINE_START=$(now_ms)
-echo "=== Bonfyre Timed Pipeline ==="
+echo "=== Akai Timed Pipeline ==="
 echo " URL:   $URL"
 echo " Title: $TITLE"
 echo " Out:   $OUT_DIR"
@@ -66,19 +66,19 @@ fi
 
 # Step 3: Normalize audio
 NORMALIZED_WAV="$OUT_DIR/source.wav"
-run_step "media-prep" "$ROOT/cmd/BonfyreMediaPrep/bonfyre-media-prep" normalize "$SOURCE_FILE" "$NORMALIZED_WAV"
+run_step "media-prep" "$ROOT/cmd/AkaiMediaPrep/akai-media-prep" normalize "$SOURCE_FILE" "$NORMALIZED_WAV"
 
 # Step 4: Transcribe
-run_step "transcribe" "$ROOT/cmd/BonfyreTranscribe/bonfyre-transcribe" "$NORMALIZED_WAV" "$TRANS_DIR"
+run_step "transcribe" "$ROOT/cmd/AkaiTranscribe/akai-transcribe" "$NORMALIZED_WAV" "$TRANS_DIR"
 
 # Step 5: Clean transcript
-run_step "transcript-clean" "$ROOT/cmd/BonfyreTranscriptClean/bonfyre-transcript-clean" --transcript "$TRANS_DIR/transcript.json" --out "$CLEAN_DIR/clean.txt"
+run_step "transcript-clean" "$ROOT/cmd/AkaiTranscriptClean/akai-transcript-clean" --transcript "$TRANS_DIR/transcript.json" --out "$CLEAN_DIR/clean.txt"
 
 # Step 6: Paragraphize
-run_step "paragraph" "$ROOT/cmd/BonfyreParagraph/bonfyre-paragraph" --input "$CLEAN_DIR/clean.txt" --out "$PARA_DIR/paragraphs.txt"
+run_step "paragraph" "$ROOT/cmd/AkaiParagraph/akai-paragraph" --input "$CLEAN_DIR/clean.txt" --out "$PARA_DIR/paragraphs.txt"
 
 # Step 7: Brief extraction
-run_step "brief" "$ROOT/cmd/BonfyreBrief/bonfyre-brief" "$PARA_DIR/paragraphs.txt" "$BRIEF_DIR" --title "$TITLE"
+run_step "brief" "$ROOT/cmd/AkaiBrief/akai-brief" "$PARA_DIR/paragraphs.txt" "$BRIEF_DIR" --title "$TITLE"
 
 # Step 8: Build proof bundle
 DURATION_S=$(jq -r '.duration // 0' "$SOURCE_META" 2>/dev/null || echo 0)

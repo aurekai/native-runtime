@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-scripts/convergence_engine.py — Bonfyre Structural Convergence Engine
+scripts/convergence_engine.py — Akai Structural Convergence Engine
 
 Converts competing claims into stable structures through repeated independent pressure.
 
@@ -28,7 +28,7 @@ Stop when:
 
 USAGE (library):
     from scripts.convergence_engine import ConvergenceEngine
-    engine = ConvergenceEngine(memory_dir="/tmp/bonfyre-memory")
+    engine = ConvergenceEngine(memory_dir="/tmp/akai-memory")
     result = engine.run_convergence(
         corpus={"doc1": "text...", "doc2": "text..."},
         max_iterations=5,
@@ -38,7 +38,7 @@ USAGE (library):
 USAGE (CLI):
     python3 scripts/convergence_engine.py \
         --docs '/tmp/corpus/*.txt' \
-        --memory-dir /tmp/bonfyre-memory \
+        --memory-dir /tmp/akai-memory \
         --max-iterations 5 \
         --pressure-threshold 1.0
 
@@ -74,7 +74,7 @@ class ConvergenceEngine:
     Orchestrates repeated swarm passes to resolve conflicts and stabilize claims.
     """
 
-    def __init__(self, memory_dir: str = "/tmp/bonfyre-memory"):
+    def __init__(self, memory_dir: str = "/tmp/akai-memory"):
         self.memory_dir = memory_dir
         self.claim_graph = ClaimGraph(memory_dir)
 
@@ -337,11 +337,11 @@ def main():
     import argparse
     import glob
 
-    ap = argparse.ArgumentParser(description="Bonfyre Structural Convergence Engine")
+    ap = argparse.ArgumentParser(description="Akai Structural Convergence Engine")
     ap.add_argument("--docs", required=True,
                     help="Glob pattern for docs (e.g. /tmp/*.txt)")
-    ap.add_argument("--memory-dir", default="/tmp/bonfyre-memory",
-                    help="Bonfyre memory directory")
+    ap.add_argument("--memory-dir", default="/tmp/akai-memory",
+                    help="Akai memory directory")
     ap.add_argument("--max-iterations", type=int, default=5,
                     help="Max convergence iterations per cluster")
     ap.add_argument("--pressure-threshold", type=float, default=1.0,

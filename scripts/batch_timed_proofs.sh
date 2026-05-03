@@ -9,7 +9,7 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP="${1:?usage: batch_timed_proofs.sh <app-slug> <seeds-json> [count] [out-base]}"
 SEEDS_JSON="${2:?provide seeds.json path}"
 COUNT="${3:-5}"
-OUT_BASE="${4:-/tmp/bonfyre-bench-$APP}"
+OUT_BASE="${4:-/tmp/akai-bench-$APP}"
 
 mkdir -p "$OUT_BASE"
 
@@ -20,7 +20,7 @@ n = min(int('$COUNT'), len(seeds))
 for s in random.sample(seeds, n): print(s)
 ")
 
-echo "=== Bonfyre Batch Benchmark - $APP ==="
+echo "=== Akai Batch Benchmark - $APP ==="
 echo " Seeds: $COUNT from $SEEDS_JSON"
 echo " Output: $OUT_BASE"
 echo ""
@@ -125,7 +125,7 @@ with open(os.path.join(out_base, "benchmark.json"), "w") as f:
 
 # Markdown report with headline claims
 lines = [
-    f"# Bonfyre Benchmark - {app}", "",
+    f"# Akai Benchmark - {app}", "",
     "## Headline Claims", "",
     f"- **{processed - failed} public-origin sources** processed end-to-end",
     f"- **{round(total_audio)}s total audio** in **{round(total_wall, 1)}s pipeline wall time**",

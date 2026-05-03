@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# bonfyre-hydra-v1.sh — multi-domain stress + showcase
+# akai-hydra-v1.sh — multi-domain stress + showcase
 #
-# Runs 8 domain event streams through the same Bonfyre substrate:
+# Runs 8 domain event streams through the same Akai substrate:
 #   device   wire-like device telemetry events
 #   dating   arc events (swipe/match/message/ghost)
 #   coupon   cart and redemption events
@@ -11,42 +11,42 @@
 #   media    transcript and clip indexing events
 #   value    opportunity scoring and margin events
 #
-# Per-event pipeline (real commands only — proven in v3/v4 or visible in bonfyre list):
+# Per-event pipeline (real commands only — proven in v3/v4 or visible in akai list):
 #   1. make synthetic artifact + doc.txt
-#   2. bonfyre hash file
-#   3. bonfyre compress pack
-#   4. bonfyre embed --backend hash --dims 384 (guarded)
-#   5. bonfyre vec insert (guarded)
-#   6. bonfyre graph add-atom + add-op lineage
-#   7. bonfyre control score → HE-SLI composite
-#   8. bonfyre discipl recurse + propose + verify (guarded)
-#   9. bonfyre ledger assess-json → portfolio_value
-#  10. bonfyre economy cost record
-#  11. bonfyre meter record
-#  12. bonfyre compete run (shared competition)
-#  13. bonfyre learn feedback
-#  14. bonfyre fragment create (λT compact record)
-#  15. bonfyre queue enqueue
-#  16. bonfyre time schedule
-#  17. bonfyre entity resolve
-#  18. bonfyre space put (λT persist)
-#  19. bonfyre tier record
+#   2. akai hash file
+#   3. akai compress pack
+#   4. akai embed --backend hash --dims 384 (guarded)
+#   5. akai vec insert (guarded)
+#   6. akai graph add-atom + add-op lineage
+#   7. akai control score → HE-SLI composite
+#   8. akai discipl recurse + propose + verify (guarded)
+#   9. akai ledger assess-json → portfolio_value
+#  10. akai economy cost record
+#  11. akai meter record
+#  12. akai compete run (shared competition)
+#  13. akai learn feedback
+#  14. akai fragment create (λT compact record)
+#  15. akai queue enqueue
+#  16. akai time schedule
+#  17. akai entity resolve
+#  18. akai space put (λT persist)
+#  19. akai tier record
 #
 # Parallelism: domains are independent; each domain's events are sequential.
-#   All 8 domain workers run in parallel via bonfyre runtime parallel.
+#   All 8 domain workers run in parallel via akai runtime parallel.
 #
 # Grounding rules:
-#   - Every command is from bonfyre list (81 ready).
+#   - Every command is from akai list (81 ready).
 #   - Optional commands (embed, vec, sli, discipl) are probed first; skipped if broken.
 #   - No fake app platforms, invented schemas, or CMS page assumptions.
 #   - λT records are plain JSON written with Python — no invented binary format.
 #
-# Usage: bash scripts/bonfyre-hydra-v1.sh [--events-per-domain N] [--dir WORKDIR]
+# Usage: bash scripts/akai-hydra-v1.sh [--events-per-domain N] [--dir WORKDIR]
 
 set -euo pipefail
 
 EVENTS_PER_DOMAIN=5
-WORKDIR="/tmp/bonfyre-hydra-v1"
+WORKDIR="/tmp/akai-hydra-v1"
 PARALLEL=true
 
 while [[ $# -gt 0 ]]; do
@@ -62,12 +62,12 @@ mkdir -p "$WORKDIR"
 LOG="$WORKDIR/hydra.log"
 exec > >(tee -a "$LOG") 2>&1
 
-BF="bonfyre"
+BF="akai"
 GRAPH_DB="$WORKDIR/hydra.graphdb"
 VEC_DB="$WORKDIR/hydra.vecdb"
 FRAG_DB="$WORKDIR/hydra.fragdb"
 LT_DIR="$WORKDIR/lt"
-SPACE="bonfyre-hydra-v1"
+SPACE="akai-hydra-v1"
 SKIP_LOG="$WORKDIR/skips.txt"
 mkdir -p "$LT_DIR"
 > "$SKIP_LOG"
@@ -93,7 +93,7 @@ ok()     { echo "    ✓ $*"; }
 warn()   { echo "    ⚠ $*"; }
 skip()   { echo "    – SKIP: $*"; echo "$*" >> "$SKIP_LOG"; }
 
-banner "bonfyre-hydra-v1 — probe optional capabilities"
+banner "akai-hydra-v1 — probe optional capabilities"
 $BF embed --help 2>&1 | grep -q "backend" && EMBED_AVAIL=true || EMBED_AVAIL=false
 $BF vec   init "$VEC_DB" 2>/dev/null && VEC_AVAIL=true  || VEC_AVAIL=false
 $BF graph init "$GRAPH_DB" 2>/dev/null && GRAPH_AVAIL=true || GRAPH_AVAIL=false
@@ -117,7 +117,7 @@ $BF finance service add --name "hydra-compress" --buy 0.000001 --sell 0.00005 --
 $BF finance service add --name "hydra-value"    --buy 0.000010 --sell 0.00100 --source ledger 2>/dev/null || true
 
 GATE_KEY_FILE="$WORKDIR/gate.json"
-$BF gate issue --tier pro --org bonfyre-hydra-v1 --out "$GATE_KEY_FILE" 2>/dev/null || true
+$BF gate issue --tier pro --org akai-hydra-v1 --out "$GATE_KEY_FILE" 2>/dev/null || true
 
 COMP_ID=""
 COMP_RAW=$($BF compete pair hydra-v1 embed 2>/dev/null || echo "")
@@ -149,14 +149,14 @@ make_event_artifact() {
   local conf; conf=$(python3 -c "import random; random.seed($idx*97+hash('$domain'+'$etype')%10000); print(f'{random.uniform(0.52,0.98):.3f}')")
   local anomaly; anomaly=$([ $((idx % 7)) -eq 0 ] && echo "true" || echo "false")
   cat > "$outdir/doc.txt" <<EOF
-Bonfyre Hydra v1 — domain event
+Akai Hydra v1 — domain event
 domain:   $domain
 type:     $etype
 index:    $idx
 conf:     $conf
 anomaly:  $anomaly
 ts:       $(date -u +"%Y-%m-%dT%H:%M:%SZ")
-summary:  ${domain} ${etype} event #${idx} processed by bonfyre substrate
+summary:  ${domain} ${etype} event #${idx} processed by akai substrate
 detail:   Signal captured at index ${idx} from ${domain} stream. Confidence ${conf}. Anomaly=${anomaly}.
           Downstream: hash → compress → embed → vec → graph → control → discipl → ledger → fragment → queue.
 tags:     hydra ${domain} ${etype} idx-${idx}
@@ -170,7 +170,7 @@ json.dump({
   'stage': 'ingest', 'hash': '$ahash', 'created': int(time.time()),
   'domain': '$domain', 'event_type': '$etype', 'index': $idx,
   'confidence': float('$conf'), 'anomaly': '$anomaly' == 'true',
-  'source': 'bonfyre-hydra-v1',
+  'source': 'akai-hydra-v1',
   'inputs': [{'path': 'doc.txt', 'type': 'text'}]
 }, open('$outdir/artifact.json', 'w'), indent=2)
 "
@@ -543,7 +543,7 @@ if "$DISCIPL_AVAIL" == "true": cmds_used.update(["discipl recurse", "discipl pro
 else: cmds_skipped.add("discipl recurse/propose/verify (DISCIPL_AVAIL=false)")
 
 print(f"  commands used:             {len(cmds_used)}")
-for c in sorted(cmds_used): print(f"    ✓ bonfyre {c}")
+for c in sorted(cmds_used): print(f"    ✓ akai {c}")
 print()
 if cmds_skipped:
     print(f"  commands skipped:          {len(cmds_skipped)}")
@@ -570,14 +570,14 @@ print(f"  λT total size:             {total_lt}B  (raw {total_raw}B  ratio={tot
 # Queue
 import subprocess, json as _json
 try:
-    out = subprocess.check_output(["bonfyre", "queue", "stats"], stderr=subprocess.DEVNULL, timeout=5)
+    out = subprocess.check_output(["akai", "queue", "stats"], stderr=subprocess.DEVNULL, timeout=5)
     d = _json.loads(out)
     print(f"  queue jobs:                {d.get('total','?')}  queued={d.get('queued','?')}")
 except: print("  queue jobs:                (see queue stats above)")
 
 # Time triggers
 try:
-    out = subprocess.check_output(["bonfyre", "time", "status"], stderr=subprocess.DEVNULL, timeout=5)
+    out = subprocess.check_output(["akai", "time", "status"], stderr=subprocess.DEVNULL, timeout=5)
     for line in out.decode().splitlines():
         if "trigger" in line.lower() or "pending" in line.lower():
             print(f"  time: {line.strip()}")

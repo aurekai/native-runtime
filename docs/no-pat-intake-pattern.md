@@ -1,6 +1,6 @@
-# Bonfyre No-PAT Intake Pattern
+# Akai No-PAT Intake Pattern
 
-This is the safer Pages-first intake pattern for Bonfyre demo apps when we do not yet have a GitHub App or server-side dispatch service.
+This is the safer Pages-first intake pattern for Akai demo apps when we do not yet have a GitHub App or server-side dispatch service.
 
 ## Goal
 
@@ -25,7 +25,7 @@ GitHub itself remains the authenticated write surface:
 
 - user uploads through GitHub web UI
 - commit lands in `input/`
-- reusable Bonfyre runtime workflow processes it
+- reusable Akai runtime workflow processes it
 - Pages republishes the output
 
 ## Why this is better than browser PATs

@@ -268,7 +268,7 @@ if __name__ == "__main__":
     )
     parser.add_argument("--corpus", required=True,
                         help="Glob pattern for corpus files (e.g., 'data/*.txt')")
-    parser.add_argument("--memory-dir", default="/tmp/bonfyre-memory",
+    parser.add_argument("--memory-dir", default="/tmp/akai-memory",
                         help="Memory directory for claims")
     parser.add_argument("--clear", action="store_true",
                         help="Clear existing claims first")
