@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: Apache-2.0
+# akai — Aurekai operator dispatcher (wraps Bonfyre native binaries)
+# Usage: akai <command> [args...]
+set -euo pipefail
+
+declare -A AKAI_OPS=(
+  [api]=BonfyreAPI [auth]=BonfyreAuth [brief]=BonfyreBrief
+  [canon]=BonfyreCanon [capability]=BonfyreCapability [cli]=BonfyreCLI
+  [clips]=BonfyreClips [cms]=BonfyreCMS [compete]=BonfyreCompete
+  [compress]=BonfyreCompress [control]=BonfyreControl
+  [detect-objects]=BonfyreDetectObjects [discip]=BonfyreDiscipl
+  [distribute]=BonfyreDistribute [economy]=BonfyreEconomy
+  [embed]=BonfyreEmbed [emit]=BonfyreEmit [entity]=BonfyreEntity
+  [family]=BonfyreFamily [finance]=BonfyreFinance
+  [flash-qla]=BonfyreFlashQLA [flow]=BonfyreFlow
+  [fpq]=BonfyreFPQ [fpqx]=BonfyreFPQx [fragment]=BonfyreFragment
+  [frame-extract]=BonfyreFrameExtract [gate]=BonfyreGate
+  [gen]=BonfyreGen [graph]=BonfyreGraph [hash]=BonfyreHash
+  [index]=BonfyreIndex [ingest]=BonfyreIngest [kv-cache]=BonfyreKVCache
+  [layer]=BonfyreLayer [leapfrog]=BonfyreLeapfrog [learn]=BonfyreLearn
+  [ledger]=BonfyreLedger [media-prep]=BonfyreMediaPrep [meter]=BonfyreMeter
+  [mfa-dict]=BonfyreMFADict [model]=BonfyreModel [moq]=BonfyreMoQ
+  [narrate]=BonfyreNarrate [net]=BonfyreNet [offer]=BonfyreOffer
+  [orchestrate]=BonfyreOrchestrate [outreach]=BonfyreOutreach [pack]=BonfyrePack
+  [paragraph]=BonfyreParagraph [pay]=BonfyrePay [physics]=BonfyrePhysics
+  [pipeline]=BonfyrePipeline [project]=BonfyreProject [proof]=BonfyreProof
+  [proxy]=BonfyreProxy [quant]=BonfyreQuant [query]=BonfyreQuery
+  [queue]=BonfyreQueue [reason]=BonfyreReason [recipe]=BonfyreRecipe
+  [render]=BonfyreRender [repurpose]=BonfyreRepurpose [run]=BonfyreRun
+  [runtime]=BonfyreRuntime [sae]=BonfyreSAE [scene-detect]=BonfyreSceneDetect
+  [segment]=BonfyreSegment [sli]=BonfyreSLI [space]=BonfyreSpace
+  [speech-loop]=BonfyreSpeechLoop [stitch]=BonfyreStitch [surface]=BonfyreSurface
+  [swarm]=BonfyreSwarm [sync]=BonfyreSync [tag]=BonfyreTag
+  [tel]=BonfyreTel [tier]=BonfyreTier [time]=BonfyreTime [tone]=BonfyreTone
+  [transcribe]=BonfyreTranscribe [transcript-clean]=BonfyreTranscriptClean
+  [transcript-family]=BonfyreTranscriptFamily [vec]=BonfyreVec
+  [video-demux]=BonfyreVideoDemux [violence]=BonfyreViolence
+  [watch]=BonfyreWatch [weaviate-index]=BonfyreWeaviateIndex
+  [wire]=BonfyreWire [workflow]=BonfyreWorkflow
+)
+
+CMD="${1:-}"
+
+if [[ -z "$CMD" || "$CMD" == "--help" || "$CMD" == "-h" ]]; then
+  echo "akai — Aurekai operator dispatcher"
+  echo ""
+  echo "Usage: akai <command> [args...]"
+  echo ""
+  echo "Available commands:"
+  for k in $(echo "${!AKAI_OPS[@]}" | tr ' ' '\n' | sort); do
+    printf "  %-22s %s\n" "$k" "${AKAI_OPS[$k]}"
+  done
+  exit 0
+fi
+
+if [[ -z "${AKAI_OPS[$CMD]+x}" ]]; then
+  echo "akai: unknown command '$CMD'" >&2
+  echo "Run 'akai --help' for the command list." >&2
+  exit 1
+fi
+
+BINARY="${AKAI_OPS[$CMD]}"
+AKAI_BIN_DIR="${AKAI_BIN_DIR:-$(dirname "$(realpath "$0")")/..}"
+
+# Search order: AKAI_BIN_DIR/cmd/<Binary>/bin, $PATH, then try bonfyre alias
+for search in \
+  "$AKAI_BIN_DIR/cmd/$BINARY/bin/$BINARY" \
+  "$(command -v "$BINARY" 2>/dev/null || true)"; do
+  if [[ -x "$search" ]]; then
+    exec "$search" "${@:2}"
+  fi
+done
+
+echo "akai: '$BINARY' not found in build tree or PATH" >&2
+echo "Run 'make' in the repo root to build operators." >&2
+exit 127

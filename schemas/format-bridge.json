@@ -1,0 +1,93 @@
+{
+  "schema": "aurekai.format-bridge.v1",
+  "description": "Mapping between legacy Bonfyre .bf* artifact formats and Aurekai-native .ak* format names. Both sets are produced and consumed by the same Bonfyre ABI-v1 native runtime.",
+  "note": "The Bonfyre extension names remain the canonical on-disk format during v0.8.x. Aurekai-native names are the target for v1.0+.",
+  "formats": [
+    {
+      "bonfyre_ext": ".bf",
+      "aurekai_ext": ".ak",
+      "description": "General-purpose packed artifact bundle",
+      "produced_by": ["BonfyrePack", "BonfyreProof"],
+      "consumed_by": ["BonfyreQuery", "BonfyreIndex", "BonfyreRuntime"]
+    },
+    {
+      "bonfyre_ext": ".bfa",
+      "aurekai_ext": ".aka",
+      "description": "Artifact archive (multi-item packed bundle)",
+      "produced_by": ["BonfyrePack"],
+      "consumed_by": ["BonfyreDistribute", "BonfyreSync"]
+    },
+    {
+      "bonfyre_ext": ".bfq",
+      "aurekai_ext": ".akq",
+      "description": "FPQ quantization artifact (T-family transform snapshot)",
+      "produced_by": ["BonfyreFPQ"],
+      "consumed_by": ["BonfyreFPQx", "BonfyreLeapfrog", "BonfyreVec"]
+    },
+    {
+      "bonfyre_ext": ".bfqx",
+      "aurekai_ext": ".akqx",
+      "description": "FPQx cross-family alignment artifact",
+      "produced_by": ["BonfyreFPQx"],
+      "consumed_by": ["BonfyreSLI", "BonfyreControl", "BonfyreLeapfrog"]
+    },
+    {
+      "bonfyre_ext": ".bfmodel",
+      "aurekai_ext": ".akmodel",
+      "description": "Embedded model snapshot (ONNX weights + metadata)",
+      "produced_by": ["BonfyreModel"],
+      "consumed_by": ["BonfyreEmbed", "BonfyreLearn", "BonfyreSAE"]
+    },
+    {
+      "bonfyre_ext": ".bfsae",
+      "aurekai_ext": ".aksae",
+      "description": "SAE feature dictionary (sparse autoencoder activation map)",
+      "produced_by": ["BonfyreSAE"],
+      "consumed_by": ["BonfyreControl", "BonfyreSLI", "BonfyreFragment"]
+    },
+    {
+      "bonfyre_ext": ".bfgraph",
+      "aurekai_ext": ".akgraph",
+      "description": "Graph artifact (entity/relation store)",
+      "produced_by": ["BonfyreGraph", "BonfyreEntity"],
+      "consumed_by": ["BonfyreQuery", "BonfyreReason"]
+    },
+    {
+      "bonfyre_ext": ".bftag",
+      "aurekai_ext": ".aktag",
+      "description": "Tag artifact (language classification output)",
+      "produced_by": ["BonfyreTag"],
+      "consumed_by": ["BonfyreIndex", "BonfyreQuery", "BonfyreRepurpose"]
+    },
+    {
+      "bonfyre_ext": ".bftone",
+      "aurekai_ext": ".aktone",
+      "description": "Tone artifact (eGeMAPS feature vector)",
+      "produced_by": ["BonfyreTone"],
+      "consumed_by": ["BonfyreProof", "BonfyreOffer"]
+    },
+    {
+      "bonfyre_ext": ".bfvec",
+      "aurekai_ext": ".akvec",
+      "description": "Dense vector store snapshot",
+      "produced_by": ["BonfyreVec", "BonfyreEmbed"],
+      "consumed_by": ["BonfyreQuery", "BonfyreLeapfrog", "BonfyreSLI"]
+    },
+    {
+      "bonfyre_ext": ".bfrecipe",
+      "aurekai_ext": ".akrecipe",
+      "description": "Pipeline recipe definition (DAG of operator steps)",
+      "produced_by": ["BonfyreRecipe"],
+      "consumed_by": ["BonfyrePipeline", "BonfyreRun", "BonfyreOrchestrate"]
+    },
+    {
+      "bonfyre_ext": ".bfproof",
+      "aurekai_ext": ".akproof",
+      "description": "Proof bundle (signed artifact + metrics attestation)",
+      "produced_by": ["BonfyreProof"],
+      "consumed_by": ["BonfyreDistribute", "BonfyreLedger"]
+    }
+  ],
+  "migration_status": "bonfyre_ext_canonical_until_v1",
+  "abi": "bonfyre-abi-v1"
+}
