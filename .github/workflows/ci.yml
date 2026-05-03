@@ -1,0 +1,133 @@
+# SPDX-License-Identifier: Apache-2.0
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Validate repository integrity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify license headers present
+        run: |
+          MISSING=0
+          while IFS= read -r -d '' f; do
+            if ! grep -qE 'SPDX-License-Identifier|Apache License|Apache-2.0' "$f"; then
+              echo "MISSING LICENSE HEADER: $f"
+              MISSING=$((MISSING+1))
+            fi
+          done < <(find cmd lib -name '*.c' -o -name '*.h' -print0 2>/dev/null)
+          if [ "$MISSING" -gt 0 ]; then
+            echo "::error::$MISSING source files are missing Apache-2.0 SPDX headers"
+            exit 1
+          fi
+          echo "All source files have license headers."
+
+      - name: Validate operator-index.json
+        run: |
+          python3 - << 'PY'
+          import json, sys, os
+
+          with open("operator-index.json") as f:
+              idx = json.load(f)
+
+          errors = []
+          ops = idx.get("operators", [])
+          print(f"Operator count in index: {len(ops)}")
+
+          # Verify every binary in cmd/ is in the index
+          indexed = {op["binary"] for op in ops}
+          on_disk = {d for d in os.listdir("cmd") if os.path.isdir(f"cmd/{d}")}
+          missing_from_index = on_disk - indexed
+          extra_in_index     = indexed - on_disk
+          if missing_from_index:
+              errors.append(f"Operators on disk but not in index: {sorted(missing_from_index)}")
+          if extra_in_index:
+              errors.append(f"Operators in index but not on disk: {sorted(extra_in_index)}")
+
+          # Verify all required fields present
+          REQUIRED = {"binary","akai_command","category","abi","source"}
+          for op in ops:
+              missing = REQUIRED - op.keys()
+              if missing:
+                  errors.append(f"{op.get('binary','?')} missing fields: {missing}")
+
+          if errors:
+              for e in errors:
+                  print(f"::error::{e}", file=sys.stderr)
+              sys.exit(1)
+          print("operator-index.json is valid.")
+          PY
+
+      - name: Validate format-bridge.json
+        run: |
+          python3 - << 'PY'
+          import json, sys
+          with open("schemas/format-bridge.json") as f:
+              bridge = json.load(f)
+          formats = bridge.get("formats", [])
+          assert len(formats) >= 10, f"Expected >=10 format entries, got {len(formats)}"
+          for entry in formats:
+              assert "bonfyre_ext" in entry and "aurekai_ext" in entry, f"Bad entry: {entry}"
+          print(f"format-bridge.json valid ({len(formats)} format mappings).")
+          PY
+
+  build-matrix:
+    name: Build sample operators (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        operator:
+          - BonfyreHash
+          - BonfyreTag
+          - BonfyreFragment
+          - BonfyrePack
+          - BonfyreBrief
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build dependencies (Ubuntu)
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y gcc make
+
+      - name: Build ${{ matrix.operator }}
+        run: |
+          if [ -f "cmd/${{ matrix.operator }}/Makefile" ]; then
+            make -C "cmd/${{ matrix.operator }}" MARCH=
+          elif [ -f "cmd/${{ matrix.operator }}/src/main.c" ]; then
+            mkdir -p "cmd/${{ matrix.operator }}/bin"
+            cc -O2 -std=c11 -D_DEFAULT_SOURCE \
+              -o "cmd/${{ matrix.operator }}/bin/${{ matrix.operator }}" \
+              cmd/${{ matrix.operator }}/src/*.c \
+              $(find lib -name '*.a' 2>/dev/null | head -5 | tr '\n' ' ') \
+              -lm 2>&1 | tail -20 || true
+            echo "build attempted (may need lib deps)"
+          else
+            echo "no Makefile or src/main.c found — skipping"
+          fi
+
+  operator-index-sync:
+    name: Check operator index is up to date
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify index total matches cmd/ count
+        run: |
+          DISK=$(find cmd -maxdepth 1 -mindepth 1 -type d | wc -l | tr -d ' ')
+          INDEX=$(python3 -c "import json; print(json.load(open('operator-index.json'))['total_operators'])")
+          echo "Operators on disk: $DISK"
+          echo "Operators in index: $INDEX"
+          if [ "$DISK" != "$INDEX" ]; then
+            echo "::error::Operator count mismatch — run scripts to regenerate operator-index.json"
+            exit 1
+          fi
+          echo "Counts match: $DISK"

@@ -1,0 +1,1036 @@
+{
+  "schema": "aurekai.operator-index.v1",
+  "generated": "2026-05-03",
+  "native_runtime_version": "0.8.0-alpha.2",
+  "abi": "bonfyre-abi-v1",
+  "total_operators": 89,
+  "categories": [
+    "media",
+    "inference",
+    "knowledge",
+    "pipeline",
+    "artifacts",
+    "platform",
+    "data",
+    "specialized",
+    "misc"
+  ],
+  "operators": [
+    {
+      "binary": "BonfyreAPI",
+      "akai_command": "api",
+      "category": "platform",
+      "description": "BonfyreAPI v2 \u2014 Async HTTP gateway for the Bonfyre binary family",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreAPI/src/main.c"
+    },
+    {
+      "binary": "BonfyreAuth",
+      "akai_command": "auth",
+      "category": "platform",
+      "description": "BonfyreAuth \u2014 user management and session tokens",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreAuth/src/main.c"
+    },
+    {
+      "binary": "BonfyreBrief",
+      "akai_command": "brief",
+      "category": "artifacts",
+      "description": "preserve document order */",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreBrief/src/main.c"
+    },
+    {
+      "binary": "BonfyreCLI",
+      "akai_command": "cli",
+      "category": "platform",
+      "description": "bonfyre \u2014 unified CLI dispatcher",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreCLI/src/main.c"
+    },
+    {
+      "binary": "BonfyreCMS",
+      "akai_command": "cms",
+      "category": "data",
+      "description": "BonfyreCMS \u2014 stripped binary CMS",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreCMS/src/main.c"
+    },
+    {
+      "binary": "BonfyreCanon",
+      "akai_command": "canon",
+      "category": "data",
+      "description": "BonfyreCanon \u2014 structure-aware canonicalization via Tree-sitter",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreCanon/src/main.c"
+    },
+    {
+      "binary": "BonfyreCapability",
+      "akai_command": "capability",
+      "category": "platform",
+      "description": "bonfyre-capability - capability discovery and matching layer",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreCapability/src/main.c"
+    },
+    {
+      "binary": "BonfyreClips",
+      "akai_command": "clips",
+      "category": "media",
+      "description": "BonfyreClips \u2014 Clip Discovery Engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreClips/src/main.c"
+    },
+    {
+      "binary": "BonfyreCompete",
+      "akai_command": "compete",
+      "category": "specialized",
+      "description": "bonfyre-compete \u2014 stage/model A/B competition engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreCompete/src/main.c"
+    },
+    {
+      "binary": "BonfyreCompress",
+      "akai_command": "compress",
+      "category": "data",
+      "description": "BonfyreCompress \u2014 family-aware compression engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreCompress/src/main.c"
+    },
+    {
+      "binary": "BonfyreControl",
+      "akai_command": "control",
+      "category": "misc",
+      "description": "bonfyre-control \u2014 control plane for Bonfyre inference pipelines",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreControl/src/main.c"
+    },
+    {
+      "binary": "BonfyreDetectObjects",
+      "akai_command": "detect-objects",
+      "category": "specialized",
+      "description": "BonfyreDetectObjects \u2014 Object detection operator for V1/I1 pipelines",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreDetectObjects/src/main.c"
+    },
+    {
+      "binary": "BonfyreDiscipl",
+      "akai_command": "discip",
+      "category": "specialized",
+      "description": "BonfyreDiscipl operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreDiscipl/src/main.c"
+    },
+    {
+      "binary": "BonfyreDistribute",
+      "akai_command": "distribute",
+      "category": "artifacts",
+      "description": "BonfyreDistribute operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreDistribute/src/main.c"
+    },
+    {
+      "binary": "BonfyreEconomy",
+      "akai_command": "economy",
+      "category": "specialized",
+      "description": "bonfyre-economy \u2014 cost-aware routing and budget enforcement",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreEconomy/src/main.c"
+    },
+    {
+      "binary": "BonfyreEmbed",
+      "akai_command": "embed",
+      "category": "inference",
+      "description": "BonfyreEmbed \u2014 text embeddings via ONNX Runtime C API",
+      "input_formats": [],
+      "output_formats": [
+        ".bfvec"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreEmbed/src/main.c"
+    },
+    {
+      "binary": "BonfyreEmit",
+      "akai_command": "emit",
+      "category": "artifacts",
+      "description": "BonfyreEmit \u2014 multi-format output engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreEmit/src/main.c"
+    },
+    {
+      "binary": "BonfyreEntity",
+      "akai_command": "entity",
+      "category": "knowledge",
+      "description": "bonfyre-entity \u2014 universal identity resolution layer",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreEntity/src/main.c"
+    },
+    {
+      "binary": "BonfyreFPQ",
+      "akai_command": "fpq",
+      "category": "inference",
+      "description": "main.c \u2014 bonfyre-fpq CLI",
+      "input_formats": [],
+      "output_formats": [
+        ".bfq"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFPQ/src/main.c"
+    },
+    {
+      "binary": "BonfyreFPQx",
+      "akai_command": "fpqx",
+      "category": "inference",
+      "description": "bonfyre-fpqx \u2014 Cross-family FPQ alignment",
+      "input_formats": [
+        ".bfq"
+      ],
+      "output_formats": [
+        ".bfqx"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFPQx/src/main.c"
+    },
+    {
+      "binary": "BonfyreFamily",
+      "akai_command": "family",
+      "category": "specialized",
+      "description": "bonfyre-family - conceptual family browser for Bonfyre",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFamily/src/main.c"
+    },
+    {
+      "binary": "BonfyreFinance",
+      "akai_command": "finance",
+      "category": "data",
+      "description": "BonfyreFinance \u2014 service arbitrage, labor pipeline, and bundle pricing engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFinance/src/main.c"
+    },
+    {
+      "binary": "BonfyreFlashQLA",
+      "akai_command": "flash-qla",
+      "category": "inference",
+      "description": "bonfyre-flashqla \u2014 BonfyreGDN Chunked Prefill (native C kernel)",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFlashQLA/src/main.c"
+    },
+    {
+      "binary": "BonfyreFlow",
+      "akai_command": "flow",
+      "category": "pipeline",
+      "description": "bonfyre-flow \u2014 coroutine-native pipeline programming",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFlow/src/main.c"
+    },
+    {
+      "binary": "BonfyreFragment",
+      "akai_command": "fragment",
+      "category": "knowledge",
+      "description": "BonfyreFragment \u2014 Fragment system CLI",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFragment/src/main.c"
+    },
+    {
+      "binary": "BonfyreFrameExtract",
+      "akai_command": "frame-extract",
+      "category": "media",
+      "description": "bonfyre-frame-extract",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreFrameExtract/src/main.c"
+    },
+    {
+      "binary": "BonfyreGate",
+      "akai_command": "gate",
+      "category": "pipeline",
+      "description": "BonfyreGate \u2014 license enforcement + access control",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreGate/src/main.c"
+    },
+    {
+      "binary": "BonfyreGen",
+      "akai_command": "gen",
+      "category": "data",
+      "description": "bonfyre-gen \u2014 natural language \u2192 recipe YAML generator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreGen/src/main.c"
+    },
+    {
+      "binary": "BonfyreGraph",
+      "akai_command": "graph",
+      "category": "knowledge",
+      "description": "BonfyreGraph \u2014 Merkle-DAG artifact graph engine",
+      "input_formats": [],
+      "output_formats": [
+        ".bfgraph"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreGraph/src/main.c"
+    },
+    {
+      "binary": "BonfyreHash",
+      "akai_command": "hash",
+      "category": "artifacts",
+      "description": "BonfyreHash \u2014 content-addressing + Merkle DAG hashing engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreHash/src/main.c"
+    },
+    {
+      "binary": "BonfyreIndex",
+      "akai_command": "index",
+      "category": "knowledge",
+      "description": "BonfyreIndex \u2014 artifact family indexer and search engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreIndex/src/main.c"
+    },
+    {
+      "binary": "BonfyreIngest",
+      "akai_command": "ingest",
+      "category": "artifacts",
+      "description": "BonfyreIngest \u2014 universal intake binary",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreIngest/src/main.c"
+    },
+    {
+      "binary": "BonfyreKVCache",
+      "akai_command": "kv-cache",
+      "category": "knowledge",
+      "description": "bonfyre-kvcache \u2014 v8 RLF KV cache compression",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreKVCache/src/main.c"
+    },
+    {
+      "binary": "BonfyreLayer",
+      "akai_command": "layer",
+      "category": "knowledge",
+      "description": "bonfyre-layer \u2014 Layer-aware ONNX model inspection and extraction (C port)",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreLayer/src/main.c"
+    },
+    {
+      "binary": "BonfyreLeapfrog",
+      "akai_command": "leapfrog",
+      "category": "inference",
+      "description": "bonfyre-leapfrog \u2014 Hamiltonian conservation and reversibility test",
+      "input_formats": [
+        ".bfq",
+        ".bfvec"
+      ],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreLeapfrog/src/main.c"
+    },
+    {
+      "binary": "BonfyreLearn",
+      "akai_command": "learn",
+      "category": "inference",
+      "description": "bonfyre-learn \u2014 artifact-level feedback and threshold tuning",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreLearn/src/main.c"
+    },
+    {
+      "binary": "BonfyreLedger",
+      "akai_command": "ledger",
+      "category": "artifacts",
+      "description": "BonfyreLedger \u2014 value accounting engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreLedger/src/main.c"
+    },
+    {
+      "binary": "BonfyreMFADict",
+      "akai_command": "mfa-dict",
+      "category": "specialized",
+      "description": "BonfyreMFADict operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreMFADict/src/main.c"
+    },
+    {
+      "binary": "BonfyreMediaPrep",
+      "akai_command": "media-prep",
+      "category": "media",
+      "description": "BonfyreMediaPrep operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreMediaPrep/src/main.c"
+    },
+    {
+      "binary": "BonfyreMeter",
+      "akai_command": "meter",
+      "category": "platform",
+      "description": "BonfyreMeter \u2014 usage metering + billing events",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreMeter/src/main.c"
+    },
+    {
+      "binary": "BonfyreMoQ",
+      "akai_command": "moq",
+      "category": "specialized",
+      "description": "bonfyre-moq \u2014 Media over QUIC style relay for Bonfyre",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreMoQ/src/main.c"
+    },
+    {
+      "binary": "BonfyreModel",
+      "akai_command": "model",
+      "category": "inference",
+      "description": "BonfyreModel \u2014 model dependency manager for bonfyre pipelines",
+      "input_formats": [],
+      "output_formats": [
+        ".bfmodel"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreModel/src/main.c"
+    },
+    {
+      "binary": "BonfyreNarrate",
+      "akai_command": "narrate",
+      "category": "media",
+      "description": "BonfyreNarrate v3 \u2014 Verified Tone-Aware Text-to-Speech Synthesis",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreNarrate/src/main.c"
+    },
+    {
+      "binary": "BonfyreNet",
+      "akai_command": "net",
+      "category": "platform",
+      "description": "bonfyre-net \u2014 Bonfyre Netlist Runtime",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreNet/src/main.c"
+    },
+    {
+      "binary": "BonfyreOffer",
+      "akai_command": "offer",
+      "category": "artifacts",
+      "description": "Also try to read proof-summary.json from",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreOffer/src/main.c"
+    },
+    {
+      "binary": "BonfyreOrchestrate",
+      "akai_command": "orchestrate",
+      "category": "pipeline",
+      "description": "BonfyreOrchestrate operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreOrchestrate/src/main.c"
+    },
+    {
+      "binary": "BonfyreOutreach",
+      "akai_command": "outreach",
+      "category": "data",
+      "description": "BonfyreOutreach \u2014 quiet distribution engine",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreOutreach/src/main.c"
+    },
+    {
+      "binary": "BonfyrePack",
+      "akai_command": "pack",
+      "category": "artifacts",
+      "description": "BonfyrePack operator",
+      "input_formats": [],
+      "output_formats": [
+        ".bf",
+        ".bfa"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyrePack/src/main.c"
+    },
+    {
+      "binary": "BonfyreParagraph",
+      "akai_command": "paragraph",
+      "category": "knowledge",
+      "description": "BonfyreParagraph operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreParagraph/src/main.c"
+    },
+    {
+      "binary": "BonfyrePay",
+      "akai_command": "pay",
+      "category": "data",
+      "description": "BonfyrePay \u2014 payment & invoice management",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyrePay/src/main.c"
+    },
+    {
+      "binary": "BonfyrePhysics",
+      "akai_command": "physics",
+      "category": "inference",
+      "description": "bonfyre-physics \u2014 Hamiltonian Version Control Protocol (HVCP) CLI",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyrePhysics/src/main.c"
+    },
+    {
+      "binary": "BonfyrePipeline",
+      "akai_command": "pipeline",
+      "category": "pipeline",
+      "description": "BonfyrePipeline \u2014 unified single-process pipeline",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyrePipeline/src/main.c"
+    },
+    {
+      "binary": "BonfyreProject",
+      "akai_command": "project",
+      "category": "data",
+      "description": "BonfyreProject operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreProject/src/main.c"
+    },
+    {
+      "binary": "BonfyreProof",
+      "akai_command": "proof",
+      "category": "artifacts",
+      "description": "BonfyreProof operator",
+      "input_formats": [
+        ".bf"
+      ],
+      "output_formats": [
+        ".bfproof"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreProof/src/main.c"
+    },
+    {
+      "binary": "BonfyreProxy",
+      "akai_command": "proxy",
+      "category": "platform",
+      "description": "BonfyreProxy \u2014 OpenAI-compatible API shim for Bonfyre binaries",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreProxy/src/main.c"
+    },
+    {
+      "binary": "BonfyreQuant",
+      "akai_command": "quant",
+      "category": "data",
+      "description": "bonfyre-quant \u2014 FPQ v8 Recursive Lattice-Flow weight quantization",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreQuant/src/main.c"
+    },
+    {
+      "binary": "BonfyreQuery",
+      "akai_command": "query",
+      "category": "knowledge",
+      "description": "BonfyreQuery \u2014 local analytics engine over artifacts via DuckDB",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreQuery/src/main.c"
+    },
+    {
+      "binary": "BonfyreQueue",
+      "akai_command": "queue",
+      "category": "pipeline",
+      "description": "BonfyreQueue v2 \u2014 SQLite-backed job queue with built-in worker daemon",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreQueue/src/main.c"
+    },
+    {
+      "binary": "BonfyreReason",
+      "akai_command": "reason",
+      "category": "specialized",
+      "description": "bonfyre-reason \u2014 Reason-state operator over the HVCP stack",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreReason/src/main.c"
+    },
+    {
+      "binary": "BonfyreRecipe",
+      "akai_command": "recipe",
+      "category": "pipeline",
+      "description": "BonfyreRecipe \u2014 Recipe Registry Management",
+      "input_formats": [],
+      "output_formats": [
+        ".bfrecipe"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreRecipe/src/main.c"
+    },
+    {
+      "binary": "BonfyreRender",
+      "akai_command": "render",
+      "category": "artifacts",
+      "description": "BonfyreRender operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreRender/src/main.c"
+    },
+    {
+      "binary": "BonfyreRepurpose",
+      "akai_command": "repurpose",
+      "category": "media",
+      "description": "BonfyreRepurpose \u2014 Transform brief artifacts into social media formats",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreRepurpose/src/main.c"
+    },
+    {
+      "binary": "BonfyreRun",
+      "akai_command": "run",
+      "category": "pipeline",
+      "description": "BonfyreRun \u2014 Recipe Executor",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreRun/src/main.c"
+    },
+    {
+      "binary": "BonfyreRuntime",
+      "akai_command": "runtime",
+      "category": "platform",
+      "description": "Try top-level sibling path: ../SiblingDir/binary */",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreRuntime/src/main.c"
+    },
+    {
+      "binary": "BonfyreSAE",
+      "akai_command": "sae",
+      "category": "inference",
+      "description": "bonfyre-sae \u2014 SAE feature dictionary runtime",
+      "input_formats": [],
+      "output_formats": [
+        ".bfsae"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSAE/src/main.c"
+    },
+    {
+      "binary": "BonfyreSLI",
+      "akai_command": "sli",
+      "category": "inference",
+      "description": "bonfyre-sli \u2014 Structured Layer Inference",
+      "input_formats": [
+        ".bfqx",
+        ".bfsae"
+      ],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSLI/src/main.c"
+    },
+    {
+      "binary": "BonfyreSceneDetect",
+      "akai_command": "scene-detect",
+      "category": "media",
+      "description": "bonfyre-scene-detect",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSceneDetect/src/main.c"
+    },
+    {
+      "binary": "BonfyreSegment",
+      "akai_command": "segment",
+      "category": "specialized",
+      "description": "BonfyreSegment \u2014 Idea Boundary Detection + Segment Graph",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSegment/src/main.c"
+    },
+    {
+      "binary": "BonfyreSpace",
+      "akai_command": "space",
+      "category": "knowledge",
+      "description": "bonfyre-space \u2014 shared memory substrate",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSpace/src/main.c"
+    },
+    {
+      "binary": "BonfyreSpeechLoop",
+      "akai_command": "speech-loop",
+      "category": "media",
+      "description": "BonfyreSpeechLoop \u2014 Whisper \u2192 Transform \u2192 Piper speech transformation",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSpeechLoop/src/main.c"
+    },
+    {
+      "binary": "BonfyreStitch",
+      "akai_command": "stitch",
+      "category": "media",
+      "description": "BonfyreStitch \u2014 DAG materializer",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreStitch/src/main.c"
+    },
+    {
+      "binary": "BonfyreSurface",
+      "akai_command": "surface",
+      "category": "specialized",
+      "description": "BonfyreSurface operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSurface/src/main.c"
+    },
+    {
+      "binary": "BonfyreSwarm",
+      "akai_command": "swarm",
+      "category": "pipeline",
+      "description": "BonfyreSwarm \u2014 P2P artifact distribution via BitTorrent v2 protocol",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSwarm/src/main.c"
+    },
+    {
+      "binary": "BonfyreSync",
+      "akai_command": "sync",
+      "category": "artifacts",
+      "description": "BonfyreSync operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreSync/src/main.c"
+    },
+    {
+      "binary": "BonfyreTag",
+      "akai_command": "tag",
+      "category": "knowledge",
+      "description": "BonfyreTag \u2014 instant intent/topic tagging via fastText (pure C)",
+      "input_formats": [],
+      "output_formats": [
+        ".bftag"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTag/src/main.c"
+    },
+    {
+      "binary": "BonfyreTel",
+      "akai_command": "tel",
+      "category": "platform",
+      "description": "BonfyreTel \u2014 FreeSWITCH Event Socket telephony adapter",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTel/src/main.c"
+    },
+    {
+      "binary": "BonfyreTier",
+      "akai_command": "tier",
+      "category": "data",
+      "description": "bonfyre-tier \u2014 latency tier management and SLA enforcement",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTier/src/main.c"
+    },
+    {
+      "binary": "BonfyreTime",
+      "akai_command": "time",
+      "category": "data",
+      "description": "bonfyre-time \u2014 temporal pipeline manager",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTime/src/main.c"
+    },
+    {
+      "binary": "BonfyreTone",
+      "akai_command": "tone",
+      "category": "media",
+      "description": "BonfyreTone \u2014 speech tone/emotion/rhythm extraction via OpenSMILE",
+      "input_formats": [],
+      "output_formats": [
+        ".bftone"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTone/src/main.c"
+    },
+    {
+      "binary": "BonfyreTranscribe",
+      "akai_command": "transcribe",
+      "category": "media",
+      "description": "================================================================",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTranscribe/src/main.c"
+    },
+    {
+      "binary": "BonfyreTranscriptClean",
+      "akai_command": "transcript-clean",
+      "category": "specialized",
+      "description": "BonfyreTranscriptClean operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTranscriptClean/src/main.c"
+    },
+    {
+      "binary": "BonfyreTranscriptFamily",
+      "akai_command": "transcript-family",
+      "category": "specialized",
+      "description": "BonfyreTranscriptFamily operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreTranscriptFamily/src/main.c"
+    },
+    {
+      "binary": "BonfyreVec",
+      "akai_command": "vec",
+      "category": "knowledge",
+      "description": "BonfyreVec \u2014 local vector search via sqlite-vec",
+      "input_formats": [
+        ".bf"
+      ],
+      "output_formats": [
+        ".bfvec"
+      ],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreVec/src/main.c"
+    },
+    {
+      "binary": "BonfyreVideoDemux",
+      "akai_command": "video-demux",
+      "category": "media",
+      "description": "bonfyre-video-demux",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreVideoDemux/src/main.c"
+    },
+    {
+      "binary": "BonfyreViolence",
+      "akai_command": "violence",
+      "category": "specialized",
+      "description": "bonfyre-violence \u2014 real coupling test harness",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreViolence/src/main.c"
+    },
+    {
+      "binary": "BonfyreWatch",
+      "akai_command": "watch",
+      "category": "platform",
+      "description": "BonfyreWatch operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreWatch/src/main.c"
+    },
+    {
+      "binary": "BonfyreWeaviateIndex",
+      "akai_command": "weaviate-index",
+      "category": "specialized",
+      "description": "BonfyreWeaviateIndex operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreWeaviateIndex/src/main.c"
+    },
+    {
+      "binary": "BonfyreWire",
+      "akai_command": "wire",
+      "category": "platform",
+      "description": "BonfyreWire operator",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreWire/src/main.c"
+    },
+    {
+      "binary": "BonfyreWorkflow",
+      "akai_command": "workflow",
+      "category": "pipeline",
+      "description": "bonfyre-workflow - workflow profile browser",
+      "input_formats": [],
+      "output_formats": [],
+      "abi": "bonfyre-abi-v1",
+      "language": "C11",
+      "source": "cmd/BonfyreWorkflow/src/main.c"
+    }
+  ]
+}
