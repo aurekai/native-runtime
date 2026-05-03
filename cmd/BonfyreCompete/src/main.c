@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre-compete — stage/model A/B competition engine.
  *

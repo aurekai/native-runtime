@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #ifndef BENCH_METRICS_H
 #define BENCH_METRICS_H
 

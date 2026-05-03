@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreModel — model dependency manager for bonfyre pipelines.
  *

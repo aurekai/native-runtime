@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_sha256.c — FIPS 180-4 SHA-256, no external dependencies.
  *

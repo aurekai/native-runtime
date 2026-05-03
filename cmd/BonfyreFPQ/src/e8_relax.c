@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * e8_relax.c — Relaxed-Constraint E8 Lattice Quantizer
  *

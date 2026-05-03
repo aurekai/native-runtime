@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreHash — content-addressing + Merkle DAG hashing engine.
  *

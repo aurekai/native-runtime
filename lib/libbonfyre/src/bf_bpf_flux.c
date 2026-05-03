@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_bpf_flux.c — BPF-Flux per-binary resource isolation
  *

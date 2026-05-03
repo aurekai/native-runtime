@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_lz4.h — In-process LZ4 block compression
  *

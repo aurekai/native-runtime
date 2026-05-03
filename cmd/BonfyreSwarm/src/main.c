@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreSwarm — P2P artifact distribution via BitTorrent v2 protocol
  *

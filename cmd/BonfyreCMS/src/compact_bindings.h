@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #ifndef COMPACT_BINDINGS_H
 #define COMPACT_BINDINGS_H
 

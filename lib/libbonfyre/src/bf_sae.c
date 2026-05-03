@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_sae.c — Bonfyre .bfsae runtime: mmap, top-k activation, feature hash,
  *             manifest JSON, danger gate, and synthetic dict writer.

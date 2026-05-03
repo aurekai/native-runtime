@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre.h — canonical runtime contract for all Bonfyre binaries.
  *

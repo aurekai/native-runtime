@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_lora_compressed.c — Compressed-domain LoRA fine-tuning
  *

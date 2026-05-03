@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * ggml_reader.c — Read GGML-format model files
  *

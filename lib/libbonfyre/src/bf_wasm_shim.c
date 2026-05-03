@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_wasm_shim.c — WebAssembly compatibility and browser runtime entry point
  *

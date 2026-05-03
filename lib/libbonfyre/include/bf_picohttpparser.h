@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_picohttpparser.h — Embedded PicoHTTPParser (SIMD-accelerated HTTP/1.x)
  *

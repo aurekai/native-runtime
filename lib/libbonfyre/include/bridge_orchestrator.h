@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bridge_orchestrator.h — Pipeline bridge / orchestrator helpers
  */

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #include "tree_sitter/parser.h"
 
 #if defined(__GNUC__) || defined(__clang__)

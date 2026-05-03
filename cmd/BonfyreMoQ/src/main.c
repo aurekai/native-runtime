@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre-moq — Media over QUIC style relay for Bonfyre
  *

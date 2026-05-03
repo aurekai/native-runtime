@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreTone — speech tone/emotion/rhythm extraction via OpenSMILE.
  *

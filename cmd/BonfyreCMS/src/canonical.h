@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreGraph — Flagship II: Canonical Functional Normalization
  *

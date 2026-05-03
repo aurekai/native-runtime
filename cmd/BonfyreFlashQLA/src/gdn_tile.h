@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * gdn_tile.h — BonfyreGDN tiled kernel (cache-friendly, fused, SIMD-ready).
  *

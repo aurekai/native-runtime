@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_textfuse.h — Hyperscan/Vectorscan single-pass text fusion
  *

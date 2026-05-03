@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_sqlite.c — SQLite open helpers with optimal PRAGMA bundle
  *

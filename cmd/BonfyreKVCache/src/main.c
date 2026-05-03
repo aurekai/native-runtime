@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre-kvcache — v8 RLF KV cache compression.
  *

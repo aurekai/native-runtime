@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_artifact.c — canonical artifact contract implementation.
  *

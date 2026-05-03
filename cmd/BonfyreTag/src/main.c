@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreTag — instant intent/topic tagging via fastText (pure C).
  *

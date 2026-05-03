@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * seed.c — The Lambda Core v2: Seed Combinator Discovery & Expansion
  *

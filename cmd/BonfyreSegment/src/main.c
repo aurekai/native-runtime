@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreSegment — Idea Boundary Detection + Segment Graph
  *

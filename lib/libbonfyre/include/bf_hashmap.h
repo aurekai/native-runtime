@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_hashmap.h — Robin-hood open-addressing hash map
  *

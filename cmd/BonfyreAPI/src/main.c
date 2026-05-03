@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreAPI v2 — Async HTTP gateway for the Bonfyre binary family.
  *

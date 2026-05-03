@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * gdn_ref.h — Gated Delta Network (GDN) Chunked Prefill, portable C11 reference.
  *

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * qjl.c — Quantized Johnson-Lindenstrauss Bias Correction
  *

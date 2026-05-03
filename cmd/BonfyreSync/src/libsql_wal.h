@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * libsql_wal.h — LibSQL embedded-replica WAL frame sync protocol
  *

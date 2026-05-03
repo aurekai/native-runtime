@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreProxy — OpenAI-compatible API shim for Bonfyre binaries.
  *

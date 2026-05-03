@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_opts.h — Declarative CLI option parser with subcommand support
  *

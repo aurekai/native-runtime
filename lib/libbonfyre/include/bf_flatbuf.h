@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_flatbuf.h — FlatBuffers zero-copy artifact manifests
  *

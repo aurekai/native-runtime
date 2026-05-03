@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_he_ckks.h — CKKS-style homomorphic inference primitives (depth-4)
  *

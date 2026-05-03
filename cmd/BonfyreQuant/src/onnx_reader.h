@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * onnx_reader.h — ONNX float32 tensor reader
  */

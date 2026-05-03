@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreGraph — Upgrade V: Typed Generators + Static Verification
  *

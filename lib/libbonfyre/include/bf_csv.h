@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_csv.h — RFC 4180 CSV reader/writer
  *

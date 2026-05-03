@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_lattice_accel.h — SIMD-accelerated batch E8 lattice quantization
  *

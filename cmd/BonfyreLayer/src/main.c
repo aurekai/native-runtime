@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre-layer — Layer-aware ONNX model inspection and extraction (C port)
  *

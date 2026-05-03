@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_hotload.h — Hot-reload pipeline stages via dlopen
  *

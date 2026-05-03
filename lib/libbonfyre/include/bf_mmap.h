@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_mmap.h — Memory-mapped file I/O for zero-copy reads
  *

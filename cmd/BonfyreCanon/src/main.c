@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreCanon — structure-aware canonicalization via Tree-sitter.
  *

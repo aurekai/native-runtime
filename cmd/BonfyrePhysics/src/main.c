@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre-physics — Hamiltonian Version Control Protocol (HVCP) CLI.
  *

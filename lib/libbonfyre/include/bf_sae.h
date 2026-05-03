@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_sae.h — Bonfyre Sparse Autoencoder (.bfsae) format and runtime API.
  *

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreEmbed — text embeddings via ONNX Runtime C API.
  *

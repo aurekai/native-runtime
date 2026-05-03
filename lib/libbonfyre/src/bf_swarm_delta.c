@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_swarm_delta.c — federated transform graph delta gossip
  *

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_reactor.h — Shared-nothing async I/O reactor for BonfyreApi
  *

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #ifndef BONFYRE_WIRE_H
 #define BONFYRE_WIRE_H
 

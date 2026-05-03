@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_common.c — shared utilities extracted from all 38 binaries.
  *

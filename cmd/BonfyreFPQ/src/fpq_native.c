@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * fpq_native.c — Native .fpq format writer/reader
  *

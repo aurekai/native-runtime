@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * fpq_codec.c — Full FPQ v2 Encode/Decode Pipeline
  *

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_crypto.h — Cryptographic primitives for Bonfyre
  *

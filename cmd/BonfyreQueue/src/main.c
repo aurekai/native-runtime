@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreQueue v2 — SQLite-backed job queue with built-in worker daemon.
  *

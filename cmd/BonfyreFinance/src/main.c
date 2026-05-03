@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreFinance — service arbitrage, labor pipeline, and bundle pricing engine.
  *

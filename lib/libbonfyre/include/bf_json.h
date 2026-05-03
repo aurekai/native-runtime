@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_json.h — yyjson-inspired SIMD JSON engine for Bonfyre
  *

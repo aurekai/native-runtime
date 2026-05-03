@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * v4_optimizations.c — Three Novel Optimization Vectors
  *

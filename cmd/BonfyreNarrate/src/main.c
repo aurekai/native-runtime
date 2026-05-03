@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreNarrate v3 — Verified Tone-Aware Text-to-Speech Synthesis
  *

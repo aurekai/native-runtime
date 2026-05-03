@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_operators.c — typed operator registry for all Bonfyre binaries.
  *

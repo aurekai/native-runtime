@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_bloom.h — Split-block Bloom filter for probabilistic dedup
  *

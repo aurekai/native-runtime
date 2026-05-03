@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_msgpack.h — Minimal MessagePack encoder/decoder
  *

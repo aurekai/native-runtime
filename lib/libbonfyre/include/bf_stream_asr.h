@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_stream_asr.h — Sub-100ms streaming transcription via ring buffer + BM25
  *

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre-control — control plane for Bonfyre inference pipelines.
  *

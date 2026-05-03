@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bonfyre-economy — cost-aware routing and budget enforcement.
  *

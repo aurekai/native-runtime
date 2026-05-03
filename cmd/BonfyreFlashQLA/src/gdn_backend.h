@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * gdn_backend.h — BonfyreGDN backend selection and dispatch.
  *

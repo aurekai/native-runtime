@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_utf8.h — SIMD-accelerated UTF-8 processing
  *

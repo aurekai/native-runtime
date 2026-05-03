@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * safetensors_reader.c — Read HuggingFace safetensors model files
  *

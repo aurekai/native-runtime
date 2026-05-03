@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * fwht.c — Fast Walsh-Hadamard Transform (Haar Rotation)
  *

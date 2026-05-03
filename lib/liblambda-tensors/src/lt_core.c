@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /* lt_core.c — liblambda-tensors: Family-aware structural JSON compression
  *
  * Five encoding tiers:

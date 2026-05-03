@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /* compact_bindings.c — SQLite storage layer for compact bindings
  *
  * Compression logic has been extracted to liblambda-tensors.

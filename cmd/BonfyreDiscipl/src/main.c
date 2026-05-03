@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 #include <limits.h>
 #include <sqlite3.h>
 #include <stdio.h>

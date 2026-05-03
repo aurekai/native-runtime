@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * BonfyreDetectObjects — Object detection operator for V1/I1 pipelines
  *

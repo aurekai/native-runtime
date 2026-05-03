@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_pipeline_coro.h — libdill structured concurrency for pipeline stages
  *

@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /*
  * bf_fountain.h — O(N) rateless fountain encoder/decoder
  *
