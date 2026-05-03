@@ -86,11 +86,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         operator:
-          - BonfyreHash
-          - BonfyreTag
-          - BonfyreFragment
-          - BonfyrePack
-          - BonfyreBrief
+          - AkaiHash
+          - AkaiTag
+          - AkaiFragment
+          - AkaiPack
+          - AkaiBrief
     steps:
       - uses: actions/checkout@v4
 

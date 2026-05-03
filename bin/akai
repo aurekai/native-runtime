@@ -1,43 +1,43 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: Apache-2.0
-# akai — Aurekai operator dispatcher (wraps Bonfyre native binaries)
+# akai — Aurekai operator dispatcher (wraps Akai native binaries)
 # Usage: akai <command> [args...]
 set -euo pipefail
 
 declare -A AKAI_OPS=(
-  [api]=BonfyreAPI [auth]=BonfyreAuth [brief]=BonfyreBrief
-  [canon]=BonfyreCanon [capability]=BonfyreCapability [cli]=BonfyreCLI
-  [clips]=BonfyreClips [cms]=BonfyreCMS [compete]=BonfyreCompete
-  [compress]=BonfyreCompress [control]=BonfyreControl
-  [detect-objects]=BonfyreDetectObjects [discip]=BonfyreDiscipl
-  [distribute]=BonfyreDistribute [economy]=BonfyreEconomy
-  [embed]=BonfyreEmbed [emit]=BonfyreEmit [entity]=BonfyreEntity
-  [family]=BonfyreFamily [finance]=BonfyreFinance
-  [flash-qla]=BonfyreFlashQLA [flow]=BonfyreFlow
-  [fpq]=BonfyreFPQ [fpqx]=BonfyreFPQx [fragment]=BonfyreFragment
-  [frame-extract]=BonfyreFrameExtract [gate]=BonfyreGate
-  [gen]=BonfyreGen [graph]=BonfyreGraph [hash]=BonfyreHash
-  [index]=BonfyreIndex [ingest]=BonfyreIngest [kv-cache]=BonfyreKVCache
-  [layer]=BonfyreLayer [leapfrog]=BonfyreLeapfrog [learn]=BonfyreLearn
-  [ledger]=BonfyreLedger [media-prep]=BonfyreMediaPrep [meter]=BonfyreMeter
-  [mfa-dict]=BonfyreMFADict [model]=BonfyreModel [moq]=BonfyreMoQ
-  [narrate]=BonfyreNarrate [net]=BonfyreNet [offer]=BonfyreOffer
-  [orchestrate]=BonfyreOrchestrate [outreach]=BonfyreOutreach [pack]=BonfyrePack
-  [paragraph]=BonfyreParagraph [pay]=BonfyrePay [physics]=BonfyrePhysics
-  [pipeline]=BonfyrePipeline [project]=BonfyreProject [proof]=BonfyreProof
-  [proxy]=BonfyreProxy [quant]=BonfyreQuant [query]=BonfyreQuery
-  [queue]=BonfyreQueue [reason]=BonfyreReason [recipe]=BonfyreRecipe
-  [render]=BonfyreRender [repurpose]=BonfyreRepurpose [run]=BonfyreRun
-  [runtime]=BonfyreRuntime [sae]=BonfyreSAE [scene-detect]=BonfyreSceneDetect
-  [segment]=BonfyreSegment [sli]=BonfyreSLI [space]=BonfyreSpace
-  [speech-loop]=BonfyreSpeechLoop [stitch]=BonfyreStitch [surface]=BonfyreSurface
-  [swarm]=BonfyreSwarm [sync]=BonfyreSync [tag]=BonfyreTag
-  [tel]=BonfyreTel [tier]=BonfyreTier [time]=BonfyreTime [tone]=BonfyreTone
-  [transcribe]=BonfyreTranscribe [transcript-clean]=BonfyreTranscriptClean
-  [transcript-family]=BonfyreTranscriptFamily [vec]=BonfyreVec
-  [video-demux]=BonfyreVideoDemux [violence]=BonfyreViolence
-  [watch]=BonfyreWatch [weaviate-index]=BonfyreWeaviateIndex
-  [wire]=BonfyreWire [workflow]=BonfyreWorkflow
+  [api]=AkaiAPI [auth]=AkaiAuth [brief]=AkaiBrief
+  [canon]=AkaiCanon [capability]=AkaiCapability [cli]=AkaiCLI
+  [clips]=AkaiClips [cms]=AkaiCMS [compete]=AkaiCompete
+  [compress]=AkaiCompress [control]=AkaiControl
+  [detect-objects]=AkaiDetectObjects [discip]=AkaiDiscipl
+  [distribute]=AkaiDistribute [economy]=AkaiEconomy
+  [embed]=AkaiEmbed [emit]=AkaiEmit [entity]=AkaiEntity
+  [family]=AkaiFamily [finance]=AkaiFinance
+  [flash-qla]=AkaiFlashQLA [flow]=AkaiFlow
+  [fpq]=AkaiFPQ [fpqx]=AkaiFPQx [fragment]=AkaiFragment
+  [frame-extract]=AkaiFrameExtract [gate]=AkaiGate
+  [gen]=AkaiGen [graph]=AkaiGraph [hash]=AkaiHash
+  [index]=AkaiIndex [ingest]=AkaiIngest [kv-cache]=AkaiKVCache
+  [layer]=AkaiLayer [leapfrog]=AkaiLeapfrog [learn]=AkaiLearn
+  [ledger]=AkaiLedger [media-prep]=AkaiMediaPrep [meter]=AkaiMeter
+  [mfa-dict]=AkaiMFADict [model]=AkaiModel [moq]=AkaiMoQ
+  [narrate]=AkaiNarrate [net]=AkaiNet [offer]=AkaiOffer
+  [orchestrate]=AkaiOrchestrate [outreach]=AkaiOutreach [pack]=AkaiPack
+  [paragraph]=AkaiParagraph [pay]=AkaiPay [physics]=AkaiPhysics
+  [pipeline]=AkaiPipeline [project]=AkaiProject [proof]=AkaiProof
+  [proxy]=AkaiProxy [quant]=AkaiQuant [query]=AkaiQuery
+  [queue]=AkaiQueue [reason]=AkaiReason [recipe]=AkaiRecipe
+  [render]=AkaiRender [repurpose]=AkaiRepurpose [run]=AkaiRun
+  [runtime]=AkaiRuntime [sae]=AkaiSAE [scene-detect]=AkaiSceneDetect
+  [segment]=AkaiSegment [sli]=AkaiSLI [space]=AkaiSpace
+  [speech-loop]=AkaiSpeechLoop [stitch]=AkaiStitch [surface]=AkaiSurface
+  [swarm]=AkaiSwarm [sync]=AkaiSync [tag]=AkaiTag
+  [tel]=AkaiTel [tier]=AkaiTier [time]=AkaiTime [tone]=AkaiTone
+  [transcribe]=AkaiTranscribe [transcript-clean]=AkaiTranscriptClean
+  [transcript-family]=AkaiTranscriptFamily [vec]=AkaiVec
+  [video-demux]=AkaiVideoDemux [violence]=AkaiViolence
+  [watch]=AkaiWatch [weaviate-index]=AkaiWeaviateIndex
+  [wire]=AkaiWire [workflow]=AkaiWorkflow
 )
 
 CMD="${1:-}"
